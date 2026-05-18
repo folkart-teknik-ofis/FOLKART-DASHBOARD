@@ -19,7 +19,6 @@ if('serviceWorker' in navigator){
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -232,46 +231,53 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
 .prj-add-ok{background:var(--ac);color:#0d1120}
 .prj-add-cancel{background:var(--s4);color:var(--tx)}
 
-/* === REHBER === */
-.rh-hero{background:linear-gradient(135deg,var(--ac)18,var(--ap)10);border-radius:14px;padding:24px 28px;margin-bottom:20px;border:1px solid var(--ac)30}
-.rh-hero h1{font-size:20px;color:var(--ac);font-weight:800;margin-bottom:5px}
-.rh-hero p{color:var(--m1);font-size:12px;line-height:1.6;max-width:600px}
-.rh-sec{font-size:10px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.8px;margin:18px 0 10px}
-.rh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:18px}
-.rh-card{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;overflow:hidden}
-.rh-card-hdr{padding:12px 16px 9px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--b1)}
-.rh-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.rh-ct{font-size:12px;font-weight:700;color:var(--tx)}
-.rh-cs{font-size:9px;color:var(--m2);margin-top:1px}
-.rh-cb{padding:13px 16px}
-.rh-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;flex-shrink:0;white-space:nowrap}
-.rh-row{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid var(--b1)0a}
-.rh-row:last-child{border-bottom:none}
-.rh-name{font-size:11px;font-weight:600;color:var(--tx);margin-bottom:2px}
-.rh-desc{font-size:10px;color:var(--m2);line-height:1.5}
-.rh-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ap);background:var(--ap)12;padding:2px 7px;border-radius:4px;margin-top:3px;display:inline-block}
-.rh-scale{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
-.rh-si{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
-.rh-tip{background:var(--ao)10;border-left:3px solid var(--ao);border-radius:0 8px 8px 0;padding:9px 13px;margin-top:9px;font-size:10px;color:var(--m1);line-height:1.6}
-.rh-tip b{color:var(--ao)}
-.rh-flow{display:flex;gap:0;align-items:stretch;flex-wrap:wrap;margin-bottom:20px}
-.rh-fs{flex:1;min-width:130px;background:var(--bg2);border:1px solid var(--b1);padding:12px 14px}
-.rh-fs:first-child{border-radius:10px 0 0 10px}.rh-fs:last-child{border-radius:0 10px 10px 0}
-.rh-fa{display:flex;align-items:center;justify-content:center;width:22px;color:var(--m2);font-size:15px;background:var(--bg2);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
-.rh-fn{font-size:9px;font-weight:800;color:var(--ac);margin-bottom:3px}
-.rh-ft{font-size:10px;font-weight:700;color:var(--tx);margin-bottom:2px}
-.rh-fd{font-size:9px;color:var(--m2);line-height:1.4}
-.rh-tbl{width:100%;border-collapse:collapse;font-size:11px}
-.rh-tbl th{background:var(--s3);color:var(--m2);font-size:9px;text-transform:uppercase;letter-spacing:.5px;padding:7px 11px;text-align:left;font-weight:600}
-.rh-tbl td{padding:7px 11px;border-bottom:1px solid var(--b1)40;color:var(--m1);vertical-align:top}
-.rh-tbl tr:last-child td{border-bottom:none}
-@media(max-width:640px){
-  .rh-grid{grid-template-columns:1fr}
-  .rh-flow{flex-direction:column}
-  .rh-fs{border-radius:8px!important;margin-bottom:3px}
-  .rh-fa{display:none}
-}
 
+/* ══ PDF RAPOR ══ */
+.pdf-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center}
+.pdf-modal-bg.show{display:flex}
+.pdf-modal{background:#fff;border-radius:12px;width:210mm;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.pdf-toolbar{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a1a2e;border-radius:12px 12px 0 0}
+.pdf-toolbar button{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;font-weight:600;font-size:12px}
+.pdf-print-btn{background:#4f8ef7;color:#fff}
+.pdf-close-btn{background:#333;color:#aaa}
+.pdf-pages{padding:0}
+@media print{
+  body > *:not(.pdf-modal-bg){display:none!important}
+  .pdf-modal-bg{display:flex!important;position:static!important;background:none!important}
+  .pdf-modal{box-shadow:none;max-height:none;border-radius:0}
+  .pdf-toolbar{display:none!important}
+  .pdf-page{page-break-after:always;break-after:page}
+}
+.pdf-page{width:210mm;min-height:297mm;padding:16mm 14mm;box-sizing:border-box;background:#fff;color:#111;font-family:'DM Sans',sans-serif;position:relative}
+.pdf-page:not(:last-child){border-bottom:3px dashed #ddd}
+.pdf-logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.pdf-logo-ic{width:32px;height:32px;background:linear-gradient(135deg,#4f8ef7,#9b6cf7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.pdf-logo-name{font-size:18px;font-weight:800;font-family:'Syne',sans-serif}
+.pdf-logo-name b{color:#4f8ef7}
+.pdf-logo-sub{font-size:9px;color:#888;letter-spacing:1.5px;text-transform:uppercase}
+.pdf-divider{height:2px;background:linear-gradient(90deg,#4f8ef7,#9b6cf7,transparent);margin:8px 0 12px}
+.pdf-section{margin-bottom:14px}
+.pdf-section-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#4f8ef7;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.pdf-section-title::before{content:'';width:3px;height:10px;background:#4f8ef7;border-radius:2px;flex-shrink:0}
+.pdf-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.pdf-kpi{border:1px solid #e8ecf4;border-radius:8px;padding:10px 12px;border-top:3px solid}
+.pdf-kpi-l{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#888;margin-bottom:4px}
+.pdf-kpi-v{font-size:16px;font-weight:800;font-family:'Syne',sans-serif;line-height:1.1}
+.pdf-kpi-s{font-size:8px;color:#aaa;margin-top:3px}
+.pdf-table{width:100%;border-collapse:collapse;font-size:9px}
+.pdf-table th{background:#f4f6fb;padding:6px 8px;text-align:left;font-weight:700;font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#666;border-bottom:2px solid #e0e4f0}
+.pdf-table th.r{text-align:right}
+.pdf-table td{padding:5px 8px;border-bottom:1px solid #f0f2f8;vertical-align:middle}
+.pdf-table td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-size:8px}
+.pdf-table tr:hover td{background:#fafbff}
+.pdf-table tfoot td{background:#f4f6fb;font-weight:700;border-top:2px solid #c8d0e8;padding:6px 8px}
+.pdf-table tfoot td.r{text-align:right;font-family:'JetBrains Mono',monospace;font-size:8px}
+.pdf-bar{display:flex;align-items:center;gap:4px}
+.pdf-bar-track{width:50px;height:5px;background:#e8ecf4;border-radius:2px;overflow:hidden;flex-shrink:0}
+.pdf-bar-fill{height:100%;border-radius:2px}
+.pdf-tag{font-size:7px;font-weight:700;padding:2px 5px;border-radius:4px;display:inline-block}
+.pdf-footer{position:absolute;bottom:10mm;left:14mm;right:14mm;display:flex;justify-content:space-between;font-size:8px;color:#bbb;border-top:1px solid #eee;padding-top:6px}
+.pdf-chart-wrap{width:100%;height:140px;margin:8px 0}
 </style>
 </head>
 <body>
@@ -330,7 +336,6 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
   <div class="tab" onclick="go('sapma',this)">🎯 Sapma Analizi</div>
   <div class="tab" onclick="go('nakit',this)">💵 Nakit Akış</div>
   <div class="tab" onclick="go('konsolide',this)" style="border-left:1px solid var(--b1);margin-left:auto">🗂 Konsolide</div>
-  <div class="tab" onclick="go('rehber',this)" style="border-left:1px solid var(--b1)">📖 Rehber</div>
 </div>
 
 <div class="content">
@@ -354,7 +359,7 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
       <div class="fr">
         <label>Fiziksel İlerleme (%)</label>
         <input id="manuelFiz" type="number" value="0" min="0" max="100" oninput="setManuelFiz(this.value)">
-        <div class="hint">PYP ilerlemelerinden otomatik hesaplanır. Farklı bir değer girmek istersen buraya yaz; boş bırakırsan otomatik hesap kullanılır.</div>
+        <div class="hint">Sağ üstteki % Fiziksel değeri bu alandan elle girilir.</div>
       </div>
 <div class="fr"><label>Arsa Alanı (m²)</label><input id="gArsa" value="22.529"></div>
 <div class="fr"><label>İnşaat Alanı (m²)</label><input id="gInsaat" value="152.091"></div>
@@ -376,12 +381,16 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
     <div id="pypList"></div>
     <div class="btn-row">
       <button class="btn btn-g" onclick="save()">💾 Kaydet & Güncelle</button>
-          <button class="hbtn" onclick="printPDF()" style="background:var(--ad)" title="PDF Rapor">📄 PDF</button>
-
       <button class="btn btn-s" onclick="loadDef()">↺ Varsayılan</button>
       <button class="btn btn-d" onclick="showRM()">🗑️ Sıfırla</button>
+      <button class="btn" onclick="exportPDF()" style="background:linear-gradient(135deg,#e85444,#9b6cf7);color:#fff;margin-left:auto">📄 PDF Rapor</button>
       <span class="last-save" id="lsave"></span>
+<div style="margin-top:10px;display:flex;gap:10px">
+<button class="btn btn-ap" onclick="exportExcel()">📤 Excel'e Dışa Aktar</button>
 
+<button class="btn btn-ap" onclick="document.getElementById('excelUpload').click()">📥 Excel'den İçe Aktar</button>
+<input type="file" id="excelUpload" accept=".xlsx" style="display:none" onchange="importExcel(event)">
+</div>
 
     </div>
   </div>
@@ -460,7 +469,18 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
 
 <!-- ═══════ SAPMA ═══════ -->
 <div id="pg-sapma" class="page">
-  <div class="shdr"><div class="stitle">🎯 Sapma <span>Analizi (EVM)</span></div><div class="ssub">Earned Value Management · Procore standartları</div></div>
+  <div class="shdr" style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="stitle">🎯 Sapma <span>Analizi (EVM)</span></div>
+      <div class="ssub">Earned Value Management · Procore standartları</div>
+      <div id="evmSource" style="font-size:10px;margin-top:4px;font-weight:600"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <button class="btn btn-ap" onclick="exportEVMExcel()">📤 PYP Şablon İndir</button>
+      <button class="btn btn-ap" onclick="document.getElementById('evmUpload').click()">📥 PYP Excel Yükle</button>
+      <input type="file" id="evmUpload" accept=".xlsx" style="display:none" onchange="importEVMExcel(event)">
+    </div>
+  </div>
   <div class="g6 mb12">
     <div class="kpi" style="border-top:2px solid var(--ac)"><div class="kpi-l">BCWS (PV)</div><div class="kpi-v" id="e1" style="color:var(--ac)">—</div><div class="kpi-s">Planlanan Bütçe</div></div>
     <div class="kpi" style="border-top:2px solid var(--ag)"><div class="kpi-l">BCWP (EV)</div><div class="kpi-v" id="e2" style="color:var(--ag)">—</div><div class="kpi-s">Kazanılmış Değer</div></div>
@@ -497,33 +517,61 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
   </div>
 </div>
 
-<!-- ═══════ KONSOLİDE RAPOR ═══════ -->
+<!-- ═══════ NAKİT AKIŞ ═══════ -->
 <div id="pg-nakit" class="page">
   <div class="shdr">
     <div class="stitle">💵 Nakit <span>Akış</span></div>
-    <div class="ssub">Aylık TL &amp; USD nakit akış — plan vs gerçekleşen</div>
+    <div class="ssub">Aylık plan vs gerçek harcama — TL & USD</div>
   </div>
-  <div class="card mb12" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-    <button onclick="exportNakitTemplate()" style="padding:8px 14px;border-radius:8px;background:var(--ao);color:#000;border:none;font-weight:600;cursor:pointer">📥 Şablon İndir</button>
-    <button onclick="document.getElementById('nakitFile').click()" style="padding:8px 14px;border-radius:8px;background:var(--ac);color:white;border:none;font-weight:600;cursor:pointer">📤 Excel Yükle</button>
-    <input type="file" id="nakitFile" accept=".xlsx" style="display:none" onchange="importNakit(event)">
-    <span style="font-size:10px;color:var(--m2)">Şablon: NAKIT_TL / NAKIT_USD · AY, PLAN, GERCEK kolonları</span>
+
+  <!-- KPI KARTLARI -->
+  <div class="g4 mb12">
+    <div class="kpi" style="border-top:2px solid var(--ac)"><div class="kpi-l">Toplam Plan (TL)</div><div class="kpi-v" id="nk1" style="color:var(--ac)">—</div><div class="kpi-s">Kümülatif planlanan</div></div>
+    <div class="kpi" style="border-top:2px solid var(--ag)"><div class="kpi-l">Toplam Gerçek (TL)</div><div class="kpi-v" id="nk2" style="color:var(--ag)">—</div><div class="kpi-s" id="nk2s">—</div></div>
+    <div class="kpi" style="border-top:2px solid var(--ao)"><div class="kpi-l">Fark (TL)</div><div class="kpi-v" id="nk3" style="color:var(--ao)">—</div><div class="kpi-s">Gerçek - Plan</div></div>
+    <div class="kpi" style="border-top:2px solid var(--ap)"><div class="kpi-l">Toplam Gerçek (USD)</div><div class="kpi-v" id="nk4" style="color:var(--ap)">—</div><div class="kpi-s">Kümülatif USD harcama</div></div>
   </div>
-  <div id="nakitEmpty" style="display:none;text-align:center;padding:40px;color:var(--m2)">
-              ⬆ Nakit akış Excel dosyası yükleyin
-            </div>
-            <div id="nakitKPI" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px"></div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-    <div class="card"><div class="ct">📊 Aylık TL</div><div style="height:200px"><canvas id="cNakitBar"></canvas></div></div>
-    <div class="card"><div class="ct">📈 Kümülatif TL</div><div style="height:200px"><canvas id="cNakitCum"></canvas></div></div>
+
+  <!-- GRAFİKLER -->
+  <div class="g2 mb12">
+    <div class="card">
+      <div class="ct">Aylık Harcama — Plan vs Gerçek (M ₺)</div>
+      <div class="cw" style="height:200px"><canvas id="cNakitBar"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Kümülatif Nakit Akış Eğrisi (M ₺)</div>
+      <div class="cw" style="height:200px"><canvas id="cNakitKum"></canvas></div>
+    </div>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-    <div class="card"><div class="ct">📊 Aylık USD</div><div style="height:200px"><canvas id="cNakitUsdBar"></canvas></div></div>
-    <div class="card"><div class="ct">📈 Kümülatif USD</div><div style="height:200px"><canvas id="cNakitUsdCum"></canvas></div></div>
+
+  <!-- EXCEL BUTONLARI -->
+  <div class="card mb12">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <div class="ct" style="margin-bottom:0">Excel Veri Aktarımı</div>
+      <button class="btn btn-ap" onclick="exportNakit()">📤 Şablon İndir</button>
+      <button class="btn btn-ap" onclick="document.getElementById('nakitUpload').click()">📥 Excel'den Yükle</button>
+      <input type="file" id="nakitUpload" accept=".xlsx" style="display:none" onchange="importNakit(event)">
+      <span style="font-size:9px;color:var(--m2)">Şablonu indirin → doldurun → yükleyin</span>
+    </div>
   </div>
-  <div class="card"><div class="ct">📋 Aylık Nakit Detay</div><div style="overflow-x:auto"><div id="nakitTablo"></div></div></div>
+
+  <!-- PYP BAZLI TABLO -->
+  <div class="card">
+    <div class="ct">PYP Bazında Aylık Harcama Tablosu</div>
+    <div class="tbl-wrap" style="max-height:400px">
+      <table id="nakitTbl" style="min-width:800px">
+        <thead id="nakitTblHead"></thead>
+        <tbody id="nakitTblBody"></tbody>
+        <tfoot id="nakitTblFoot"></tfoot>
+      </table>
+    </div>
+    <div id="nakitEmpty" style="text-align:center;color:var(--m2);padding:30px;font-size:12px">
+      📥 Excel şablonunu indirin, doldurun ve yükleyin
+    </div>
+  </div>
 </div>
 
+<!-- ═══════ KONSOLİDE RAPOR ═══════ -->
 <div id="pg-konsolide" class="page">
   <div class="shdr">
     <div class="stitle">🗂 <span>Konsolide</span> Rapor</div>
@@ -531,202 +579,6 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
   </div>
   <div id="kons-content" style="display:flex;flex-direction:column;gap:14px"></div>
 </div>
-
-
-  <!-- ═══ REHBER ═══ -->
-  <div id="pg-rehber" class="page">
-    <div class="shdr">
-      <div class="stitle">📖 <span>Kullanım Rehberi</span></div>
-    </div>
-    <div style="padding:16px 20px;overflow-y:auto;height:calc(100% - 52px)" id="rehber-content">
-
-<!-- HERO -->
-<div class="rh-hero">
-  <h1>📖 Kullanım Rehberi</h1>
-  <p>Paneldeki tüm metriklerin tanımı, formülü ve yorumlama kılavuzu. Her kartı inceleyerek verileri nasıl okuyacağınızı öğrenin.</p>
-</div>
-
-<!-- AKIŞ -->
-<div class="rh-sec">📋 Veri Giriş Akışı</div>
-<div class="rh-flow">
-  <div class="rh-fs"><div class="rh-fn">1</div><div class="rh-ft">Proje Bilgileri</div><div class="rh-fd">Ad, kod, mevcut ay, toplam süre</div></div>
-  <div class="rh-fa">›</div>
-  <div class="rh-fs"><div class="rh-fn">2</div><div class="rh-ft">PYP Bütçeleri</div><div class="rh-fd">Alt PYP bütçe girin → ağırlıklar otomatik</div></div>
-  <div class="rh-fa">›</div>
-  <div class="rh-fs"><div class="rh-fn">3</div><div class="rh-ft">Fiziksel İlerleme</div><div class="rh-fd">Alt PYP % girin → Ana PYP otomatik</div></div>
-  <div class="rh-fa">›</div>
-  <div class="rh-fs"><div class="rh-fn">4</div><div class="rh-ft">Kaydet</div><div class="rh-fd">Tüm paneller ve grafikler güncellenir</div></div>
-  <div class="rh-fa">›</div>
-  <div class="rh-fs"><div class="rh-fn">5</div><div class="rh-ft">Analiz Et</div><div class="rh-fd">Dashboard, S-Eğrisi, Sapma sekmelerini inceleyin</div></div>
-</div>
-
-<!-- EVM -->
-<div class="rh-sec">📊 EVM — Kazanılmış Değer Metrikleri</div>
-<div class="rh-grid">
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#9b6cf720">💜</div><div><div class="rh-ct">BCWP — Kazanılmış Değer</div><div class="rh-cs">Budgeted Cost of Work Performed / EV</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#9b6cf720;color:#9b6cf7">TANIM</span><div><div class="rh-name">Tamamlanan işin bütçesel değeri</div><div class="rh-desc">%80 tamamlanmış 100M TL'lik iş → BCWP = 80M TL. Gerçek harcamadan bağımsız.</div><div class="rh-f">BCWP = Σ (Bütçe × Fiziksel İlerleme%)</div></div></div>
-    <div class="rh-tip"><b>İpucu:</b> BCWP > ACWP → tasarruf. BCWP < ACWP → fazla harcama.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#4f8ef720">💙</div><div><div class="rh-ct">BCWS — Planlanan Değer</div><div class="rh-cs">Budgeted Cost of Work Scheduled / PV</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#4f8ef720;color:#4f8ef7">TANIM</span><div><div class="rh-name">Bu tarihe kadar yapılması planlanan işin bütçesel değeri</div><div class="rh-desc">Takvim ilerlemesine göre bugüne kadar tamamlanmış olması gereken iş miktarı.</div><div class="rh-f">BCWS = Σ (Bütçe × Takvim İlerleme%)</div></div></div>
-    <div class="rh-tip"><b>İpucu:</b> BCWP < BCWS → proje takvim gerisinde.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#e8544420">❤️</div><div><div class="rh-ct">ACWP — Gerçek Maliyet</div><div class="rh-cs">Actual Cost of Work Performed / AC</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#e8544420;color:#e85444">TANIM</span><div><div class="rh-name">Bugüne kadar gerçekte harcanan tutar</div><div class="rh-desc">Veri girişindeki "Gerçekleşen" sütunundan gelen toplam. Faturalar, ödemeler, fiili giderler.</div><div class="rh-f">ACWP = Σ Gerçekleşen Harcamalar</div></div></div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#f0b42920">🟡</div><div><div class="rh-ct">CPI — Maliyet Performans Endeksi</div><div class="rh-cs">Cost Performance Index</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#f0b42920;color:#f0b429">FORMÜL</span><div><div class="rh-name">Harcanan her 1 TL'ye karşılık üretilen iş değeri</div><div class="rh-f">CPI = BCWP ÷ ACWP</div></div></div>
-    <div class="rh-scale">
-      <span class="rh-si" style="background:#3dba6f20;color:#3dba6f">CPI &gt; 1 → Bütçe altında ✅</span>
-      <span class="rh-si" style="background:#f0b42920;color:#f0b429">CPI = 1 → Tam bütçede 🟡</span>
-      <span class="rh-si" style="background:#e8544420;color:#e85444">CPI &lt; 1 → Bütçe aşımı 🔴</span>
-    </div>
-    <div class="rh-tip"><b>Örnek:</b> CPI = 0.85 → Her 100 TL harcamada 85 TL'lik iş yapılıyor. Proje bütçesi ~%18 aşacak.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#22c4e820">🩵</div><div><div class="rh-ct">SPI — Takvim Performans Endeksi</div><div class="rh-cs">Schedule Performance Index</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#22c4e820;color:#22c4e8">FORMÜL</span><div><div class="rh-name">Planlanan işe göre gerçekte ne kadar tamamlandığı</div><div class="rh-f">SPI = BCWP ÷ BCWS</div></div></div>
-    <div class="rh-scale">
-      <span class="rh-si" style="background:#3dba6f20;color:#3dba6f">SPI &gt; 1 → Takvim ilerisinde ✅</span>
-      <span class="rh-si" style="background:#f0b42920;color:#f0b429">SPI = 1 → Tam takvimde 🟡</span>
-      <span class="rh-si" style="background:#e8544420;color:#e85444">SPI &lt; 1 → Takvim gerisinde 🔴</span>
-    </div>
-    <div class="rh-tip"><b>Örnek:</b> SPI = 0.90 → Planın %90'ı tamamlanmış, bu aydaki işin %10'u sarkıyor.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#3dba6f20">💚</div><div><div class="rh-ct">CV — Maliyet Sapması</div><div class="rh-cs">Cost Variance</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#3dba6f20;color:#3dba6f">FORMÜL</span><div><div class="rh-name">Kazanılan değer ile gerçek harcama arasındaki fark</div><div class="rh-f">CV = BCWP − ACWP</div></div></div>
-    <div class="rh-scale">
-      <span class="rh-si" style="background:#3dba6f20;color:#3dba6f">CV &gt; 0 → Tasarruf ✅</span>
-      <span class="rh-si" style="background:#e8544420;color:#e85444">CV &lt; 0 → Aşım 🔴</span>
-    </div>
-    <div class="rh-tip"><b>Örnek:</b> CV = −5M TL → Yapılan işin bütçesel değerinden 5M TL fazla harcanmış.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#4f8ef720">📅</div><div><div class="rh-ct">SV — Takvim Sapması</div><div class="rh-cs">Schedule Variance</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#4f8ef720;color:#4f8ef7">FORMÜL</span><div><div class="rh-name">Kazanılan değer ile planlanan arasındaki fark (para cinsinden)</div><div class="rh-f">SV = BCWP − BCWS</div></div></div>
-    <div class="rh-scale">
-      <span class="rh-si" style="background:#3dba6f20;color:#3dba6f">SV &gt; 0 → Takvim ileride ✅</span>
-      <span class="rh-si" style="background:#e8544420;color:#e85444">SV &lt; 0 → Takvim geride 🔴</span>
-    </div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#f0b42920">🔮</div><div><div class="rh-ct">EAC — Tamamlanma Tahmini</div><div class="rh-cs">Estimate At Completion</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#f0b42920;color:#f0b429">FORMÜL</span><div><div class="rh-name">Mevcut performans devam ederse projenin toplam maliyeti</div><div class="rh-f">EAC = Toplam Bütçe ÷ CPI</div></div></div>
-    <div class="rh-tip"><b>Örnek:</b> Bütçe 100M, CPI = 0.90 → EAC = 111M TL. Proje 11M TL fazlaya mal olacak.</div>
-  </div>
-</div>
-
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#9b6cf720">⚖️</div><div><div class="rh-ct">VAC — Tamamlanma Sapması</div><div class="rh-cs">Variance At Completion</div></div></div>
-  <div class="rh-cb">
-    <div class="rh-row"><span class="rh-badge" style="background:#9b6cf720;color:#9b6cf7">FORMÜL</span><div><div class="rh-name">Toplam bütçe ile EAC arasındaki fark — nihai tasarruf veya aşım</div><div class="rh-f">VAC = Toplam Bütçe − EAC</div></div></div>
-    <div class="rh-scale">
-      <span class="rh-si" style="background:#3dba6f20;color:#3dba6f">VAC &gt; 0 → Tasarrufla tamamlanacak</span>
-      <span class="rh-si" style="background:#e8544420;color:#e85444">VAC &lt; 0 → Aşımla tamamlanacak</span>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<!-- S-EĞRİSİ -->
-<div class="rh-sec">📈 S-Eğrisi — Nasıl Okunur?</div>
-<div class="rh-grid">
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#4f8ef720">📐</div><div><div class="rh-ct">Planlanan Eğri (Mavi)</div><div class="rh-cs">Takvime göre beklenen kümülatif ilerleme</div></div></div>
-  <div class="rh-cb"><div class="rh-desc" style="font-size:11px;color:var(--m1);line-height:1.6">Her PYP'nin başlangıç/bitiş ayı ve ağırlığından hesaplanır. Başlangıçta yavaş, ortada hızlı, bitişe doğru yavaşlayan "S" formunu alır.</div>
-  <div class="rh-tip"><b>Dikkat:</b> Doğru plan eğrisi S şeklinde olmalıdır. Düz veya erken dik çıkan plan gerçekçi değildir.</div></div>
-</div>
-<div class="rh-card">
-  <div class="rh-card-hdr"><div class="rh-ico" style="background:#3dba6f20">✅</div><div><div class="rh-ct">Gerçekleşen Eğri (Yeşil)</div><div class="rh-cs">Fiili fiziksel ilerlemenin kümülatif değeri</div></div></div>
-  <div class="rh-cb"><div class="rh-desc" style="font-size:11px;color:var(--m1);line-height:1.6">Alt PYP veya Ana PYP fiziksel ilerleme değerlerinden ağırlıklı hesaplanır. Sadece mevcut aya kadar gösterilir.</div>
-  <div class="rh-tip"><b>Okuma:</b> Yeşil mavi <b>üstündeyse</b> → takvim ilerisinde ✅  Mavi <b>altındaysa</b> → takvim gerisinde 🔴</div></div>
-</div>
-</div>
-
-<!-- PYP ALANLARI -->
-<div class="rh-sec">🏗️ PYP Alanları — Ne Gireceğim?</div>
-<div class="rh-card" style="margin-bottom:18px">
-  <div class="rh-cb">
-    <table class="rh-tbl">
-      <thead><tr><th>Alan</th><th>Açıklama</th><th>Otomatik?</th></tr></thead>
-      <tbody>
-        <tr><td><b>Bütçe (₺)</b></td><td>PYP için öngörülen toplam maliyet. Alt PYP varsa otomatik toplanır.</td><td style="color:#3dba6f">Alt PYP varsa ✅</td></tr>
-        <tr><td><b>Gerçekleşen (₺)</b></td><td>Bugüne kadar yapılan toplam ödeme ve harcama.</td><td style="color:#3dba6f">Alt PYP varsa ✅</td></tr>
-        <tr><td><b>Ağırlık (%)</b></td><td>Bu PYP'nin toplam proje bütçesindeki payı. Tüm hesaplamalarda kullanılır.</td><td style="color:#3dba6f">Her zaman ✅</td></tr>
-        <tr><td><b>Fiziksel İlerleme (%)</b></td><td>İşin fiziksel tamamlanma yüzdesi. Alt PYP varsa bütçesel ağırlıkla otomatik hesaplanır.</td><td style="color:#3dba6f">Alt PYP varsa ✅</td></tr>
-        <tr><td><b>Başlangıç / Bitiş Ay</b></td><td>PYP'nin proje takvimindeki başlangıç ve bitiş ayı numarası (1, 2, 3...).</td><td style="color:#e85444">❌ Manuel</td></tr>
-        <tr><td><b>Alt PYP İlerleme</b></td><td>Her alt iş kaleminin ayrı ayrı fiziksel tamamlanma yüzdesi.</td><td style="color:#e85444">❌ Manuel</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- RENK KODLARI -->
-<div class="rh-sec">🎨 Renk ve Durum Kodları</div>
-<div class="rh-grid">
-<div class="rh-card"><div class="rh-card-hdr"><div class="rh-ico" style="background:#3dba6f20">🟢</div><div><div class="rh-ct">Yeşil — İyi Performans</div></div></div>
-  <div class="rh-cb"><div class="rh-desc" style="font-size:11px;color:var(--m1);line-height:1.8">• Fiziksel ilerleme ≥ %80<br>• CPI ≥ 1.0 → Bütçe altında<br>• CV > 0 → Tasarruf<br>• Risk: İyi</div></div></div>
-<div class="rh-card"><div class="rh-card-hdr"><div class="rh-ico" style="background:#f0b42920">🟡</div><div><div class="rh-ct">Sarı — Dikkat Gerekli</div></div></div>
-  <div class="rh-cb"><div class="rh-desc" style="font-size:11px;color:var(--m1);line-height:1.8">• Fiziksel ilerleme %50–79<br>• CPI 0.85–1.0 → Hafif baskı<br>• CV küçük negatif → İzleme<br>• Risk: Orta / Yüksek</div></div></div>
-<div class="rh-card"><div class="rh-card-hdr"><div class="rh-ico" style="background:#e8544420">🔴</div><div><div class="rh-ct">Kırmızı — Kritik Durum</div></div></div>
-  <div class="rh-cb"><div class="rh-desc" style="font-size:11px;color:var(--m1);line-height:1.8">• Gerçekleşen > Bütçe × 1.25<br>• CPI &lt; 0.85 → Ciddi aşım<br>• CV büyük negatif → Müdahale<br>• Risk: Kritik</div></div></div>
-</div>
-
-<!-- SEKME REHBERİ -->
-<div class="rh-sec">🗂️ Sekme Rehberi</div>
-<div class="rh-card" style="margin-bottom:20px">
-  <div class="rh-cb">
-    <table class="rh-tbl">
-      <thead><tr><th>Sekme</th><th>Ne Gösterir?</th><th>Ne Zaman?</th></tr></thead>
-      <tbody>
-        <tr><td>🏠 Giriş</td><td>Proje bilgileri, PYP bütçe/ilerleme girişi, Alt PYP kırılımı</td><td>Her güncelleme döneminde</td></tr>
-        <tr><td>📊 Dashboard</td><td>Toplam bütçe, gerçekleşen, EAC, fiziksel ilerleme, S-eğrisi özet</td><td>Günlük takip</td></tr>
-        <tr><td>📈 S-Eğrisi</td><td>Kümülatif plan vs gerçekleşen, aylık fark, Gantt</td><td>Haftalık toplantı</td></tr>
-        <tr><td>💰 Bütçe</td><td>PYP bazlı bütçe/gerçekleşen/tahmin, alt PYP kırılımı</td><td>Fatura onayı</td></tr>
-        <tr><td>🎯 Sapma</td><td>BCWS/BCWP/ACWP/EAC grafikleri, CPI/SPI trend, risk panelleri</td><td>Aylık raporlama</td></tr>
-        <tr><td>🏦 Nakit Akış</td><td>Aylık plan/gerçek ödeme, TL+USD kümülatif eğriler</td><td>Ödeme planlaması</td></tr>
-        <tr><td>🗂️ Konsolide</td><td>Tüm projelerin tek tabloda özeti, EAC karşılaştırması</td><td>Portföy değerlendirme</td></tr>
-        <tr><td>📖 Rehber</td><td>Metrik tanımları, formüller, renk kodları</td><td>İhtiyaç duyulduğunda</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div style="text-align:center;color:var(--m2);font-size:10px;padding:12px 0 20px">
-  Folkart İnşaat Takip Paneli · v19 · PMI-PMBOK EVM standartları
-</div>
-
-    </div>
-  </div>
 
 </div><!-- /content -->
 </div><!-- /main-wrap -->
@@ -748,7 +600,6 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
   </div>
 </div>
 
-
 <!-- RESET MODAL -->
 <div class="mbg" id="rm">
   <div class="modal">
@@ -759,6 +610,7 @@ input[type=range]{padding:0;height:4px;accent-color:var(--ac)}
 </div>
 
 <div id="toast"></div><script>
+
 function clamp(n,min,max){ return Math.min(Math.max(n,min),max); }
 const clone = obj => JSON.parse(JSON.stringify(obj));
 
@@ -766,8 +618,6 @@ const clone = obj => JSON.parse(JSON.stringify(obj));
 // TÜM ALT PYP KATALOĞU — YENİ PYP YAPISI
 // ══════════════════════════════════════════
 const KATALOG = {
-  "03": [{k:"03.01",a:"Mimari Proje"},{k:"03.02",a:"Statik Proje"},{k:"03.03",a:"Mekanik Proje"},{k:"03.04",a:"Elektrik Proje"},{k:"03.05",a:"Zemin Etüdü"},{k:"03.06",a:"Peyzaj Projesi"}],
-  "05": [{k:"05.01",a:"Kamulaştırma"},{k:"05.02",a:"Altyapı Bağlantıları"},{k:"05.03",a:"İzin ve Ruhsat"},{k:"05.04",a:"Geçici Tesisler"}],
   "07": [{k:"07.01",a:"Mobilizasyon İşleri"},{k:"07.02",a:"Demobilizasyon İşleri"}],
   "09": [{k:"09.00",a:"Genel Hafriyat İşleri"},{k:"09.01",a:"Yıkım ve Söküm İşleri"},{k:"09.02",a:"Hafriyat İşleri"},{k:"09.03",a:"Dolgu İşleri"}],
   "11": [{k:"11.00",a:"Genel Zemin İyileştirme"},{k:"11.01",a:"İksa İşleri"},{k:"11.02",a:"Zemin İyileştirme ve Derin Temel"},{k:"11.03",a:"Test ve Deney Yapılması"},{k:"11.04",a:"Su Kuyusu ve Sondaj"}],
@@ -784,179 +634,40 @@ const KATALOG = {
   "33": [{k:"33.00",a:"Genel Elektrik Tesisat"},{k:"33.01",a:"Kuvvetli Akım Tesisat"},{k:"33.02",a:"Zayıf Akım Tesisat"},{k:"33.03",a:"Elektriksel Güç Üretim"}],
   "35": [{k:"35.01",a:"Asansör İşleri"},{k:"35.02",a:"Yürüyen Merdiven"},{k:"35.03",a:"Asansör Diğer Sarf"}],
   "01": [{k:"01.01",a:"Personel Giderleri"},{k:"01.02",a:"Enerji Giderleri"},{k:"01.03",a:"Bakım Onarım Giderleri"},{k:"01.04",a:"Araç Giderleri"},{k:"01.05",a:"Seyahat ve Konaklama"},{k:"01.06",a:"Nakliye ve Kargo"},{k:"01.07",a:"Sigorta Giderleri"},{k:"01.08",a:"Banka Giderleri"},{k:"01.09",a:"Haberleşme Giderleri"},{k:"01.10",a:"Gayrimenkul Kira ve Aidat"},{k:"01.11",a:"Toplantı, Eğitim, Organizasyon"},{k:"01.12",a:"Amortisman Giderleri"},{k:"01.13",a:"Vergi Harç Noter"},{k:"01.14",a:"Danışmanlık ve Müşavirlik"},{k:"01.15",a:"Merkez Yönetim Giderleri"},{k:"01.16",a:"Finansman Giderleri"},{k:"01.17",a:"İş Makinası ve Ekipman Kiralama"},{k:"01.18",a:"İşçi Sağlığı ve İş Güvenliği"},{k:"01.19",a:"Diğer Giderler"}],
-  "97": [{k:"97.01",a:"Beklenmedik Giderler"},{k:"97.02",a:"Risk Karşılığı"},{k:"97.03",a:"Fiyat Farkı Karşılığı"}],
-  "99": [{k:"99.01",a:"Genel İdare Giderleri"},{k:"99.02",a:"Yönetim Hizmetleri"},{k:"99.03",a:"Denetim ve Danışmanlık"},{k:"99.04",a:"Sigorta Giderleri"}]
 };
 
 // ══ VARSAYILAN VERİ ══
 const DEF = [
-  {kod:"03",ad:"Proje ve İş Geliştirme",        butce:0,        g:0,        il:0,  bas:1, bit:3,  ag:0,   alt:[]},
-  {kod:"05",ad:"Arazi Hazırlık",                 butce:0,        g:0,        il:0,  bas:1, bit:2,  ag:0,   alt:[]},
-  {kod:"07",ad:"Mobilizasyon ve Demob.",          butce:4200000,  g:4200000,  il:100,bas:1, bit:2, ag:1.2, alt:[]},
-  {kod:"09",ad:"Hafriyat ve Dolgu",               butce:18500000, g:18500000, il:100,bas:2, bit:5, ag:5.3, alt:[]},
-  {kod:"11",ad:"Zemin İyileştirme ve İksa",       butce:12800000, g:12300000, il:96, bas:3, bit:7, ag:3.7, alt:[]},
-  {kod:"13",ad:"Kaba Yapı",                        butce:92000000, g:72400000, il:78, bas:4, bit:16,ag:26.5,alt:[
-    {k:"13.01",a:"Betonarme İşleri",    b:55000000,g:45100000,il:82},
-    {k:"13.02",a:"Çelik Konstrüksiyon", b:12000000,g:8400000, il:70},
-    {k:"13.03",a:"Öngerme / Ardgerme",  b:6000000, g:4800000, il:80},
-    {k:"13.05",a:"İstinat Duvar",       b:4200000, g:4200000, il:100},
-  ]},
-  {kod:"15",ad:"İnce Yapı",                        butce:54000000, g:24300000, il:45, bas:10,bit:21,ag:15.5,alt:[
-    {k:"15.01",a:"Duvar İşleri",        b:12000000,g:7200000, il:60},
-    {k:"15.02",a:"Sıva İşleri",         b:8000000, g:2400000, il:30},
-    {k:"15.06",a:"Döşeme Kaplama",      b:9500000, g:2850000, il:30},
-    {k:"15.12",a:"Çatı İşleri",         b:4000000, g:3400000, il:85},
-  ]},
-  {kod:"17",ad:"Özellikli İnşaat İşleri",          butce:8600000,  g:2150000,  il:25, bas:14,bit:22,ag:2.5, alt:[]},
-  {kod:"19",ad:"Dış Cephe",                         butce:22000000, g:6600000,  il:30, bas:12,bit:20,ag:6.3, alt:[]},
-  {kod:"21",ad:"Kapı Pencere Cam",                  butce:16500000, g:3300000,  il:20, bas:14,bit:21,ag:4.7, alt:[]},
-  {kod:"23",ad:"İzolasyon",                          butce:9800000,  g:1960000,  il:20, bas:13,bit:20,ag:2.8, alt:[]},
-  {kod:"25",ad:"Mobilya Tefrişat",                   butce:14200000, g:0,        il:0,  bas:18,bit:23,ag:4.1, alt:[]},
-  {kod:"27",ad:"Altyapı İşleri",                    butce:11000000, g:5500000,  il:50, bas:8, bit:18,ag:3.2, alt:[]},
-  {kod:"29",ad:"Çevre Düzenleme ve Peyzaj",          butce:7500000,  g:0,        il:0,  bas:20,bit:24,ag:2.2, alt:[]},
-  {kod:"31",ad:"Mekanik Tesisat",                    butce:28000000, g:8400000,  il:30, bas:11,bit:22,ag:8.1, alt:[
-    {k:"31.01",a:"Sıhhi Tesisat",       b:7000000, g:2100000, il:30},
-    {k:"31.02",a:"Isıtma ve Soğutma",   b:8500000, g:2550000, il:30},
-    {k:"31.03",a:"Havalandırma/Klima",   b:6000000, g:1800000, il:30},
-  ]},
-  {kod:"33",ad:"Elektrik Tesisat",                   butce:24000000, g:7200000,  il:30, bas:11,bit:22,ag:6.9, alt:[
-    {k:"33.01",a:"Kuvvetli Akım",       b:14000000,g:4200000, il:30},
-    {k:"33.02",a:"Zayıf Akım",          b:8000000, g:2400000, il:30},
-  ]},
-  {kod:"35",ad:"Asansör",                            butce:6800000,  g:680000,   il:10, bas:17,bit:23,ag:2.0, alt:[]},
-  {kod:"01",ad:"Şantiye Genel Giderleri",            butce:18000000, g:11250000, il:63, bas:1, bit:24,ag:5.2, alt:[]},
-  {kod:"97",ad:"Beklenmedik Giderler",               butce:0, g:0, il:0, bas:1, bit:24, ag:0, alt:[]},
-  {kod:"99",ad:"Genel İdare",                        butce:0, g:0, il:0, bas:1, bit:24, ag:0, alt:[]}
+  {kod:"01",ad:"Şantiye Genel Giderler",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"01.01",a:"Şantiye Personel Gideri",b:0,g:0,il:0},{k:"01.02",a:"Şantiye Enerji Gideri",b:0,g:0,il:0},{k:"01.03",a:"Şantiye Bakım Onarım Gideri",b:0,g:0,il:0},{k:"01.04",a:"Araç Giderleri",b:0,g:0,il:0},{k:"01.05",a:"Şantiye Seyahat ve Konaklama Gideri",b:0,g:0,il:0},{k:"01.06",a:"Şantiye Nakliye Ve Kargo Giderleri",b:0,g:0,il:0},{k:"01.07",a:"Şantiye Sigorta Giderleri",b:0,g:0,il:0},{k:"01.08",a:"Şantiye Banka Giderleri",b:0,g:0,il:0},{k:"01.09",a:"Şantiye Haberleşme Giderleri",b:0,g:0,il:0},{k:"01.10",a:"Şantiye Gayrimenkul Kira Ve Aidat Gider",b:0,g:0,il:0},{k:"01.11",a:"Şantiye Toplantı Eğitim Organizasyon Gi",b:0,g:0,il:0},{k:"01.12",a:"Şantiye Amortisman Giderleri",b:0,g:0,il:0},{k:"01.13",a:"Şantiye Vergi Harç Noter Giderleri",b:0,g:0,il:0},{k:"01.14",a:"Şantiye Danışmanlık Ve Müşavirlik Gider",b:0,g:0,il:0},{k:"01.15",a:"Şantiye Merkez Yönetim Giderleri",b:0,g:0,il:0},{k:"01.16",a:"Şantiye Finansman Giderleri",b:0,g:0,il:0},{k:"01.17",a:"Şantiye İş Makinası Ve Ekipman Kiralama",b:0,g:0,il:0},{k:"01.18",a:"Şantiye İşçi Sağlığı Ve İş Güvenliği Gi",b:0,g:0,il:0},{k:"01.19",a:"Şantiye Diğer Giderler",b:0,g:0,il:0},{k:"01.20",a:"Şantiye Pazarlama  Reklam  Fuar Giderle",b:0,g:0,il:0},{k:"01.21",a:"Şantiye Bilgi İşlem Giderleri",b:0,g:0,il:0},{k:"01.22",a:"Şantiye Yemek Giderleri",b:0,g:0,il:0},{k:"01.23",a:"Şantiye Koğuş Yatakhane Giderleri",b:0,g:0,il:0},{k:"01.24",a:"Şantiye Dizayn Ofis Gideri",b:0,g:0,il:0},{k:"01.25",a:"Yönetim Gideri",b:0,g:0,il:0}]},
+  {kod:"03",ad:"Satış Ofisi ve Örnek Daire Giderleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"03.01",a:"Satış Ofisi/ Örnek Daire Giderleri",b:0,g:0,il:0}]},
+  {kod:"04",ad:"Merkez Yönetim Proje Payı",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"04.01",a:"Merkez Yönetim Proje Payı",b:0,g:0,il:0}]},
+  {kod:"05",ad:"Proje ve İş Geliştirme İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"05.01",a:"İş Geliştirme Giderleri",b:0,g:0,il:0},{k:"05.02",a:"Proje Çizim Giderleri",b:0,g:0,il:0},{k:"05.03",a:"Proje Danışmanlık ve Müşavirlik Hizmet G",b:0,g:0,il:0},{k:"05.04",a:"Yapı Denetim Giderleri",b:0,g:0,il:0}]},
+  {kod:"07",ad:"Şantiye Mobilizasyon ve Demobilizasyon",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"07.01",a:"Mobilizasyon İşleri",b:0,g:0,il:0},{k:"07.02",a:"Demobilizasyon İşleri",b:0,g:0,il:0}]},
+  {kod:"09",ad:"Hafriyat ve Dolgu İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"09.00",a:"Genel Hafriyat İşleri",b:0,g:0,il:0},{k:"09.01",a:"Yıkım Ve Söküm İşleri",b:0,g:0,il:0},{k:"09.02",a:"Hafriyat İşleri",b:0,g:0,il:0},{k:"09.03",a:"Dolgu İşleri",b:0,g:0,il:0}]},
+  {kod:"11",ad:"Zemin İyileştirme ve İksa İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"11.00",a:"Genel Zemin İyileştirme Ve İksa İşleri",b:0,g:0,il:0},{k:"11.01",a:"İksa İşleri",b:0,g:0,il:0},{k:"11.02",a:"Zemin İyileştirme ve Derin Temel İşleri",b:0,g:0,il:0},{k:"11.03",a:"Test Ve Deney Yapılması",b:0,g:0,il:0},{k:"11.04",a:"Su Kuyusu Ve Sondaj İşleri",b:0,g:0,il:0}]},
+  {kod:"13",ad:"Kaba Yapı İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"13.00",a:"Genel Kaba Yapı İşleri",b:0,g:0,il:0},{k:"13.01",a:"Betonarme İşleri",b:0,g:0,il:0},{k:"13.02",a:"Çelik Konstrüksiyon İşleri",b:0,g:0,il:0},{k:"13.03",a:"Öngerme ve Ardgerme İşleri",b:0,g:0,il:0},{k:"13.04",a:"Prefabrik ve Prekast İşleri",b:0,g:0,il:0},{k:"13.05",a:"İstinat Duvar İşleri",b:0,g:0,il:0},{k:"13.06",a:"Güçlendirme İşleri",b:0,g:0,il:0},{k:"13.07",a:"Delme, Kesme, Ankraj, Karot İşleri",b:0,g:0,il:0},{k:"13.08",a:"Saha Betonu İşleri (Perdahlı/Perdahsız)",b:0,g:0,il:0}]},
+  {kod:"15",ad:"İnce Yapı İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"15.00",a:"Genel İnce Yapı İşleri",b:0,g:0,il:0},{k:"15.01",a:"Duvar İşleri",b:0,g:0,il:0},{k:"15.02",a:"Sıva İşleri",b:0,g:0,il:0},{k:"15.03",a:"Şap İşleri",b:0,g:0,il:0},{k:"15.04",a:"Asmatavan İşleri",b:0,g:0,il:0},{k:"15.05",a:"Duvar Kaplama İşleri",b:0,g:0,il:0},{k:"15.06",a:"Döşeme Kaplama İşleri",b:0,g:0,il:0},{k:"15.07",a:"Tavan Kaplama İşleri",b:0,g:0,il:0},{k:"15.08",a:"Boya İşleri",b:0,g:0,il:0},{k:"15.09",a:"Denizlik, Harpuşta Ve Eşik İşleri (Tutamak Kaymaz)",b:0,g:0,il:0},{k:"15.10",a:"Bina İç Korkuluk İşleri",b:0,g:0,il:0},{k:"15.11",a:"Tezgah İşleri",b:0,g:0,il:0},{k:"15.12",a:"Çatı İşleri",b:0,g:0,il:0},{k:"15.13",a:"Dilatasyon İşleri",b:0,g:0,il:0},{k:"15.14",a:"Mutfak Ve Islak Hacim Ekipmanları",b:0,g:0,il:0},{k:"15.15",a:"Yönlendirme Ve Tabela İşleri",b:0,g:0,il:0},{k:"15.16",a:"Temizlik İşleri",b:0,g:0,il:0}]},
+  {kod:"17",ad:"Özellikli İnşaat İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"17.01",a:"Sauna Ve Buhar Odası Yapılması",b:0,g:0,il:0},{k:"17.02",a:"Site Girişi Ve Güvenlik Kulübeleri",b:0,g:0,il:0},{k:"17.03",a:"Endüstriyel Mutfak Yapılması",b:0,g:0,il:0},{k:"17.04",a:"Şömine Yapılması",b:0,g:0,il:0},{k:"17.05",a:"Spor Aletleri",b:0,g:0,il:0},{k:"17.06",a:"Şezlong Ve Şemsiyeler",b:0,g:0,il:0},{k:"17.07",a:"Deniz İskelesi Yapılması",b:0,g:0,il:0},{k:"17.08",a:"Sosyal Alan Nitelikli İnşaat İşleri",b:0,g:0,il:0}]},
+  {kod:"19",ad:"Dış Cephe İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"19.00",a:"Genel Dış Cephe İşleri",b:0,g:0,il:0},{k:"19.01",a:"Mantolama / Sıva / Boya İşleri",b:0,g:0,il:0},{k:"19.02",a:"Doğrama İşleri",b:0,g:0,il:0},{k:"19.03",a:"Muhtelif Kaplama İşleri",b:0,g:0,il:0},{k:"19.04",a:"Korkuluk İşleri",b:0,g:0,il:0},{k:"19.05",a:"Giydirme Cephe İşleri",b:0,g:0,il:0},{k:"19.06",a:"Panjur, Kepenk, Tente Vs. İşleri",b:0,g:0,il:0}]},
+  {kod:"21",ad:"Kapı Pencere Cam İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"21.01",a:"Çelik Kapılar",b:0,g:0,il:0},{k:"21.02",a:"Yangın Kapıları Ve Şaft Kapakları",b:0,g:0,il:0},{k:"21.03",a:"Blok Giriş Kapıları",b:0,g:0,il:0},{k:"21.04",a:"Teknik Hacim Kapılar",b:0,g:0,il:0},{k:"21.05",a:"İç Mekan Cam Bölücü Ve Doğramalar",b:0,g:0,il:0}]},
+  {kod:"23",ad:"İzolasyon İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"23.00",a:"Genel İzolasyon İşleri",b:0,g:0,il:0},{k:"23.01",a:"Su İzolasyon İşleri",b:0,g:0,il:0},{k:"23.02",a:"Isı İzolasyon İşleri",b:0,g:0,il:0},{k:"23.03",a:"Ses İzolasyon İşleri",b:0,g:0,il:0},{k:"23.04",a:"Yangın Ve Duman Koruma İşleri",b:0,g:0,il:0}]},
+  {kod:"25",ad:"Mobilya Tefrişat ve Ekipman İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"25.01",a:"Mutfak Dolabı İşleri",b:0,g:0,il:0},{k:"25.02",a:"Banyo Dolapları",b:0,g:0,il:0},{k:"25.03",a:"Vestiyer Ve Daire İçi Dolaplar",b:0,g:0,il:0},{k:"25.04",a:"Daire İç Kapısı",b:0,g:0,il:0},{k:"25.05",a:"Süpürgelik İşleri",b:0,g:0,il:0},{k:"25.06",a:"Ortak Alan Mobilya Kaplamaları",b:0,g:0,il:0},{k:"25.07",a:"Hareketli Mobilyalar",b:0,g:0,il:0},{k:"25.08",a:"Tekstil (Halı Perde V.S)",b:0,g:0,il:0},{k:"25.09",a:"Aksesuarlar",b:0,g:0,il:0}]},
+  {kod:"27",ad:"Altyapı İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"27.00",a:"Genel Altyapı İşleri",b:0,g:0,il:0},{k:"27.01",a:"Yol Ve Sanat İşleri",b:0,g:0,il:0}]},
+  {kod:"29",ad:"Çevre Düzenleme ve Peyzaj İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"29.00",a:"Genel Çevre Düzenleme Ve Peyzaj İşleri",b:0,g:0,il:0},{k:"29.01",a:"Bitkisel Peyzaj İşleri",b:0,g:0,il:0},{k:"29.02",a:"Sulama Sistemleri İşleri",b:0,g:0,il:0},{k:"29.03",a:"Sert Zemin Kaplama İşleri",b:0,g:0,il:0},{k:"29.04",a:"Muhtelif Diğer Zemin Kaplama İşleri",b:0,g:0,il:0},{k:"29.05",a:"Şehir Mobilyaları, Oyun Alanları Ve Spor Tesisi İşleri",b:0,g:0,il:0},{k:"29.06",a:"Bahçe Duvarları Ve Sınırlayıcılar",b:0,g:0,il:0}]},
+  {kod:"31",ad:"Mekanik Tesisat İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"31.00",a:"Genel Mekanik Tesisat İşleri",b:0,g:0,il:0},{k:"31.01",a:"Sıhhi Tesisat İşleri",b:0,g:0,il:0},{k:"31.02",a:"Isıtma ve Soğutma Tesisatı",b:0,g:0,il:0},{k:"31.03",a:"Havalandırma ve Klima Tesisatı",b:0,g:0,il:0},{k:"31.04",a:"Yangın Tesisat İşleri",b:0,g:0,il:0},{k:"31.05",a:"Doğalgaz Tesisat İşleri",b:0,g:0,il:0},{k:"31.06",a:"Otomatik Kontrol Sistemleri",b:0,g:0,il:0},{k:"31.07",a:"Özel Tesisatlar ve Sistemler",b:0,g:0,il:0}]},
+  {kod:"33",ad:"Elektrik Tesisat İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"33.00",a:"Genel Elektrik Tesisat İşleri",b:0,g:0,il:0},{k:"33.01",a:"Kuvvetli Akım Tesisat İşleri",b:0,g:0,il:0},{k:"33.02",a:"Zayıf Akım Tesisat İşleri",b:0,g:0,il:0},{k:"33.03",a:"Elektriksel Güç Üretim İşleri",b:0,g:0,il:0}]},
+  {kod:"35",ad:"Asansör ve Yürüyen Merdiven İşleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"35.01",a:"Asansör İşleri",b:0,g:0,il:0},{k:"35.02",a:"Yürüyen Merdiven İşleri",b:0,g:0,il:0},{k:"35.03",a:"Asansör Diğer Sarf",b:0,g:0,il:0}]},
+  {kod:"37",ad:"Finansman Giderleri",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"37.01",a:"Finansman Giderleri",b:0,g:0,il:0}]},
+  {kod:"99",ad:"Diğer Giderler",butce:0,g:0,il:0,bas:1,bit:24,ag:0,alt:[{k:"99.01",a:"Diğer Giderler",b:0,g:0,il:0}]},
 ];
 
-const DEF_PRJ = {ad:"Folkart Orion",kod:"3025",ay:15,top:45,arsa:"22.529",insaat:"152.091",satilab:"123.245",kat:"44",konut:"725",ofis:"0",ticari:"30",m2:"72.453",baslangic:"Oca 25",planBitis:"Eyl 28",guncelBitis:"Eyl 28"};
-
-// ── 3 PROJENİN BAŞLANGIÇ VERİSİ ──
-const INIT_PROJECTS = [
-  {
-    id:"terra_3013",
-    prj:{ad:"Folkart Terra",kod:"3013",ay:27,top:28,arsa:"55.931",insaat:"22.764",satilab:"27.377",kat:"2",konut:"77+46",ofis:"0",ticari:"5",m2:"66.635",baslangic:"Oca 24",planBitis:"May 26",guncelBitis:"Haz 26"},
-    pyp:[
-      {kod:"01",ad:"Şantiye Genel Giderleri",     butce:175344304, g:65237653,  il:100, bas:1,  bit:28, ag:11.6, alt:[]},
-      {kod:"03",ad:"Satış Ofisi ve Örnek Daire",  butce:8729943,   g:8363880,   il:97,  bas:1,  bit:6,  ag:0.6,  alt:[]},
-      {kod:"05",ad:"Proje ve İş Geliştirme",      butce:14422326,  g:15439278,  il:100, bas:1,  bit:4,  ag:1.0,  alt:[]},
-      {kod:"07",ad:"Mobilizasyon ve Demob.",       butce:17317458,  g:11449371,  il:100, bas:1,  bit:3,  ag:1.1,  alt:[]},
-      {kod:"09",ad:"Hafriyat ve Dolgu",            butce:47481559,  g:58980538,  il:99,  bas:2,  bit:6,  ag:3.1,  alt:[]},
-      {kod:"11",ad:"Zemin İyileştirme ve İksa",    butce:20240,     g:20240,     il:100, bas:3,  bit:7,  ag:0.0,  alt:[]},
-      {kod:"13",ad:"Kaba Yapı",                    butce:211695500, g:184892520, il:100, bas:4,  bit:16, ag:13.9, alt:[]},
-      {kod:"15",ad:"İnce Yapı",                    butce:270399210, g:187024619, il:79,  bas:10, bit:24, ag:17.8, alt:[]},
-      {kod:"17",ad:"Özellikli İnşaat İşleri",      butce:13419414,  g:104907,    il:0,   bas:14, bit:22, ag:0.9,  alt:[]},
-      {kod:"19",ad:"Dış Cephe",                    butce:309706453, g:216602147, il:97,  bas:12, bit:22, ag:20.4, alt:[]},
-      {kod:"21",ad:"Kapı Pencere Cam",              butce:16993624,  g:4220990,   il:46,  bas:14, bit:22, ag:1.1,  alt:[]},
-      {kod:"23",ad:"İzolasyon",                     butce:18436965,  g:15958481,  il:98,  bas:13, bit:22, ag:1.2,  alt:[]},
-      {kod:"25",ad:"Mobilya Tefrişat",              butce:47575092,  g:14511100,  il:61,  bas:18, bit:26, ag:3.1,  alt:[]},
-      {kod:"27",ad:"Altyapı İşleri",               butce:34280178,  g:34956012,  il:99,  bas:8,  bit:20, ag:2.3,  alt:[]},
-      {kod:"29",ad:"Çevre Düzenleme ve Peyzaj",     butce:73207072,  g:25599136,  il:24,  bas:20, bit:27, ag:4.8,  alt:[]},
-      {kod:"31",ad:"Mekanik Tesisat",               butce:159890870, g:136380605, il:93,  bas:11, bit:24, ag:10.5, alt:[]},
-      {kod:"33",ad:"Elektrik Tesisat",              butce:97956846,  g:78283459,  il:60,  bas:11, bit:24, ag:6.5,  alt:[]},
-      {kod:"35",ad:"Asansör",                       butce:0,         g:0,         il:0,   bas:17, bit:25, ag:0.0,  alt:[]},
-      {kod:"97",ad:"Beklenmedik Giderler",          butce:0,         g:0,         il:0,   bas:1,  bit:28, ag:0.0,  alt:[]},
-      {kod:"99",ad:"Genel İdare",                   butce:0,         g:0,         il:0,   bas:1,  bit:28, ag:0.0,  alt:[]},
-    ],
-    sc:{},sc2:{},nakit:{tl:[],usd:[]},manFiz:83.3
-  },
-  {
-    id:"orion_3025",
-    prj:{ad:"Folkart Orion",kod:"3025",ay:15,top:45,arsa:"22.529",insaat:"152.091",satilab:"123.245",kat:"44",konut:"725",ofis:"0",ticari:"30",m2:"72.453",baslangic:"Oca 25",planBitis:"Eyl 28",guncelBitis:"Eyl 28"},
-    pyp:[
-      {kod:"01",ad:"Şantiye Genel Giderleri",     butce:1206592345, g:124846766, il:94,  bas:1,  bit:45, ag:10.7, alt:[]},
-      {kod:"03",ad:"Satış Ofisi ve Örnek Daire",  butce:35709466,   g:37076134,  il:97,  bas:1,  bit:6,  ag:0.3,  alt:[]},
-      {kod:"05",ad:"Proje ve İş Geliştirme",      butce:124663913,  g:34186201,  il:98,  bas:1,  bit:4,  ag:1.1,  alt:[]},
-      {kod:"07",ad:"Mobilizasyon ve Demob.",       butce:59666300,   g:57522487,  il:94,  bas:1,  bit:3,  ag:0.5,  alt:[]},
-      {kod:"09",ad:"Hafriyat ve Dolgu",            butce:78218494,   g:60996392,  il:83,  bas:2,  bit:8,  ag:0.7,  alt:[]},
-      {kod:"11",ad:"Zemin İyileştirme ve İksa",    butce:386665127,  g:375224410, il:98,  bas:3,  bit:10, ag:3.4,  alt:[]},
-      {kod:"13",ad:"Kaba Yapı",                    butce:1880907703, g:503596203, il:23,  bas:4,  bit:24, ag:16.7, alt:[]},
-      {kod:"15",ad:"İnce Yapı",                    butce:1215660391, g:915,       il:0,   bas:14, bit:38, ag:10.8, alt:[]},
-      {kod:"17",ad:"Özellikli İnşaat İşleri",      butce:24203423,   g:0,         il:0,   bas:20, bit:36, ag:0.2,  alt:[]},
-      {kod:"19",ad:"Dış Cephe",                    butce:2006077430, g:0,         il:0,   bas:18, bit:38, ag:17.8, alt:[]},
-      {kod:"21",ad:"Kapı Pencere Cam",              butce:68357597,   g:0,         il:0,   bas:22, bit:38, ag:0.6,  alt:[]},
-      {kod:"23",ad:"İzolasyon",                     butce:129645261,  g:17498736,  il:39,  bas:16, bit:36, ag:1.2,  alt:[]},
-      {kod:"25",ad:"Mobilya Tefrişat",              butce:533915404,  g:1174268,   il:0,   bas:30, bit:43, ag:4.7,  alt:[]},
-      {kod:"27",ad:"Altyapı İşleri",               butce:7884230,    g:0,         il:0,   bas:10, bit:30, ag:0.1,  alt:[]},
-      {kod:"29",ad:"Çevre Düzenleme ve Peyzaj",     butce:284402022,  g:559951,    il:0,   bas:36, bit:44, ag:2.5,  alt:[]},
-      {kod:"31",ad:"Mekanik Tesisat",               butce:1429826349, g:2027923,   il:0,   bas:14, bit:38, ag:12.7, alt:[]},
-      {kod:"33",ad:"Elektrik Tesisat",              butce:1295443962, g:1027053,   il:0,   bas:14, bit:38, ag:11.5, alt:[]},
-      {kod:"35",ad:"Asansör",                       butce:251555669,  g:0,         il:0,   bas:30, bit:43, ag:2.2,  alt:[]},
-      {kod:"97",ad:"Beklenmedik Giderler",          butce:0,          g:0,         il:0,   bas:1,  bit:45, ag:0.0,  alt:[]},
-      {kod:"99",ad:"Genel İdare",                   butce:0,          g:0,         il:0,   bas:1,  bit:45, ag:0.0,  alt:[]},
-    ],
-    sc:{},sc2:{},nakit:{tl:[],usd:[]},manFiz:14.5
-  },
-  {
-    id:"mona_3028",
-    prj:{ad:"Folkart Mona",kod:"3028",ay:15,top:32,arsa:"17.229",insaat:"75.051",satilab:"62.626",kat:"5",konut:"192",ofis:"0",ticari:"47",m2:"80.094",baslangic:"Ara 24",planBitis:"Eyl 27",guncelBitis:"Eyl 27"},
-    pyp:[
-      {kod:"01",ad:"Şantiye Genel Giderleri",     butce:542946051,  g:120773150, il:100, bas:1,  bit:32, ag:8.9,  alt:[]},
-      {kod:"03",ad:"Satış Ofisi ve Örnek Daire",  butce:0,          g:0,         il:0,   bas:1,  bit:4,  ag:0.0,  alt:[]},
-      {kod:"05",ad:"Proje ve İş Geliştirme",      butce:101175736,  g:53347618,  il:100, bas:1,  bit:3,  ag:1.7,  alt:[]},
-      {kod:"07",ad:"Mobilizasyon ve Demob.",       butce:50019387,   g:33286384,  il:100, bas:1,  bit:2,  ag:0.8,  alt:[]},
-      {kod:"09",ad:"Hafriyat ve Dolgu",            butce:158248252,  g:141326992, il:96,  bas:2,  bit:6,  ag:2.6,  alt:[]},
-      {kod:"11",ad:"Zemin İyileştirme ve İksa",    butce:387134166,  g:382055660, il:100, bas:3,  bit:9,  ag:6.3,  alt:[]},
-      {kod:"13",ad:"Kaba Yapı",                    butce:648656549,  g:188705548, il:32,  bas:4,  bit:18, ag:10.6, alt:[]},
-      {kod:"15",ad:"İnce Yapı",                    butce:1068749513, g:37715,     il:0,   bas:14, bit:28, ag:17.4, alt:[]},
-      {kod:"17",ad:"Özellikli İnşaat İşleri",      butce:23791586,   g:0,         il:0,   bas:18, bit:28, ag:0.4,  alt:[]},
-      {kod:"19",ad:"Dış Cephe",                    butce:1201324991, g:1360461,   il:0,   bas:16, bit:28, ag:19.6, alt:[]},
-      {kod:"21",ad:"Kapı Pencere Cam",              butce:34874796,   g:0,         il:0,   bas:20, bit:28, ag:0.6,  alt:[]},
-      {kod:"23",ad:"İzolasyon",                     butce:41988846,   g:11264082,  il:47,  bas:14, bit:26, ag:0.7,  alt:[]},
-      {kod:"25",ad:"Mobilya Tefrişat",              butce:385100222,  g:0,         il:0,   bas:24, bit:31, ag:6.3,  alt:[]},
-      {kod:"27",ad:"Altyapı İşleri",               butce:5201995,    g:0,         il:0,   bas:8,  bit:22, ag:0.1,  alt:[]},
-      {kod:"29",ad:"Çevre Düzenleme ve Peyzaj",     butce:114182207,  g:0,         il:0,   bas:26, bit:32, ag:1.9,  alt:[]},
-      {kod:"31",ad:"Mekanik Tesisat",               butce:788625586,  g:678016,    il:0,   bas:12, bit:28, ag:12.9, alt:[]},
-      {kod:"33",ad:"Elektrik Tesisat",              butce:402961834,  g:4309876,   il:1,   bas:12, bit:28, ag:6.6,  alt:[]},
-      {kod:"35",ad:"Asansör",                       butce:54391718,   g:0,         il:0,   bas:24, bit:31, ag:0.9,  alt:[]},
-      {kod:"97",ad:"Beklenmedik Giderler",          butce:0,          g:0,         il:0,   bas:1,  bit:32, ag:0.0,  alt:[]},
-      {kod:"99",ad:"Genel İdare",                   butce:0,          g:0,         il:0,   bas:1,  bit:32, ag:0.0,  alt:[]},
-    ],
-    sc:{},sc2:{},nakit:{tl:[],usd:[]},manFiz:16.5
-  }
-];
-
-// ── Yeni proje için boş şablon (DEF = demo proje için korundu) ──
-const DEF_PRJ_BLANK = {ad:"",kod:"",ay:1,top:24,arsa:"",insaat:"",satilab:"",
-  kat:"",konut:"",ofis:"",ticari:"",m2:"",baslangic:"",planBitis:"",guncelBitis:""};
-const DEF_BLANK = DEF.map(p=>Object.assign({},p,{butce:0,g:0,il:0,ag:0,bas:1,bit:p.bit,alt:[]}));
+const DEF_PRJ = {ad:"Folkart Orion",kod:"3025",ay:15,top:24,arsa:"22.529",insaat:"152.091",satilab:"123.245",kat:"44",konut:"725",ofis:"0",ticari:"36",m2:"72.472",baslangic:"Ocak 25",planBitis:"Eylul 28",guncelBitis:"Eylul 28"};
 
 // ══ STATE ══
 // ══ ÇOK PROJELİ MİMARİ ══
 const PRJ_DB_KEY = "projects_v1";
 const ACTIVE_KEY = "active_prj";
-const SC_KEY = () => "sc_" + ACTIVE_ID;
-
-// ── SC2 (PYP_DETAY) ─────────────────────────────────────────
-const SC2_KEY = () => "sc2_" + ACTIVE_ID;
-const sc2Load = () => {
-  if(typeof _INIT_SC2!=="undefined"&&_INIT_SC2&&Object.keys(_INIT_SC2).length>0) return _INIT_SC2;
-  try{ return JSON.parse(localStorage.getItem(SC2_KEY())||"{}"); }catch(e){ return {}; }
-};
-const sc2Save = (o) => {
-  _INIT_SC2=o;
-  const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-  if(_i>=0) PROJECTS[_i].sc2=o;
-  try{ localStorage.setItem(SC2_KEY(),JSON.stringify(o)); }catch(e){}
-};
-
-// ── NAKİT AKIŞ ──────────────────────────────────────────────
-const NAKIT_KEY = () => "nakit_" + ACTIVE_ID;
-const nakitLoad = () => {
-  if(typeof _INIT_NAKIT!=="undefined"&&_INIT_NAKIT&&(_INIT_NAKIT.tl?.length||_INIT_NAKIT.usd?.length)) return _INIT_NAKIT;
-  try{
-    const d=JSON.parse(localStorage.getItem(NAKIT_KEY())||"null");
-    return d||{tl:[],usd:[],pyp:{}};
-  }catch(e){ return {tl:[],usd:[],pyp:{}}; }
-};
-const nakitSave = (o) => {
-  if(!o.pyp) o.pyp={};
-  _INIT_NAKIT=o;
-  const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-  if(_i>=0) PROJECTS[_i].nakit=o;
-  try{ localStorage.setItem(NAKIT_KEY(),JSON.stringify(o)); }catch(e){}
-};
- // { "13": {plan:80, gercek:78}, ... }
+const SC_KEY = "scurve_pyp_manual"; // { "13": {plan:80, gercek:78}, ... }
 const MAN_FIZ_KEY = "manuel_fiz";
 function _uuid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function _migrate(){
@@ -965,56 +676,25 @@ function _migrate(){
     const id=_uuid();
     const p={id,prj:JSON.parse(oj||"null")||JSON.parse(JSON.stringify(DEF_PRJ)),
              pyp:JSON.parse(op||"null")||JSON.parse(JSON.stringify(DEF)),
-             sc:{},
+             sc:JSON.parse(localStorage.getItem("scurve_pyp_manual")||"{}"),
              manFiz:JSON.parse(localStorage.getItem("manuel_fiz")||"0")};
     localStorage.setItem(PRJ_DB_KEY,JSON.stringify([p]));
     localStorage.setItem(ACTIVE_KEY,id);
     localStorage.removeItem("fp");localStorage.removeItem("fj");
-    try{localStorage.removeItem("scurve_pyp_manual");}catch(e){}localStorage.removeItem(MAN_FIZ_KEY);
+    localStorage.removeItem(SC_KEY);localStorage.removeItem(MAN_FIZ_KEY);
     return [p];
   }
   return null;
 }
-// manFiz bug artifact temizleyici: eski bug setManuelFiz(388)→100 kaydetmişti
-function _fixManFiz(db){
-  if(!Array.isArray(db)) return db;
-  let changed=false;
-  db.forEach(proj=>{
-    const stored=proj.manFiz||0;
-    if(stored<100) return; // 100'den küçükse artifact değil
-    // Oto GI_PHYS hesapla (manFiz=0 iken)
-    const pyp=proj.pyp||[];
-    const tb=pyp.reduce((s,p)=>s+(p.butce||0),0);
-    if(tb===0){proj.manFiz=0;changed=true;return;}
-    const ay=proj.prj?.ay||1,top=proj.prj?.top||24;
-    let effAy=ay>1?ay:1;
-    if(effAy<=1) pyp.forEach(p=>{if((p.il||0)>0){const imp=p.bas+Math.round(Math.max((p.bit||1)-(p.bas||1),1)*(p.il/100));effAy=Math.max(effAy,Math.min(imp,top));}});
-    let gc=0;
-    pyp.forEach(p=>{
-      const ag=p.ag||0,il=p.il||0;
-      if(effAy<(p.bas||1)||(ag===0&&il===0))return;
-      const dur=Math.max((p.bit||1)-(p.bas||1),1);
-      const prog=Math.min((Math.min(effAy,(p.bit||1))-(p.bas||1))/dur,1);
-      gc+=(ag>0?ag:100/pyp.length)*(il/100)*prog;
-    });
-    gc=Math.min(Math.max(gc,0),100);
-    // stored=100 ama oto<95 → bug artifact → sıfırla
-    if(stored>=100&&gc<95){proj.manFiz=0;changed=true;}
-  });
-  if(changed) localStorage.setItem(PRJ_DB_KEY,JSON.stringify(db));
-  return db;
-}
-
 let PROJECTS=(()=>{
   let db=JSON.parse(localStorage.getItem(PRJ_DB_KEY)||"null");
   if(!db)db=_migrate();
   if(!db||db.length===0){
-    // İlk açılışta 3 projeyi yükle
-    db = JSON.parse(JSON.stringify(INIT_PROJECTS));
+    const id=_uuid();
+    db=[{id,prj:JSON.parse(JSON.stringify(DEF_PRJ)),pyp:JSON.parse(JSON.stringify(DEF)),sc:{},manFiz:0}];
     localStorage.setItem(PRJ_DB_KEY,JSON.stringify(db));
-    localStorage.setItem(ACTIVE_KEY,db[1].id); // Orion aktif başlasın
+    localStorage.setItem(ACTIVE_KEY,id);
   }
-  _fixManFiz(db); // bug artifact temizliği
   return db;
 })();
 let ACTIVE_ID=localStorage.getItem(ACTIVE_KEY)||PROJECTS[0].id;
@@ -1024,8 +704,6 @@ let _ap=_getActive();
 let PYP=JSON.parse(JSON.stringify(_ap.pyp));
 let PRJ=JSON.parse(JSON.stringify(_ap.prj));
 let _INIT_SC=_ap.sc||{};
-let _INIT_SC2=_ap.sc2||{};
-let _INIT_NAKIT=_ap.nakit||{tl:[],usd:[]};
 let MANUEL_FIZIKSEL=_ap.manFiz||0;
 
 // ══ SEÇİM MODAL STATE ══
@@ -1039,13 +717,8 @@ const dC = il => il>=80?"#3dba6f":il>=50?"#f0b429":il>=20?"#4f8ef7":il>0?"#9b6cf
 const dA = il => il>=100?"Tamamlandı":il>=80?"İleri Aşama":il>=50?"Devam":il>=20?"Erken":il>0?"Başladı":"Başlamadı";
 const pIl= p => {if(PRJ.ay<p.bas)return 0;const s=Math.max(p.bit-p.bas,1),g=Math.min(PRJ.ay,p.bit)-p.bas;return Math.min(100,Math.round(g/s*100));};
 // ── S-Eğrisi sayfası: Alt tablo Plan/Gerçek % MANUEL ──
-const scLoad = () => { return (typeof _INIT_SC!=="undefined"&&_INIT_SC&&Object.keys(_INIT_SC).length>0)?_INIT_SC:(()=>{try{return JSON.parse(localStorage.getItem(SC_KEY())||"{}");}catch(e){return{};}})(); };
-const scSave = (o) => {
-  _INIT_SC=o;
-  const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-  if(_i>=0) PROJECTS[_i].sc=o;
-  try{ localStorage.setItem(SC_KEY(),JSON.stringify(o)); }catch(e){}
-};
+const scLoad = () => { return (typeof _INIT_SC!=="undefined"&&_INIT_SC&&Object.keys(_INIT_SC).length>0)?_INIT_SC:(()=>{try{return JSON.parse(localStorage.getItem(SC_KEY)||"{}");}catch(e){return{};}})(); };
+const scSave = (o) => localStorage.setItem(SC_KEY, JSON.stringify(o));
 const scNorm = (v) => { v = parseFloat(v); if (isNaN(v)) v = 0; v = Math.round(v); return Math.max(0, Math.min(100, v)); };
 
 // S-Eğrisi (fiziksel) — fiziksel olmayan ana PYP'leri hariç tut
@@ -1074,29 +747,10 @@ window.setSCPlan = (kod, val) => {
 };
 
 window.setSCGercek = (kod, val) => {
-  const v = scNorm(val);
-  const _pi = PYP.findIndex(p => p.kod === kod);
-  if(_pi >= 0){
-    // 1) State güncelle
-    PYP[_pi].il = v;
-    // 2) DOM inputları güncelle — _syncDOM PN'den okur, doğru değeri görmeli
-    const pnEl = document.getElementById('PN' + _pi);
-    const psEl = document.getElementById('PS' + _pi);
-    if(pnEl) pnEl.value = v;
-    if(psEl) psEl.value = v;
-    updPct(_pi, v);
-    // 3) PROJECTS.pyp'ye direkt kaydet — switchProject sonrası sıfırlanmasın
-    const _idx = PROJECTS.findIndex(p => p.id === ACTIVE_ID);
-    if(_idx >= 0){
-      PROJECTS[_idx].pyp[_pi].il = v;
-      localStorage.setItem(PRJ_DB_KEY, JSON.stringify(PROJECTS));
-    }
-    // 4) sc kaydına da yaz (plan/gercek tablo tutarlılığı)
-    const o = scLoad();
-    o[kod] = o[kod] || {};
-    o[kod].gercek = v;
-    scSave(o);
-  }
+  const o = scLoad();
+  o[kod] = o[kod] || {};
+  o[kod].gercek = scNorm(val);
+  scSave(o);
   renderSCTableAndGantt();
 };
 
@@ -1106,8 +760,6 @@ function renderSCTableAndGantt(){
   if(ganttEl){
     ganttEl.innerHTML = scPhysicalList().map(p=>{
       const m = scGet(p);
-      const _sc2=sc2Load()[p.kod];
-      if(_sc2){m.plan=_sc2.plan??m.plan;m.gercek=_sc2.gercek??m.gercek;}
       const act = m.gercek;
       const pw=((p.bit-p.bas)/PRJ.top)*100,
             pl=((p.bas-1)/PRJ.top)*100,
@@ -1155,85 +807,54 @@ function renderSCTableAndGantt(){
 
 const TB = () => PYP.reduce((s,p)=>s+(isFinite(p.butce)?p.butce:0),0);
 const TG = () => PYP.reduce((s,p)=>s+(isFinite(p.g)?p.g:0),0);
-// Genel ilerleme (tüm PYP'ler)
 const GI = () => { 
   const ta=PYP.reduce((s,p)=>s+p.ag,0); 
   return ta>0?PYP.reduce((s,p)=>s+p.il*p.ag,0)/ta:0; 
 };
-
-// Fiziksel ilerleme (S-Eğrisi / üst header için) — genel gider & benzeri PYP'leri hariç tutar
-const EXCLUDE_PHYS = ["01","04","05","37","97","99"];
-// Fiziksel ilerleme (S-Eğrisi / üst header için) — MANUEL (tamamen kullanıcı girişi)
-// MANUEL_FIZIKSEL: _ap.manFiz ile başlatıldı (yukarıda)
-
-const GI_PHYS = () => {
-  if(Number(MANUEL_FIZIKSEL)>0) return Number(MANUEL_FIZIKSEL);
-  // sData ile aynı effAy mantığı
-  let _effAy = PRJ.ay > 1 ? PRJ.ay : 1;
-  if(_effAy <= 1){
-    PYP.forEach(p=>{
-      const il=isFinite(p.il)?p.il:0;
-      if(il>0){
-        const implied=p.bas+Math.round(Math.max(p.bit-p.bas,1)*(il/100));
-        _effAy=Math.max(_effAy,Math.min(implied,PRJ.top));
-      }
-    });
-  }
-  let gc=0;
-  PYP.forEach(p=>{
-    const ag=isFinite(p.ag)?p.ag:0;
-    const il=isFinite(p.il)?p.il:0;
-    if(_effAy<p.bas||ag===0&&il===0) return;
-    const dur=Math.max(p.bit-p.bas,1);
-    const prog=Math.min((Math.min(_effAy,p.bit)-p.bas)/dur,1);
-    const w=ag>0?ag:(100/PYP.length);
-    gc+=w*(il/100)*prog;
-  });
-  return Math.min(Math.max(gc,0),100);
-};
-
-
-
+const GI_PHYS = () => Number(MANUEL_FIZIKSEL) || 0;
 const PI = () => { const ta=PYP.reduce((s,p)=>s+p.ag,0); return ta>0?PYP.reduce((s,p)=>s+pIl(p)*p.ag,0)/ta:0; };
 
-// ══════════════════════════════════════════════════════════════
-// EVM EXCEL SİSTEMİ — PYP bazlı aylık PV & AC
-// ══════════════════════════════════════════════════════════════
+// ── PYP EVM VERİSİ (Excel'den yüklenen) ──
+// { "13": {pv: 5000000, ac: 4800000, il: 78}, ... }
 const EVM_KEY = "evm_pyp_data";
 function evmLoad(){
   const ap=_getActive();
-  try{ return JSON.parse(localStorage.getItem(EVM_KEY+"_"+ap.id)||"null")||{}; }
-  catch(e){ return {}; }
+  try{ return JSON.parse(localStorage.getItem(EVM_KEY+"_"+ap.id)||"null")||{}; }catch(e){ return {}; }
 }
 function evmSave(d){
   const ap=_getActive();
   try{ localStorage.setItem(EVM_KEY+"_"+ap.id, JSON.stringify(d)); }catch(e){}
 }
 
-// EVM hesap tabanı:
-// fromExcel=true → Excel'den gelen kümülatif PV & AC kullan
-// fromExcel=false → PYP veri girişi fallback
+// EVM hesap tabanı: Excel verisi varsa kullan, yoksa eski hesap
 function _evmBase(){
-  const ed=evmLoad();
-  const hasData=Object.keys(ed).length>0;
+  const ed = evmLoad();
+  const hasData = Object.keys(ed).length > 0;
   if(hasData){
-    let pv=0,ac=0;
-    PYP.forEach(p=>{ const d=ed[p.kod]||{}; pv+=d.pv||0; ac+=d.ac||0; });
-    const fiz=GI_PHYS();
-    const ev=pv*(fiz/100);
-    return {pv,ev,ac,fromExcel:true};
+    // PV = Σ aylık kümülatif planlanan bütçe (Excel'den)
+    // AC = Σ gerçekleşen (Excel'den)
+    // EV = PV × fiziksel ilerleme%
+    let pv=0, ac=0;
+    PYP.forEach(p=>{
+      const d = ed[p.kod]||{};
+      pv += d.pv||0;
+      ac += d.ac||0;
+    });
+    const fiz = GI_PHYS();
+    const ev  = pv * (fiz/100);
+    return {pv, ev, ac, fromExcel:true};
   }
-  // Fallback: PYP girişlerinden
-  const bcwp_=PYP.reduce((s,p)=>s+(isFinite(p.butce)?p.butce:0)*(isFinite(p.il)?p.il:0)/100,0);
-  const pv_  =TB()*(PI()/100);
-  const ac_  =TG();
-  return {pv:pv_,ev:bcwp_,ac:ac_,fromExcel:false};
+  // Fallback: eski hesap
+  const bcwp = PYP.reduce((s,p)=>s+(isFinite(p.butce)?p.butce:0)*(isFinite(p.il)?p.il:0)/100,0);
+  const pv   = TB()*(PI()/100);
+  const ac   = TG();
+  return {pv, ev:bcwp, ac, fromExcel:false};
 }
 
 const BCWP = () => _evmBase().ev;
 const CPI  = () => { const {ev,ac}=_evmBase(); return ac>0?ev/ac:1; };
 const SPI  = () => { const {pv,ev}=_evmBase(); return pv>0?ev/pv:1; };
-const EAC  = () => { const tb=TB(); if(tb<=0) return 0; const c=CPI(); return c>0?tb/c:tb; };
+const EAC  = () => { const c=CPI(); return c>0?TB()/c:TB(); };
 
 // ══════════════════════════════════════
 // VERİ GİRİŞİ FORMU
@@ -1245,7 +866,7 @@ function buildForm(){
   document.getElementById("gTop").value = PRJ.top;
 
     const mf = document.getElementById("manuelFiz");
-  if(mf){ mf.value = MANUEL_FIZIKSEL>0 ? parseFloat(MANUEL_FIZIKSEL).toFixed(1) : ''; }
+  if(mf){ mf.value = fmtD(GI_PHYS()); }
 
   // Proje detay alanlarini yukle
   const _fl=['arsa','insaat','satilab','kat','konut','ofis','ticari','m2','baslangic','planBitis','guncelBitis'];
@@ -1285,12 +906,12 @@ document.getElementById("pypList").innerHTML = PYP.map((p,i) => `
             <div class="fr"><label>Bitiş Ay</label><input type="number" id="BT${i}" value="${p.bit}" min="1"></div>
           </div>
           <div class="fg2">
-            <div class="fr"><label>Ağırlık <span style="font-size:9px;color:var(--ac);background:var(--ac)18;padding:1px 5px;border-radius:3px;margin-left:3px">⚡ Otomatik</span></label><input type="text" id="A${i}" value="${fmtD(p.ag,2)}" readonly style="background:var(--s3);color:var(--ac);cursor:default;font-weight:600"><div class="hint">Bütçe / Toplam bütçe × 100</div></div>
+            <div class="fr"><label>Ağırlık (%)</label><input type="number" id="A${i}" value="${p.ag}" min="0" max="100" step="0.1"><div class="hint">Projedeki ağırlık payı</div></div>
             <div class="fr">
-              <label>Fiziksel İlerleme: <span id="pL${i}" style="color:${dC(p.il)};font-weight:700">${p.il}%</span>${p.alt&&p.alt.length>0?'<span style="font-size:9px;color:var(--ap);background:var(--ap)18;padding:1px 5px;border-radius:3px;margin-left:4px">⚡ Otomatik</span>':''}</label>
+              <label>Fiziksel İlerleme: <span id="pL${i}" style="color:${dC(p.il)};font-weight:700">${p.il}%</span></label>
               <div class="slider-row">
-                <input type="range" id="PS${i}" min="0" max="100" value="${p.il}" ${p.alt&&p.alt.length>0?'disabled style="opacity:0.45;pointer-events:none"':'oninput="sS('+i+',this.value)"'}>
-                <input type="number" id="PN${i}" value="${p.il}" min="0" max="100" ${p.alt&&p.alt.length>0?'readonly style="background:var(--s3);color:var(--ap);cursor:default;font-weight:600"':'oninput="nS('+i+',this.value)"'}>
+                <input type="range" id="PS${i}" min="0" max="100" value="${p.il}" oninput="sS(${i},this.value)">
+                <input type="number" id="PN${i}" value="${p.il}" min="0" max="100" oninput="nS(${i},this.value)">
               </div>
             </div>
           </div>
@@ -1357,47 +978,8 @@ function togAna(i){
 // Slider senkron (ana)
 function sS(i,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("PN"+i).value=v;updPct(i,v);}
 function nS(i,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("PS"+i).value=v;updPct(i,v);}
-function updPct(i,v){const _pl=document.getElementById("pL"+i);if(_pl){_pl.textContent=v+"%";_pl.style.color=dC(v);}}
-function lv(i){
-  const b=_parseTR(document.getElementById("B"+i).value);
-  const g=_parseTR(document.getElementById("G"+i).value);
-  document.getElementById("G"+i).classList.toggle("err",g>b*1.25&&b>0);
-  // Bütçe değişti — ağırlıkları anlık güncelle
-  PYP[i].butce=b;
-  recalcAg();
-}
-
-function recalcAg(){
-  const total=PYP.reduce((s,p)=>s+(isFinite(p.butce)?p.butce:0),0);
-  PYP.forEach(p=>{
-    p.ag = total>0 ? parseFloat((p.butce/total*100).toFixed(4)) : 0;
-  });
-  // DOM'daki ağırlık göstergelerini güncelle
-  PYP.forEach((p,i)=>{
-    const el=document.getElementById("A"+i);
-    if(el) el.value=fmtD(p.ag,2);
-  });
-}
-
-function recalcIl(pi){
-  const p=PYP[pi];
-  if(!p.alt||p.alt.length===0) return; // Alt PYP yoksa manuel
-  const totalB=p.alt.reduce((s,a)=>s+(isFinite(a.b)?a.b:0),0);
-  if(totalB<=0) return; // Alt bütçeler sıfırsa manuel
-  const weighted=p.alt.reduce((s,a)=>s+(isFinite(a.b)?a.b:0)*(isFinite(a.il)?a.il:0),0);
-  const il=Math.round(weighted/totalB);
-  p.il=il;
-  // DOM güncelle: slider, sayı inputu, etiket
-  const ps=document.getElementById("PS"+pi);
-  const pn=document.getElementById("PN"+pi);
-  if(ps) ps.value=il;
-  if(pn) pn.value=il;
-  updPct(pi,il);
-}
-
-function recalcAllIl(){
-  PYP.forEach((_,i)=>recalcIl(i));
-}
+function updPct(i,v){document.getElementById("pL"+i).textContent=v+"%";document.getElementById("pL"+i).style.color=dC(v);}
+function lv(i){const b=_parseTR(document.getElementById("B"+i).value),g=_parseTR(document.getElementById("G"+i).value);document.getElementById("G"+i).classList.toggle("err",g>b*1.25&&b>0);}
 
 
 function syncParentBudget(pi){
@@ -1418,8 +1000,8 @@ function syncParentBudget(pi){
 }
 
 // Slider senkron (alt)
-function altSS(pi,ai,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("APN"+pi+"_"+ai).value=v;updAltBar(pi,ai,v);if(PYP[pi])PYP[pi].alt[ai].il=v;recalcIl(pi);}
-function altNS(pi,ai,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("APS"+pi+"_"+ai).value=v;updAltBar(pi,ai,v);if(PYP[pi])PYP[pi].alt[ai].il=v;recalcIl(pi);}
+function altSS(pi,ai,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("APN"+pi+"_"+ai).value=v;updAltBar(pi,ai,v);}
+function altNS(pi,ai,v){v=Math.max(0,Math.min(100,parseInt(v)||0));document.getElementById("APS"+pi+"_"+ai).value=v;updAltBar(pi,ai,v);}
 function updAltBar(pi,ai,v){
   const bar=document.getElementById("altBar"+pi+"_"+ai),pct=document.getElementById("altPct"+pi+"_"+ai);
   if(bar){bar.style.width=v+"%";bar.style.background=dC(v);}
@@ -1441,7 +1023,7 @@ function fmtD(v,mx){
 
 // ── Binlik ayraç yardımcıları ──
 function _parseTR(s){ return parseFloat(String(s).replace(/\./g,'').replace(',','.'))||0; }
-function fmtAlt(el){ const v=_parseTR(el.value); el.value=v>0?v.toLocaleString('tr-TR'):'0'; if(el.id&&el.id.startsWith('B')){const i=parseInt(el.id.slice(1));if(!isNaN(i)&&PYP[i]!==undefined){PYP[i].butce=v;recalcAg();}}}
+function fmtAlt(el){ const v=_parseTR(el.value); el.value=v>0?v.toLocaleString('tr-TR'):'0'; }
 
 function altCalc(pi,ai){
   const mk = _parseTR(document.getElementById("AMK"+pi+"_"+ai).value);
@@ -1453,26 +1035,10 @@ function altCalc(pi,ai){
 }
 
 function altLV(pi,ai){
-  const b=_parseTR(document.getElementById("AB"+pi+"_"+ai).value);
-  const g=_parseTR(document.getElementById("AG"+pi+"_"+ai).value);
-  document.getElementById("AG"+pi+"_"+ai).classList.toggle("err",g>b*1.25&&b>0);
-  if(PYP[pi]&&PYP[pi].alt[ai]!==undefined){
-    PYP[pi].alt[ai].b=b;
-    PYP[pi].alt[ai].g=g;
-  }
-  // Alt bütçe toplamını Ana PYP bütçesine yansıt (DOM + state)
-  if(PYP[pi]){
-    const totalAltB=PYP[pi].alt.reduce((s,a)=>s+(isFinite(a.b)?a.b:0),0);
-    const totalAltG=PYP[pi].alt.reduce((s,a)=>s+(isFinite(a.g)?a.g:0),0);
-    PYP[pi].butce=totalAltB;
-    PYP[pi].g=totalAltG;
-    const bMain=document.getElementById("B"+pi);
-    const gMain=document.getElementById("G"+pi);
-    if(bMain) bMain.value=totalAltB>0?totalAltB.toLocaleString('tr-TR'):'0';
-    if(gMain) gMain.value=totalAltG>0?totalAltG.toLocaleString('tr-TR'):'0';
-  }
-  recalcAg();   // Bütçe değişti → ağırlıkları güncelle
-  recalcIl(pi); // Alt bütçe ağırlığı değişince Ana il yeniden hesapla
+ const b=_parseTR(document.getElementById("AB"+pi+"_"+ai).value);
+ const g=_parseTR(document.getElementById("AG"+pi+"_"+ai).value);
+ document.getElementById("AG"+pi+"_"+ai).classList.toggle("err",g>b*1.25&&b>0);
+ syncParentBudget(pi);
 }
 
 // Alt PYP sil
@@ -1568,7 +1134,7 @@ function _syncDOM(){
   PYP.forEach((p,i)=>{
     p.butce = clamp(_parseTR(document.getElementById("B"+i).value),0,1e12);
     p.g     = clamp(_parseTR(document.getElementById("G"+i).value),0,1e12);
-    // p.ag otomatik hesaplanır — recalcAg() ile (aşağıda)
+    p.ag    = parseFloat(document.getElementById("A"+i).value)||0;
     p.bas   = parseInt(document.getElementById("BS"+i).value)||1;
     p.bit   = parseInt(document.getElementById("BT"+i).value)||PRJ.top;
     p.il    = clamp(parseInt(document.getElementById("PN"+i).value)||0,0,100);
@@ -1581,9 +1147,6 @@ function _syncDOM(){
       if(bfEl) a.birimFiyat=_parseTR(bfEl.value);
     });
   });
-  // Bütçe bazlı ağırlık + alt PYP bazlı ilerleme otomatik hesapla
-  recalcAg();
-  recalcAllIl();
   const _idx=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
   if(_idx>=0){PROJECTS[_idx].pyp=JSON.parse(JSON.stringify(PYP));PROJECTS[_idx].prj=JSON.parse(JSON.stringify(PRJ));PROJECTS[_idx].manFiz=MANUEL_FIZIKSEL;PROJECTS[_idx].sc=scLoad();}
   localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));
@@ -1594,81 +1157,10 @@ function save(){
   localStorage.setItem("fsave",new Date().toLocaleString("tr-TR"));
   Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
   Object.keys(rend).forEach(k=>rend[k]=false);
-  buildForm();
-  recalcAllIl(); // Alt PYP değişikliklerini Ana PYP'ye yansıt
-  updHdr();      // Fiziksel ilerlemeyi güncelle
+  updHdr(); buildForm();
   const at=document.querySelector(".tab.active");
   if(at){const m=at.getAttribute("onclick").match(/'([^']+)'/);if(m&&m[1]!=="giris"&&m[1]!=="konsolide")rPage(m[1]);}
   toast("Kaydedildi — paneller güncellendi ✓","ok");
-}
-function exportAllProjects(){
-  _syncDOM();
-  const blob=new Blob([JSON.stringify({v:2,exported:new Date().toISOString(),projects:PROJECTS},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='folkart_projeler_'+new Date().toLocaleDateString('tr-TR').replace(/[/.]/g,'-')+'.json';
-  a.click();URL.revokeObjectURL(a.href);
-  toast('Projeler dışa aktarıldı ✓','ok');
-}
-function importAllProjects(){
-  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
-  inp.onchange=e=>{
-    const f=e.target.files[0];if(!f)return;
-    const r=new FileReader();
-    r.onload=ev=>{
-      try{
-        const d=JSON.parse(ev.target.result);
-        const arr=d.projects||d;
-        if(!Array.isArray(arr)||!arr.length)throw new Error('Geçersiz format');
-        PROJECTS.length=0;arr.forEach(p=>PROJECTS.push(p));
-        localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));
-        ACTIVE_ID=PROJECTS[0].id;localStorage.setItem(ACTIVE_KEY,ACTIVE_ID);
-        const ap=_getActive();
-        PYP=JSON.parse(JSON.stringify(ap.pyp));PRJ=JSON.parse(JSON.stringify(ap.prj));
-        MANUEL_FIZIKSEL=ap.manFiz||0;_INIT_SC=ap.sc||{};_INIT_SC2=ap.sc2||{};_INIT_NAKIT=ap.nakit||{tl:[],usd:[]};
-        Object.keys(rend).forEach(k=>rend[k]=false);
-        Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
-        sbRender();updHdr();buildForm();
-        recalcAg();recalcAllIl(); // buildForm sonrası — DOM elementleri artık mevcut
-        toast(arr.length+' proje içe aktarıldı ✓','ok');
-      }catch(err){toast('Hata: '+err.message,'err');}
-    };r.readAsText(f);
-  };inp.click();
-}
-
-// ── Cross-Browser Veri Transferi ──────────────────────
-function exportAllProjects(){
-  _syncDOM();
-  const data={v:2,exported:new Date().toISOString(),projects:PROJECTS};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='folkart_projeler_'+new Date().toLocaleDateString('tr-TR').replace(/\//g,'-')+'.json';
-  a.click();URL.revokeObjectURL(a.href);
-  toast('Tüm projeler JSON olarak dışa aktarıldı ✓','ok');
-}
-function importAllProjects(){
-  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
-  inp.onchange=e=>{
-    const f=e.target.files[0];if(!f)return;
-    const r=new FileReader();
-    r.onload=ev=>{
-      try{
-        const d=JSON.parse(ev.target.result);
-        const arr=d.projects||d;
-        if(!Array.isArray(arr)||arr.length===0)throw new Error('Geçersiz format');
-        PROJECTS.length=0;arr.forEach(p=>PROJECTS.push(p));
-        localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));
-        ACTIVE_ID=PROJECTS[0].id;localStorage.setItem(ACTIVE_KEY,ACTIVE_ID);
-        const ap=_getActive();
-        PYP=JSON.parse(JSON.stringify(ap.pyp));PRJ=JSON.parse(JSON.stringify(ap.prj));
-        MANUEL_FIZIKSEL=ap.manFiz||0;_INIT_SC=ap.sc||{};
-        Object.keys(rend).forEach(k=>rend[k]=false);
-        Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
-        sbRender();updHdr();buildForm();
-        toast(arr.length+' proje içe aktarıldı ✓','ok');
-      }catch(err){toast('Hata: '+err.message,'err');}
-    };r.readAsText(f);
-  };inp.click();
 }
 
 function loadDef(){if(!confirm("Varsayılan verilere dönülsün mü?"))return;PYP=JSON.parse(JSON.stringify(DEF));PRJ=JSON.parse(JSON.stringify(DEF_PRJ));MANUEL_FIZIKSEL=0;const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);if(_i>=0){PROJECTS[_i].pyp=JSON.parse(JSON.stringify(DEF));PROJECTS[_i].prj=JSON.parse(JSON.stringify(DEF_PRJ));PROJECTS[_i].manFiz=0;PROJECTS[_i].sc={};localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));}Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});Object.keys(rend).forEach(k=>rend[k]=false);updHdr();buildForm();toast("Varsayılan yüklendi","info");}
@@ -1682,39 +1174,26 @@ function doReset(){closeRM();loadDef();}
 function setManuelFiz(val){
   const v = Math.min(100, Math.max(0, parseFloat(val)||0));
   MANUEL_FIZIKSEL = v;
-  // Aktif projeye anlık yaz — proje bağımsızlığı için kritik
-  const _ai=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-  if(_ai>=0) PROJECTS[_ai].manFiz=v;
-  try{ localStorage.setItem(PRJ_DB_KEY, JSON.stringify(PROJECTS)); }catch(e){}
+  try{ localStorage.setItem(MAN_FIZ_KEY, JSON.stringify(v)); }catch(e){}
   // tüm alanları senkronize et (aktif input dışında)
   const h = document.getElementById('hFizInput');
   const m = document.getElementById('manuelFiz');
-  // type=number input: nokta formatı, sıfırsa boş
-  if(h && document.activeElement !== h) h.value = v>0 ? v.toFixed(1) : '';
-  if(m && document.activeElement !== m) m.value = v>0 ? v.toFixed(1) : '';
+  if(h && document.activeElement !== h) h.value = fmtD(v);
+  if(m && document.activeElement !== m) m.value = fmtD(v);
   updHdr();
 }
 
 function updHdr(){
   const gi=GI_PHYS(), cpi=CPI();
   document.getElementById("hAy").textContent=`Ay ${PRJ.ay} / ${PRJ.top}`;
-  // hFizInput: manuel girilmemişse (=0) otomatik hesaplanan değeri göster
+
   const hf=document.getElementById("hFizInput");
-  if(hf && document.activeElement !== hf){
-    // type=number input: virgül değil nokta gerekir
-    hf.value = MANUEL_FIZIKSEL>0 ? parseFloat(MANUEL_FIZIKSEL).toFixed(1) : parseFloat(gi).toFixed(1);
-    hf.style.color = MANUEL_FIZIKSEL>0 ? "var(--ao)" : "var(--ag)";
-    hf.title = MANUEL_FIZIKSEL>0 ? "Manuel değer" : "PYP ağırlıklı otomatik hesap";
-  }
-  // manuelFiz (Giriş sekmesi override alanı): sadece gerçek manuel değer varsa göster
-  // Boşsa → oto hesap kullanılıyor demektir, karıştırmaması için dokunma
-  const mf=document.getElementById("manuelFiz");
-  if(mf && document.activeElement !== mf){
-    mf.value = MANUEL_FIZIKSEL>0 ? parseFloat(MANUEL_FIZIKSEL).toFixed(1) : '';
-  }
+  // disabled auto physical overwrite
+
+  const _cpiH=CPI();
   document.getElementById("hHar").textContent=M(TG());
-  document.getElementById("hCPI").textContent=`CPI: ${fmtD(cpi)}`;
-  document.getElementById("hCPI").style.color=cpi>=1?"var(--ag)":"var(--ad)";
+  document.getElementById("hCPI").textContent=`CPI: ${fmtD(_cpiH)}`;
+  document.getElementById("hCPI").style.color=_cpiH>=1?"var(--ag)":"var(--ad)";
 }
 
 // ══════════════════════════════════════
@@ -1729,12 +1208,7 @@ function mkC(id,cfg){if(CI[id])CI[id].destroy();const c=document.getElementById(
 function sData(){
   // 1) Excel'den besleme (varsa) — localStorage: scurve_excel_data
   try{
-    const _ap2=PROJECTS.find(p=>p.id===ACTIVE_ID);
-  if(Array.isArray(_ap2?.scExcel)&&_ap2.scExcel.length){
-    return _ap2.scExcel.filter(r=>r&&r.AY!=null).sort((a,b)=>Number(a.AY)-Number(b.AY))
-      .map(r=>({ay:"A"+Number(r.AY),plan:r.PLANLANAN==null?null:Number(r.PLANLANAN),gercek:r.GERCEKLESEN==null?null:Number(r.GERCEKLESEN)}));
-  }
-  const raw = localStorage.getItem("scurve_excel_data");
+    const raw = localStorage.getItem("scurve_excel_data");
     if(raw){
       const arr = JSON.parse(raw);
       if(Array.isArray(arr) && arr.length){
@@ -1751,40 +1225,21 @@ function sData(){
   }catch(e){}
 
   // 2) Fallback: PYP/PRJ takviminden hesap
-  // Fiili ay: PRJ.ay > 1 ise kullan; yoksa il değerlerinden türet
-  let _effAy = PRJ.ay > 1 ? PRJ.ay : 1;
-  if(_effAy <= 1){
-    // Her PYP'nin il%'sine göre takvimde hangi aya denk geldiğini hesapla
-    PYP.forEach(p=>{
-      const il=isFinite(p.il)?p.il:0;
-      const ag=isFinite(p.ag)?p.ag:0;
-      if(il>0&&(ag>0||true)){
-        // il=X% ise takvimde X% oranında ilerlemiş demek
-        const implied=p.bas+Math.round(Math.max(p.bit-p.bas,1)*(il/100));
-        _effAy=Math.max(_effAy,Math.min(implied,PRJ.top));
-      }
-    });
-  }
   const d=[];
   for(let m=1;m<=PRJ.top;m++){
     let pl=0;
     PYP.forEach(p=>{if(m>=p.bas){const s=Math.max(p.bit-p.bas,1),g=Math.min(m,p.bit)-p.bas;pl+=p.ag*Math.min(g/s,1);}});
     let gc=null;
-    if(m<=_effAy){
-      // Gerçekleşen kümülatif %: doğrudan PYP.il (fiziksel ilerleme) kullan
-      // ag ağırlığıyla kümülatif olarak artar
+    if(m<=PRJ.ay){
       gc=0;
       PYP.forEach(p=>{
-        const ag=isFinite(p.ag)?p.ag:0;
-        const il=isFinite(p.il)?p.il:0;
-        if(m<p.bas) return;
-        if(ag===0&&il===0) return;
-        const dur=Math.max(p.bit-p.bas,1);
-        const prog=Math.min((Math.min(m,p.bit)-p.bas)/dur,1);
-        const w=ag>0?ag:(100/PYP.length);
-        gc+=w*(il/100)*prog;
+        if(m>=p.bas){
+          const s=Math.max(p.bit-p.bas,1),g=Math.min(m,p.bit)-p.bas;
+          const pp=Math.min(g/s,1);
+          gc+=p.ag*pp*(p.il/Math.max(pIl(p),1))*(Math.min(pIl(p),100)/100);
+        }
       });
-      gc=Math.min(Math.max(gc,0),100);
+      gc=Math.min(gc,100);
     }
     d.push({ay:"A"+m,plan:Math.min(parseFloat(pl.toFixed(2)),100),gercek:gc!=null?parseFloat(gc.toFixed(2)):null});
   }
@@ -1848,97 +1303,39 @@ function rButce(){
 
 // ── SAPMA ──
 function rSapma(){
-  const {pv,ev,ac,fromExcel}=_evmBase();
-  const bcwp=ev,bcws=pv,tg=ac;
   const tb=TB(),cpi=CPI(),spi=SPI(),eac=EAC();
-
-  // EVM kaynak göstergesi
+  const {pv,ev,ac,fromExcel}=_evmBase();
+  const bcwp=ev, bcws=pv, tg=ac;
   const srcEl=document.getElementById("evmSource");
   if(srcEl){
-    srcEl.textContent=fromExcel
-      ?"✅ PYP EVM Excel verisi kullanılıyor — PV & AC Excel'den"
-      :"⚠️ PYP EVM Excel yok — PYP veri girişindeki değerler kullanılıyor";
-    srcEl.style.color=fromExcel?"var(--ag)":"var(--ao)";
+    srcEl.textContent = fromExcel
+      ? "✅ PYP Excel verisi kullanılıyor — PV: aylık kümülatif planlanan, AC: gerçekleşen"
+      : "⚠️ PYP Excel verisi yok — PYP veri girişindeki değerler kullanılıyor";
+    srcEl.style.color = fromExcel?"var(--ag)":"var(--ao)";
   }
-
-  // KPI kartları
-  document.getElementById("e1").textContent=M(bcws);
-  document.getElementById("e2").textContent=M(bcwp);
-  document.getElementById("e3").textContent=M(tg);
+  document.getElementById("e1").textContent=M(bcws);document.getElementById("e2").textContent=M(bcwp);document.getElementById("e3").textContent=M(ac);
   const e4=document.getElementById("e4");e4.textContent=fmtD(cpi);e4.style.color=cpi>=1?"var(--ag)":"var(--ad)";
   const e5=document.getElementById("e5");e5.textContent=fmtD(spi);e5.style.color=spi>=1?"var(--ag)":"var(--ao)";
   document.getElementById("e6").textContent=M(eac);
-
-  // EVM zaman serisi grafik — bcwsAtM takvim bazlı
   const S=sData();
-  const nakit=nakitLoad();
-  const tlGercek=nakit.tl||[];
-  let cumAC=0;
-  const ed=S.slice(0,PRJ.ay).map((d,i)=>{
-    const bcwsM=bcwsAtM(i+1);
-    const bcwpM=d.gercek!=null?(d.gercek/100*tb):null;
-    let acwpM=null;
-    if(tlGercek.length){
-      cumAC+=(tlGercek[i]?.gercek||0);
-      acwpM=+(cumAC/1e6).toFixed(2);
-    } else if(bcwpM!=null){
-      acwpM=cpi>0?+(bcwpM/cpi/1e6).toFixed(2):null;
-    }
-    return {ay:d.ay,bcws:+(bcwsM/1e6).toFixed(2),bcwp:bcwpM!=null?+(bcwpM/1e6).toFixed(2):null,acwp:acwpM};
-  });
-  mkC("cEVM",{type:"line",data:{labels:ed.map(d=>d.ay),datasets:[
-    {label:"BCWS",data:ed.map(d=>d.bcws),borderColor:"#4f8ef7",borderWidth:1.5,fill:false,pointRadius:0,tension:.4},
-    {label:"BCWP",data:ed.map(d=>d.bcwp),borderColor:"#3dba6f",borderWidth:2,fill:false,pointRadius:(c)=>c.dataIndex===ed.length-1?3:0,pointBackgroundColor:"#3dba6f",tension:.4},
-    {label:"ACWP",data:ed.map(d=>d.acwp),borderColor:"#e85444",borderWidth:1.5,fill:false,pointRadius:(c)=>c.dataIndex===ed.length-1?3:0,pointBackgroundColor:"#e85444",tension:.4},
-    {label:"EAC",data:ed.map(()=>+(eac/1e6).toFixed(2)),borderColor:"#f0b429",borderWidth:1.5,borderDash:[5,4],fill:false,pointRadius:0,tension:0}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9},filter:i=>i.text!=="BCWS"&&i.text!=="BCWP"&&i.text!=="ACWP"||true}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw!=null?fmtD(c.raw,2)+"M":"—"}`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
-
-  // CV & SV bar grafikleri — PYP takvim bazlı
+  const ed=S.slice(0,PRJ.ay).map(d=>({ay:d.ay,bcws:+(d.plan/100*tb/1e6).toFixed(1),bcwp:d.gercek!=null?+(d.gercek/100*tb/1e6).toFixed(1):null,acwp:d.gercek!=null?+(d.gercek/100*tb/1e6/cpi).toFixed(1):null}));
+  mkC("cEVM",{type:"line",data:{labels:ed.map(d=>d.ay),datasets:[{label:"BCWS",data:ed.map(d=>d.bcws),borderColor:"#4f8ef7",borderWidth:1.5,fill:false,pointRadius:0,tension:.4},{label:"BCWP",data:ed.map(d=>d.bcwp),borderColor:"#3dba6f",borderWidth:2,fill:false,pointRadius:(c)=>c.dataIndex===ed.length-1?3:0,pointBackgroundColor:"#3dba6f",tension:.4},{label:"ACWP",data:ed.map(d=>d.acwp),borderColor:"#e85444",borderWidth:1.5,fill:false,pointRadius:(c)=>c.dataIndex===ed.length-1?3:0,pointBackgroundColor:"#e85444",tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw!=null?fmtD(c.raw,2)+"M":"—"}`}}},scales:{...AX,y:{...AX.y,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:8},...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
   const cvD=PYP.filter(p=>p.il>0).map(p=>({k:p.kod,v:+((p.butce*(p.il/100)-p.g)/1e6).toFixed(2)}));
-  mkC("cCV",{type:"bar",data:{labels:cvD.map(d=>d.k),datasets:[{data:cvD.map(d=>d.v),backgroundColor:cvD.map(d=>d.v>=0?"#3dba6f88":"#e8544488"),borderRadius:2,barPercentage:.85}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:c=>` CV: ${c.raw!=null?fmtD(c.raw,2):"—"}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
-
-  const svD=PYP.filter(p=>p.il>0).map(p=>{
-    const dur=Math.max(p.bit-p.bas,1);
-    const takIl=Math.min((Math.min(PRJ.ay,p.bit)-p.bas)/dur,1)*100;
-    const sv=((p.butce*(p.il/100))-(p.butce*Math.max(takIl,0)/100))/1e6;
-    return {k:p.kod,v:+sv.toFixed(2)};
-  });
-  mkC("cSV",{type:"bar",data:{labels:svD.map(d=>d.k),datasets:[{data:svD.map(d=>d.v),backgroundColor:svD.map(d=>d.v>=0?"#4f8ef788":"#f0b42988"),borderRadius:2,barPercentage:.85}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:c=>` SV: ${c.raw!=null?fmtD(c.raw,2):"—"}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
-
-  // CPI/SPI trend
-  mkC("cCPI",{type:"line",data:{labels:S.slice(0,PRJ.ay).map(d=>d.ay),datasets:[
-    {label:"CPI",data:S.slice(0,PRJ.ay).map(d=>(d.gercek!=null&&d.plan>0)?+((d.gercek/d.plan*cpi).toFixed(2)):null),borderColor:"#e85444",borderWidth:1.5,fill:false,pointRadius:0,tension:.4},
-    {label:"SPI",data:S.slice(0,PRJ.ay).map(d=>(d.gercek!=null&&d.plan>0)?+((d.gercek/d.plan).toFixed(2)):null),borderColor:"#f0b429",borderWidth:1.5,fill:false,pointRadius:0,tension:.4}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT}},scales:{...AX,x:{...AX.x,ticks:{...AX.x.ticks,maxTicksLimit:8}},y:{...AX.y,min:0.7,max:1.15}}}});
-
-  // PYP sapma tablosu
-  document.getElementById("sT").innerHTML=PYP.filter(p=>p.il>0).map(p=>{
-    const ev_=p.butce*(p.il/100),cv_=ev_-p.g,cvY=(cv_/Math.max(ev_,1)*100);
-    const risk=cv_<-1e6?{l:"Kritik",c:"var(--ad)"}:cv_<0?{l:"İzle",c:"var(--ao)"}:{l:"İyi",c:"var(--ag)"};
-    return `<tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700">${p.kod}</td><td>${p.ad}</td><td class="r" style="color:var(--ag)">${fmtD(ev_/1e6,1)}M</td><td class="r" style="color:var(--ao)">${fmtD(p.g/1e6,1)}M</td><td class="r" style="font-weight:700;color:${cv_>=0?"var(--ag)":"var(--ad)"}">${cv_>0?"+":""}${fmtD(cv_/1e6,1)}M</td><td class="r" style="font-weight:700;color:${cv_>=0?"var(--ag)":"var(--ad)"}">${cvY>0?"+":""}${fmtD(cvY,1)}%</td><td><span class="tag" style="background:${risk.c}22;color:${risk.c}">${risk.l}</span></td></tr>`;
-  }).join("");
-
-  // Risk panelleri
+  mkC("cCV",{type:"bar",data:{labels:cvD.map(d=>d.k),datasets:[{data:cvD.map(d=>d.v),backgroundColor:cvD.map(d=>d.v>=0?"#3dba6f88":"#e8544488"),borderRadius:2,barPercentage:.85}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:c=>` CV: ${c.raw!=null?fmtD(c.raw,2):"—"}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:8},...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
+  const svD=PYP.filter(p=>p.il>0).map(p=>({k:p.kod,v:+(((p.butce*(p.il/100))-(p.butce*(pIl(p)/100)))/1e6).toFixed(2)}));
+  mkC("cSV",{type:"bar",data:{labels:svD.map(d=>d.k),datasets:[{data:svD.map(d=>d.v),backgroundColor:svD.map(d=>d.v>=0?"#4f8ef788":"#f0b42988"),borderRadius:2,barPercentage:.85}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...TT,callbacks:{label:c=>` SV: ${c.raw!=null?fmtD(c.raw,2):"—"}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:8},...AX.y.ticks,callback:v=>fmtD(v,2)+"M"}}}}});
+  mkC("cCPI",{type:"line",data:{labels:S.slice(0,PRJ.ay).map(d=>d.ay),datasets:[{label:"CPI",data:S.slice(0,PRJ.ay).map(d=>(d.gercek!=null&&d.plan>0)?+((d.gercek/d.plan*cpi).toFixed(2)):null),borderColor:"#e85444",borderWidth:1.5,fill:false,pointRadius:0,tension:.4},{label:"SPI",data:S.slice(0,PRJ.ay).map(d=>(d.gercek!=null&&d.plan>0)?+((d.gercek/d.plan).toFixed(2)):null),borderColor:"#f0b429",borderWidth:1.5,fill:false,pointRadius:0,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT}},scales:{...AX,x:{...AX.x,ticks:{autoSkip:false,maxRotation:0,minRotation:0,font:{size:8},...AX.x.ticks,maxTicksLimit:8}},y:{...AX.y,min:0.7,max:1.15}}}});
+  document.getElementById("sT").innerHTML=PYP.filter(p=>p.il>0).map(p=>{const ev=p.butce*(p.il/100),cv=ev-p.g,cvY=(cv/Math.max(ev,1)*100),risk=cv<-1e6?{l:"Kritik",c:"var(--ad)"}:cv<0?{l:"İzle",c:"var(--ao)"}:{l:"İyi",c:"var(--ag)"};return `<tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700">${p.kod}</td><td>${p.ad}</td><td class="r" style="color:var(--ag)">${fmtD(ev/1e6,1)}M</td><td class="r" style="color:var(--ao)">${fmtD(p.g/1e6,1)}M</td><td class="r" style="font-weight:700;color:${cv>=0?"var(--ag)":"var(--ad)"}">${cv>0?"+":""}${fmtD(cv/1e6,1)}M</td><td class="r" style="font-weight:700;color:${cv>=0?"var(--ag)":"var(--ad)"}">${cvY>0?"+":""}${fmtD(cvY,1)}%</td><td><span class="tag" style="background:${risk.c}22;color:${risk.c}">${risk.l}</span></td></tr>`;}).join("");
   const kr=[],or=[],dr=[];
-  PYP.filter(p=>p.il>0).forEach(p=>{
-    const ev_=p.butce*(p.il/100),cv_=ev_-p.g,cvY=(cv_/Math.max(ev_,1)*100);
-    const it=`<div class="ritem"><div class="rdot" style="background:${cvY<-5?"var(--ad)":cvY<0?"var(--ao)":"var(--ag)"}"></div>${p.kod} — ${p.ad.slice(0,13)} (${cvY>0?"+":""}${fmtD(cvY,1)}%)</div>`;
-    if(cvY<-5)kr.push(it);else if(cvY<0)or.push(it);else dr.push(it);
-  });
+  PYP.filter(p=>p.il>0).forEach(p=>{const ev=p.butce*(p.il/100),cv=ev-p.g,cvY=(cv/Math.max(ev,1)*100);const it=`<div class="ritem"><div class="rdot" style="background:${cvY<-5?"var(--ad)":cvY<0?"var(--ao)":"var(--ag)"}"></div>${p.kod} — ${p.ad.slice(0,13)} (${cvY>0?"+":""}${fmtD(cvY,1)}%)</div>`;if(cvY<-5)kr.push(it);else if(cvY<0)or.push(it);else dr.push(it);});
   document.getElementById("rK").innerHTML=kr.join("")||'<div class="ritem" style="color:var(--ag)">✓ Risk yok</div>';
   document.getElementById("rO").innerHTML=or.join("")||'<div class="ritem" style="color:var(--ag)">✓ Risk yok</div>';
   document.getElementById("rD").innerHTML=dr.join("")||'<div class="ritem" style="color:var(--m2)">—</div>';
-  rend.sapma=true;
 }
 
-const bcwsAtM = (m) => PYP.reduce((s,p) => {
-  if(m < p.bas) return s;
-  const dur = Math.max(p.bit - p.bas, 1);
-  const prog = Math.min((Math.min(m, p.bit) - p.bas) / dur, 1);
-  return s + (isFinite(p.butce) ? p.butce : 0) * prog;
-}, 0);
-const rend={dash:false,scurve:false,butce:false,sapma:false,konsolide:false,nakit:false,rehber:false};
-function rPage(id){if(id==="dash")rDash();if(id==="scurve")rSCurve();if(id==="butce")rButce();if(id==="sapma")rSapma();if(id==="konsolide")rKonsolide();if(id==="nakit")rNakit();if(id==="rehber")rRehber();rend[id]=true;}
+// ══ TAB ══
+const rend={dash:false,scurve:false,butce:false,sapma:false,nakit:false,konsolide:false};
+function rPage(id){if(id==="dash")rDash();if(id==="scurve")rSCurve();if(id==="butce")rButce();if(id==="sapma")rSapma();if(id==="nakit")rNakit();if(id==="konsolide")rKonsolide();rend[id]=true;}
 function go(id,el){
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -1952,17 +1349,19 @@ function toast(m,t="ok"){const e=document.getElementById("toast");e.textContent=
 
 // ══ INIT ══
 document.addEventListener("DOMContentLoaded",function(){
-  // Başlangıçta ağırlık hesapla (state only — DOM yok henüz)
-  recalcAg();
+  // manuel fiziksel inputları başlangıçta senkronla
+  const a=document.getElementById("manuelFiz");
+  if(a) a.value = MANUEL_FIZIKSEL;
   sbRender();
+  const b=document.getElementById("hFizInput");
+  if(b) b.value = fmtD(Number(MANUEL_FIZIKSEL));
   // modal click-outside kapatma
   const selM=document.getElementById("selModal");
   if(selM) selM.addEventListener("click",function(e){if(e.target===e.currentTarget)closeSel();});
   const rmM=document.getElementById("rm");
   if(rmM) rmM.addEventListener("click",function(e){if(e.target===e.currentTarget)closeRM();});
+  updHdr();
   buildForm();
-  recalcAllIl(); // buildForm sonrası — DOM elementleri artık mevcut
-  updHdr();      // buildForm sonrası çağır — hFizInput GI_PHYS ile dolsun
 });
 
 
@@ -1972,21 +1371,18 @@ document.addEventListener("DOMContentLoaded",function(){
 // ══════════════════════════════════════════════════════════════
 
 function _saveAllProjects(){
+  const _hf=document.getElementById('hFizInput');
+  if(_hf && _hf.value!=='') { const _v=parseFloat(_hf.value); if(!isNaN(_v)) MANUEL_FIZIKSEL=Math.min(100,Math.max(0,_v)); }
   const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
   if(_i>=0){PROJECTS[_i].pyp=JSON.parse(JSON.stringify(PYP));
             PROJECTS[_i].prj=JSON.parse(JSON.stringify(PRJ));
             PROJECTS[_i].manFiz=MANUEL_FIZIKSEL;
-            PROJECTS[_i].sc=scLoad();
-            PROJECTS[_i].sc2=sc2Load();
-            PROJECTS[_i].nakit=nakitLoad();}
+            PROJECTS[_i].sc=scLoad();}
   localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));
 }
 
 function switchProject(id){
   if(id===ACTIVE_ID)return;
-  const _hf=document.getElementById('hFizInput');
-  // Yalnızca gerçek manuel değeri kaydet (otomatik hesap ≠ manuel)
-  if(_hf&&_hf.value!==''&&MANUEL_FIZIKSEL>0)setManuelFiz(parseFloat(_hf.value)||MANUEL_FIZIKSEL);
   _saveAllProjects();
   ACTIVE_ID=id;
   localStorage.setItem(ACTIVE_KEY,id);
@@ -1994,16 +1390,14 @@ function switchProject(id){
   PYP=JSON.parse(JSON.stringify(p.pyp));
   PRJ=JSON.parse(JSON.stringify(p.prj));
   MANUEL_FIZIKSEL=p.manFiz||0;
-  const _hfSW=document.getElementById('hFizInput');if(_hfSW)_hfSW.value=MANUEL_FIZIKSEL>0?parseFloat(MANUEL_FIZIKSEL).toFixed(1):'';
-  const _mfSW=document.getElementById('manuelFiz');if(_mfSW)_mfSW.value=MANUEL_FIZIKSEL>0?parseFloat(MANUEL_FIZIKSEL).toFixed(1):'';
+  const _hfSW=document.getElementById('hFizInput');
+  if(_hfSW) _hfSW.value=fmtD(MANUEL_FIZIKSEL);
+  const _mfSW=document.getElementById('manuelFiz');
+  if(_mfSW) _mfSW.value=fmtD(MANUEL_FIZIKSEL);
   _INIT_SC=p.sc||{};
-  _INIT_SC2=p.sc2||{};
-  _INIT_NAKIT=p.nakit||{tl:[],usd:[]};
   Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
   Object.keys(rend).forEach(k=>rend[k]=false);
-  recalcAg();
   updHdr();buildForm();
-  recalcAllIl(); // buildForm sonrası — DOM elementleri artık mevcut
   const at=document.querySelector(".tab.active");
   if(at){const m2=at.getAttribute("onclick").match(/'([^']+)'/);if(m2&&m2[1]!=="giris")rPage(m2[1]);}
   sbRender();
@@ -2026,9 +1420,9 @@ function addProjectConfirm(){
   const kod=(kodEl&&kodEl.value||"").trim()||("P"+(PROJECTS.length+1));
   _saveAllProjects();
   const id=_uuid();
-  const np=JSON.parse(JSON.stringify(DEF_PRJ_BLANK));
+  const np=JSON.parse(JSON.stringify(DEF_PRJ));
   np.ad=ad;np.kod=kod;
-  PROJECTS.push({id,prj:np,pyp:JSON.parse(JSON.stringify(DEF_BLANK)),sc:{},sc2:{},nakit:{tl:[],usd:[]},manFiz:0});
+  PROJECTS.push({id,prj:np,pyp:JSON.parse(JSON.stringify(DEF)),sc:{},manFiz:0});
   localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));
   // Formu sıfırla ve kapat
   if(adEl)adEl.value="";if(kodEl)kodEl.value="";
@@ -2082,823 +1476,6 @@ function sbToggle(){
   const sb=document.getElementById("sidebar");
   if(sb)sb.classList.toggle("collapsed");
 }
-
-
-// ══════════════════════════════════════════════════════════
-// NAKİT AKIŞ
-// ══════════════════════════════════════════════════════════
-function exportNakit(){
-  const wb=XLSX.utils.book_new();
-  const top=PRJ.top||24;
-  const nd=nakitLoad();
-
-  // ── NAKIT_TL ──
-  const tlHeader={PYP_KOD:"KOD",PYP_ADI:"İŞ KALEMİ"};
-  for(let m=1;m<=top;m++){tlHeader["A"+m+"_PLAN"]="A"+m+" PLAN";tlHeader["A"+m+"_GERCEK"]="A"+m+" GERÇEK";}
-  const tlRows=[tlHeader];
-  DEF.forEach(d=>{
-    const row={PYP_KOD:d.kod,PYP_ADI:d.ad};
-    const pypData=(nd.pyp[d.kod]||{}).tl||{};
-    for(let m=1;m<=top;m++){row["A"+m+"_PLAN"]=pypData["A"+m+"_PLAN"]||0;row["A"+m+"_GERCEK"]=pypData["A"+m+"_GERCEK"]||0;}
-    tlRows.push(row);
-    d.alt.forEach(da=>{
-      const rowA={PYP_KOD:da.k,PYP_ADI:"  └ "+da.a};
-      const altData=(nd.pyp[da.k]||{}).tl||{};
-      for(let m=1;m<=top;m++){rowA["A"+m+"_PLAN"]=altData["A"+m+"_PLAN"]||0;rowA["A"+m+"_GERCEK"]=altData["A"+m+"_GERCEK"]||0;}
-      tlRows.push(rowA);
-    });
-  });
-  const totRow={PYP_KOD:"TOPLAM",PYP_ADI:""};
-  for(let m=1;m<=top;m++){totRow["A"+m+"_PLAN"]=nd.tl.find(r=>r.ay===m)?.plan||0;totRow["A"+m+"_GERCEK"]=nd.tl.find(r=>r.ay===m)?.gercek||0;}
-  tlRows.push(totRow);
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(tlRows),"NAKIT_TL");
-
-  // ── NAKIT_USD ──
-  const usdHeader={PYP_KOD:"KOD",PYP_ADI:"İŞ KALEMİ"};
-  for(let m=1;m<=top;m++){usdHeader["A"+m+"_PLAN"]="A"+m+" PLAN";usdHeader["A"+m+"_GERCEK"]="A"+m+" GERÇEK";}
-  const usdRows=[usdHeader];
-  DEF.forEach(d=>{
-    const row={PYP_KOD:d.kod,PYP_ADI:d.ad};
-    const pypData=(nd.pyp[d.kod]||{}).usd||{};
-    for(let m=1;m<=top;m++){row["A"+m+"_PLAN"]=pypData["A"+m+"_PLAN"]||0;row["A"+m+"_GERCEK"]=pypData["A"+m+"_GERCEK"]||0;}
-    usdRows.push(row);
-    d.alt.forEach(da=>{
-      const rowA={PYP_KOD:da.k,PYP_ADI:"  └ "+da.a};
-      const altData=(nd.pyp[da.k]||{}).usd||{};
-      for(let m=1;m<=top;m++){rowA["A"+m+"_PLAN"]=altData["A"+m+"_PLAN"]||0;rowA["A"+m+"_GERCEK"]=altData["A"+m+"_GERCEK"]||0;}
-      usdRows.push(rowA);
-    });
-  });
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(usdRows),"NAKIT_USD");
-
-  XLSX.writeFile(wb,"nakit_akis_sablon.xlsx");
-  toast("Nakit akış şablonu indirildi ✓","ok");
-}
-// Geriye dönük uyumluluk
-const exportNakitTemplate=exportNakit;
-
-function importNakit(e){
-  const file=e.target.files[0];if(!file)return;e.target.value="";
-  const reader=new FileReader();
-  reader.onload=function(evt){
-    try{
-      const wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array"});
-      const nd={tl:[],usd:[],pyp:{}};
-
-      // ── NAKIT_TL ──
-      const tlSheet=wb.Sheets["NAKIT_TL"]||wb.Sheets[wb.SheetNames[0]];
-      if(tlSheet){
-        const top=PRJ.top||24;
-        const rows=XLSX.utils.sheet_to_json(tlSheet,{defval:0});
-        for(let m=1;m<=top;m++){
-          let plan=0,gercek=0;
-          rows.forEach(r=>{
-            if(String(r.PYP_KOD||"").toUpperCase()==="TOPLAM"||String(r.PYP_KOD||"")==="KOD")return;
-            plan+=Number(r["A"+m+"_PLAN"])||0;
-            gercek+=Number(r["A"+m+"_GERCEK"])||0;
-          });
-          nd.tl.push({ay:m,plan,gercek});
-        }
-        rows.forEach(r=>{
-          const kod=String(r.PYP_KOD||"").trim();
-          if(!kod||kod.toUpperCase()==="TOPLAM"||kod==="KOD")return;
-          if(!nd.pyp[kod])nd.pyp[kod]={tl:{},usd:{}};
-          for(let m=1;m<=top;m++){
-            nd.pyp[kod].tl["A"+m+"_PLAN"]=Number(r["A"+m+"_PLAN"])||0;
-            nd.pyp[kod].tl["A"+m+"_GERCEK"]=Number(r["A"+m+"_GERCEK"])||0;
-          }
-        });
-      }
-
-      // ── NAKIT_USD ──
-      const usdSheet=wb.Sheets["NAKIT_USD"]||wb.Sheets[wb.SheetNames[1]];
-      if(usdSheet){
-        const top=PRJ.top||24;
-        const rows=XLSX.utils.sheet_to_json(usdSheet,{defval:0});
-        for(let m=1;m<=top;m++){
-          let plan=0,gercek=0;
-          rows.forEach(r=>{
-            if(String(r.PYP_KOD||"").toUpperCase()==="TOPLAM"||String(r.PYP_KOD||"")==="KOD")return;
-            plan+=Number(r["A"+m+"_PLAN"])||0;
-            gercek+=Number(r["A"+m+"_GERCEK"])||0;
-          });
-          nd.usd.push({ay:m,plan,gercek});
-        }
-        rows.forEach(r=>{
-          const kod=String(r.PYP_KOD||"").trim();
-          if(!kod||kod.toUpperCase()==="TOPLAM"||kod==="KOD")return;
-          if(!nd.pyp[kod])nd.pyp[kod]={tl:{},usd:{}};
-          for(let m=1;m<=top;m++){
-            nd.pyp[kod].usd["A"+m+"_PLAN"]=Number(r["A"+m+"_PLAN"])||0;
-            nd.pyp[kod].usd["A"+m+"_GERCEK"]=Number(r["A"+m+"_GERCEK"])||0;
-          }
-        });
-      }
-
-      nakitSave(nd);
-      rend.nakit=false;rNakit();
-      toast("Nakit akış verisi yüklendi ✓","ok");
-    }catch(err){toast("Dosya okunamadı: "+err.message,"err");}
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-function rNakit(){
-  const nd=nakitLoad();
-  const top=PRJ.top||24;
-  const labels=Array.from({length:top},(_,i)=>"A"+(i+1));
-
-  const tlPlanTot =nd.tl.reduce((s,r)=>s+(r.plan||0),0);
-  const tlGercTot =nd.tl.reduce((s,r)=>s+(r.gercek||0),0);
-  const usdGercTot=nd.usd.reduce((s,r)=>s+(r.gercek||0),0);
-  const fark=tlGercTot-tlPlanTot;
-
-  const kE=document.getElementById("nakitKPI");
-  if(kE) kE.innerHTML=`
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
-              <button class="btn-sm" onclick="exportEVMExcel()">⬇ EVM Excel</button>
-              <label class="btn-sm">⬆ EVM Excel<input type="file" accept=".xlsx" style="display:none" onchange="importEVMExcel(this)"></label>
-            </div>
-            <div id="evmSource" style="font-size:11px;padding:6px 10px;margin-bottom:8px;border-radius:4px;background:var(--bg2);grid-column:1/-1"></div>
-            <div class="kpi-card"><div class="kpi-lbl">Plan Toplam</div><div class="kpi-val" style="color:var(--ac)">${N(tlPlanTot)} ₺</div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Gerçekleşen TL</div><div class="kpi-val" style="color:var(--ag)">${N(tlGercTot)} ₺</div><div class="kpi-sub">${tlPlanTot>0?"%"+fmtD(tlGercTot/tlPlanTot*100,1)+" plan gerçekleşme":"—"}</div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Plan/Gerçek Fark</div><div class="kpi-val" style="color:${fark<=0?"var(--ag)":"var(--ad)"}">${fark>=0?"+":""}${N(fark)} ₺</div></div>
-    <div class="kpi-card"><div class="kpi-lbl">Gerçekleşen USD</div><div class="kpi-val" style="color:var(--m2)">${fmtD(usdGercTot/1000,1)}K $</div></div>`;
-
-  const hasTL =nd.tl.some(r=>r.plan||r.gercek);
-  const hasUSD=nd.usd.some(r=>r.plan||r.gercek);
-  const empEl=document.getElementById("nakitEmpty");
-  const tblEl=document.getElementById("nakitTablo");
-  if(empEl) empEl.style.display=hasTL?"none":"block";
-  if(tblEl) tblEl.style.display=hasTL?"":"none";
-  if(!hasTL&&!hasUSD)return;
-
-  // Aylık bar grafik (TL)
-  const planVals=labels.map((_,i)=>+((nd.tl[i]?.plan||0)/1e6).toFixed(2));
-  const gercVals=labels.map((_,i)=>+((nd.tl[i]?.gercek||0)/1e6).toFixed(2));
-  mkC("cNakitBar",{type:"bar",data:{labels,datasets:[
-    {label:"Plan",data:planVals,backgroundColor:"#4f8ef755",borderRadius:2,barPercentage:.8},
-    {label:"Gerçek",data:gercVals,backgroundColor:"#3dba6f",borderRadius:2,barPercentage:.8}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${fmtD(c.raw,2)}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,1)+"M"}}}}});
-
-  // Kümülatif eğri
-  let cumP=0,cumG=0;
-  const cpV=[],cgV=[];
-  labels.forEach((_,i)=>{cumP+=(nd.tl[i]?.plan||0)/1e6;cumG+=(nd.tl[i]?.gercek||0)/1e6;cpV.push(+cumP.toFixed(2));cgV.push(i<PRJ.ay?+cumG.toFixed(2):null);});
-  mkC("cNakitCum",{type:"line",data:{labels,datasets:[
-    {label:"Plan (Küm.)",data:cpV,borderColor:"#4f8ef7",borderWidth:2,fill:true,backgroundColor:"#4f8ef710",pointRadius:0,tension:.4},
-    {label:"Gerçek (Küm.)",data:cgV,borderColor:"#3dba6f",borderWidth:2.5,fill:true,backgroundColor:"#3dba6f10",pointRadius:0,tension:.4}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw!=null?fmtD(c.raw,2)+"M ₺":"—"}`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,1)+"M"}}}}});
-
-  if(!hasTL)return;
-
-  // PYP × Ay matris tablosu
-  const visAys=Array.from({length:Math.min(top,PRJ.ay+2)},(_,i)=>i+1);
-  const nakTbl=document.getElementById("nakitTablo");
-  if(!nakTbl)return;
-  const headCols=visAys.map(m=>`<th class="r" colspan="2" style="text-align:center;color:var(--ac)">A${m}</th>`).join("");
-  const subCols=visAys.map(()=>`<th class="r" style="font-size:8px;color:var(--m2)">Plan</th><th class="r" style="font-size:8px;color:var(--ag)">Gerçek</th>`).join("");
-  const bodyRows=PYP.map(p=>{
-    const pypTL=(nd.pyp&&nd.pyp[p.kod]||{}).tl||{};
-    const cols=visAys.map(m=>{
-      const pl=pypTL["A"+m+"_PLAN"]||0,gr=pypTL["A"+m+"_GERCEK"]||0;
-      return `<td class="r" style="color:var(--m2)">${pl>0?fmtD(pl/1e6,2)+"M":"—"}</td><td class="r" style="color:var(--ag)">${gr>0?fmtD(gr/1e6,2)+"M":"—"}</td>`;
-    }).join("");
-    return `<tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700">${p.kod}</td><td style="font-weight:500">${p.ad}</td>${cols}</tr>`;
-  }).join("");
-  const footCols=visAys.map(m=>{
-    const pl=nd.tl[m-1]?.plan||0,gr=nd.tl[m-1]?.gercek||0;
-    return `<td class="r" style="color:var(--ac)">${pl>0?fmtD(pl/1e6,2)+"M":"—"}</td><td class="r" style="color:var(--ag)">${gr>0?fmtD(gr/1e6,2)+"M":"—"}</td>`;
-  }).join("");
-  nakTbl.innerHTML=`<table class="tbl"><thead><tr><th rowspan="2">PYP</th><th rowspan="2">İş Kalemi</th>${headCols}</tr><tr>${subCols}</tr></thead><tbody>${bodyRows}</tbody><tfoot><tr><td colspan="2"><strong>TOPLAM</strong></td>${footCols}</tr></tfoot></table>`;
-  rend.nakit=true;
-}
-
-function printPDF(){
-  _syncDOM();
-  const now=new Date().toLocaleDateString("tr-TR",{day:"2-digit",month:"long",year:"numeric"});
-  const fp=v=>v!=null?fmtD(v,1)+"%":"—";
-
-  // ── Her proje için KPI hesapla (aktif proje bağımsız)
-  function _projKPI(proj){
-    const py=proj.pyp||[];
-    const tb_=py.reduce((s,x)=>s+(isFinite(x.butce)?x.butce:0),0);
-    const tg_=py.reduce((s,x)=>s+(isFinite(x.g)?x.g:0),0);
-    const bcwp_=py.reduce((s,x)=>s+(isFinite(x.butce)?x.butce:0)*(isFinite(x.il)?x.il:0)/100,0);
-    const ay_=proj.prj?.ay||1, top_=proj.prj?.top||24;
-    // bcwsAtM bu projenin PYP'si ile
-    const bcws_=py.reduce((s,x)=>{
-      if(ay_<x.bas)return s;
-      const dur=Math.max(x.bit-x.bas,1),prog=Math.min((Math.min(ay_,x.bit)-x.bas)/dur,1);
-      return s+(isFinite(x.butce)?x.butce:0)*prog;
-    },0);
-    // EVM Excel verisi bu proje için var mı?
-    let cpi_=tg_>0?bcwp_/tg_:1, spi_=bcws_>0?bcwp_/bcws_:1, pv_=bcws_, ac_=tg_, ev_=bcwp_;
-    try{
-      const evmRaw=localStorage.getItem(EVM_KEY+"_"+proj.id);
-      if(evmRaw){
-        const evmD=JSON.parse(evmRaw)||{};
-        if(Object.keys(evmD).length>0){
-          let pv2=0,ac2=0;
-          py.forEach(x=>{const d=evmD[x.kod]||{};pv2+=d.pv||0;ac2+=d.ac||0;});
-          const fiz2=proj.manFiz||0;
-          const ev2=pv2*(fiz2/100);
-          pv_=pv2;ac_=ac2;ev_=ev2;
-          cpi_=ac2>0?ev2/ac2:1;spi_=pv2>0?ev2/pv2:1;
-        }
-      }
-    }catch(e){}
-    const eac_=cpi_>0?tb_/cpi_:tb_;
-    const cv_=ev_-ac_, sv_=ev_-pv_;
-    const fiz=proj.manFiz||0;
-    return {p:proj.prj,py,tb:tb_,tg:tg_,bcwp:ev_,bcws:pv_,cpi:cpi_,spi:spi_,eac:eac_,cv:cv_,sv:sv_,fiz};
-  }
-
-  const CSS=`*{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial,sans-serif;font-size:9pt;color:#111;background:#fff}.page{width:210mm;min-height:297mm;padding:14mm 12mm;page-break-after:always}.page:last-child{page-break-after:auto}h1{font-size:13pt;color:#1a2a6c;margin-bottom:2mm}h2{font-size:10pt;color:#1a2a6c;margin:4mm 0 2mm}.meta{font-size:8pt;color:#555;margin-bottom:4mm;border-bottom:1px solid #ccc;padding-bottom:2mm}.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-bottom:5mm}.kpi{border:1px solid #ddd;border-radius:3mm;padding:3mm;text-align:center}.kpi-l{font-size:7pt;color:#555;margin-bottom:1mm}.kpi-v{font-size:11pt;font-weight:700}table{width:100%;border-collapse:collapse;font-size:8pt}th{background:#1a2a6c;color:#fff;padding:2mm 3mm;text-align:left}td{padding:1.5mm 3mm;border-bottom:1px solid #eee}tr:nth-child(even){background:#f7f8fc}.r{text-align:right}@media print{@page{size:A4 portrait;margin:0}body{margin:0}.page{padding:10mm;width:100%;min-height:0}}`;
-
-  // ── Konsolide özet sayfa (tüm projeler)
-  const allRows=PROJECTS.map(proj=>{
-    const k=_projKPI(proj);
-    const cviY=k.tb>0?((k.bcwp-k.tg)/k.tb*100):0;
-    const risk=cviY<-10?"🔴 Kritik":cviY<-5?"🟠 Yüksek":cviY<0?"🟡 Orta":"🟢 İyi";
-    return `<tr>
-      <td>${proj.prj.kod}</td><td>${proj.prj.ad}</td>
-      <td class="r">${M(k.tb)}</td><td class="r">${M(k.tg)}</td>
-      <td class="r">${M(k.eac)}</td>
-      <td class="r" style="color:${k.cpi>=1?"#3dba6f":"#e85444"};font-weight:700">${fmtD(k.cpi,3)}</td>
-      <td class="r" style="color:${k.spi>=1?"#3dba6f":"#e85444"};font-weight:700">${fmtD(k.spi,3)}</td>
-      <td class="r" style="color:${k.cv>=0?"#3dba6f":"#e85444"}">${k.cv>=0?"+":""}${M(k.cv)}</td>
-      <td>${risk}</td><td class="r">${k.fiz}%</td>
-    </tr>`;
-  }).join("");
-  const totTB=PROJECTS.reduce((s,p)=>s+_projKPI(p).tb,0);
-  const totTG=PROJECTS.reduce((s,p)=>s+_projKPI(p).tg,0);
-  const totEAC=PROJECTS.reduce((s,p)=>s+_projKPI(p).eac,0);
-  const totCV=PROJECTS.reduce((s,p)=>s+_projKPI(p).cv,0);
-  const summaryPage=`<div class="page">
-    <h1>📊 Konsolide Proje Raporu</h1>
-    <div class="meta">Toplam: <b>${PROJECTS.length} proje</b> | Tarih: <b>${now}</b></div>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kpi-l">Toplam Bütçe</div><div class="kpi-v" style="color:#4f8ef7">${M(totTB)}</div></div>
-      <div class="kpi"><div class="kpi-l">Toplam Gerçekleşen</div><div class="kpi-v" style="color:#3dba6f">${M(totTG)}</div></div>
-      <div class="kpi"><div class="kpi-l">Toplam EAC</div><div class="kpi-v" style="color:#f0b429">${M(totEAC)}</div></div>
-      <div class="kpi"><div class="kpi-l">Toplam CV</div><div class="kpi-v" style="color:${totCV>=0?"#3dba6f":"#e85444"}">${totCV>=0?"+":""}${M(totCV)}</div></div>
-    </div>
-    <h2>Proje Bazlı Özet</h2>
-    <table><thead><tr>
-      <th>Kod</th><th>Proje</th><th class="r">Bütçe</th><th class="r">Gerçekleşen</th>
-      <th class="r">EAC</th><th class="r">CPI</th><th class="r">SPI</th>
-      <th class="r">CV</th><th>Risk</th><th class="r">Fiziksel</th>
-    </tr></thead><tbody>${allRows}</tbody></table>
-  </div>`;
-
-  // ── Her proje için 2 sayfa
-  const projPages=PROJECTS.map(proj=>{
-    const k=_projKPI(proj);
-    const {p,py}=k;
-    // Proje bazlı S-eğrisi: proj.sc veya proj.scExcel
-    const scD=proj.scExcel?.length ? proj.scExcel.map(r=>({ay:r.AY,plan:r.PLANLANAN,gercek:r.GERCEKLESEN}))
-               : Object.entries(proj.sc||{}).map(([kod,val])=>{const m=parseInt(kod);return {ay:m,plan:val.plan,gercek:val.gercek};}).sort((a,b)=>a.ay-b.ay);
-
-    const kpis=[
-      {l:"Toplam Bütçe",v:M(k.tb),c:"#4f8ef7"},{l:"Gerçekleşen",v:M(k.tg),c:"#3dba6f"},
-      {l:"BCWP",v:M(k.bcwp),c:"#9b6cf7"},{l:"EAC",v:M(k.eac),c:"#f0b429"},
-      {l:"Fiziksel",v:fp(k.fiz),c:"#3dba6f"},{l:"BCWS",v:M(k.bcws),c:"#4f8ef7"},
-      {l:"CPI",v:isFinite(k.cpi)?fmtD(k.cpi,3):"—",c:k.cpi>=1?"#3dba6f":"#e85444"},
-      {l:"SPI",v:isFinite(k.spi)?fmtD(k.spi,3):"—",c:k.spi>=1?"#3dba6f":"#e85444"}
-    ];
-    const pypR=py.map(q=>`<tr><td>${q.kod}</td><td>${q.ad}</td><td class="r">${M(q.butce)}</td><td class="r">${M(q.g)}</td><td class="r">${fp(q.il)}</td><td class="r">${q.bas}</td><td class="r">${q.bit}</td></tr>`).join("");
-    const sc2D=proj.sc2||{};
-    const scR=py.map(q=>{
-      const sc=proj.sc&&proj.sc[q.kod]?proj.sc[q.kod]:{plan:null,gercek:null};
-      const s2=sc2D[q.kod]||{};
-      const pl=s2.plan??sc.plan;const gr=s2.gercek??sc.gercek;
-      if(pl==null&&gr==null)return "";
-      const diff=(gr??0)-(pl??0);
-      return `<tr><td>${q.kod}</td><td>${q.ad}</td><td class="r">${fp(pl)}</td><td class="r">${fp(gr)}</td><td class="r" style="color:${diff>=0?"#3dba6f":"#e85444"}">${diff>=0?"+":""}${fp(diff)}</td></tr>`;
-    }).filter(Boolean).join("");
-    const evmR=[
-      {l:"Cost Variance (CV)",v:M(k.cv),c:k.cv>=0?"#3dba6f":"#e85444"},
-      {l:"Schedule Variance (SV)",v:M(k.sv),c:k.sv>=0?"#3dba6f":"#e85444"},
-      {l:"CPI",v:isFinite(k.cpi)?fmtD(k.cpi,3):"—",c:k.cpi>=1?"#3dba6f":"#e85444"},
-      {l:"SPI",v:isFinite(k.spi)?fmtD(k.spi,3):"—",c:k.spi>=1?"#3dba6f":"#e85444"},
-      {l:"EAC",v:M(k.eac),c:"#f0b429"},
-      {l:"VAC (Bütçe - EAC)",v:M(k.tb-k.eac),c:k.tb>=k.eac?"#3dba6f":"#e85444"}
-    ].map(r=>`<tr><td>${r.l}</td><td class="r" style="color:${r.c};font-weight:700">${r.v}</td></tr>`).join("");
-
-    return `<div class="page">
-      <h1>${p.ad} — Proje Raporu</h1>
-      <div class="meta">Kod: <b>${p.kod}</b> | Ay: <b>${p.ay}</b>/${p.top} | Tarih: <b>${now}</b></div>
-      <h2>KPI</h2>
-      <div class="kpi-grid">${kpis.map(ki=>`<div class="kpi"><div class="kpi-l">${ki.l}</div><div class="kpi-v" style="color:${ki.c}">${ki.v}</div></div>`).join("")}</div>
-      <h2>PYP İlerleme</h2>
-      <table><thead><tr><th>Kod</th><th>İş Kalemi</th><th class="r">Bütçe</th><th class="r">Gerçek</th><th class="r">İlerleme</th><th class="r">Baş</th><th class="r">Bit</th></tr></thead>
-      <tbody>${pypR}</tbody></table>
-    </div>
-    <div class="page">
-      <h1>${p.ad} — S-Eğrisi & EVM</h1>
-      <div class="meta">Kod: <b>${p.kod}</b> | Tarih: <b>${now}</b></div>
-      ${scR?`<h2>S-Eğrisi PYP</h2><table><thead><tr><th>Kod</th><th>İş Kalemi</th><th class="r">Plan</th><th class="r">Gerçek</th><th class="r">Sapma</th></tr></thead><tbody>${scR}</tbody></table>`:""}
-      <h2 style="margin-top:5mm">EVM Sapma Analizi</h2>
-      <table><thead><tr><th>Gösterge</th><th class="r">Değer</th></tr></thead>
-      <tbody>${evmR}</tbody></table>
-    </div>`;
-  }).join("");
-
-  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Folkart Proje Raporu</title><style>'+CSS+'</style></head><body>'
-    +summaryPage+projPages
-    +'<scr'+'ipt>window.onload=()=>window.print();<'+'/scr'+'ipt></body></html>';
-
-  const w=window.open("","_blank","width=900,height=700");
-  if(w){w.document.write(html);w.document.close();}
-  else toast("Açılır pencere engellendi","err");
-}
-
-// ══════════════════════════════════════════════════════════════
-// EVM EXCEL — Şablon İndir / Yükle
-// ══════════════════════════════════════════════════════════════
-function exportEVMExcel(){
-  const wb=XLSX.utils.book_new();
-  const ed=evmLoad();
-  const pypMap={};PYP.forEach(p=>{pypMap[p.kod]=p;});
-
-  // ANA_PYP sekmesi
-  const anaRows=DEF.map(d=>{
-    const p=pypMap[d.kod]||d;
-    const ev=ed[d.kod]||{};
-    return {ANA_PYP:d.kod,ANA_PYP_ADI:d.ad,
-      PYP_KUMULATIF_BUTCE:p.butce||0,
-      AYLIK_KUMULATIF_PLANLANAN:ev.pv||0,
-      GERCEKLESEN:ev.ac||0,
-      ILERLEME:p.il||0};
-  });
-  const ws1=XLSX.utils.json_to_sheet(anaRows);
-  XLSX.utils.book_append_sheet(wb,ws1,"ANA_PYP");
-
-  // ALT_PYP sekmesi
-  const altRows=[];
-  DEF.forEach(d=>{
-    const p=pypMap[d.kod]||d;
-    const altMap={};(p.alt||[]).forEach(a=>{altMap[a.k]=a;});
-    const evA=(ed[d.kod]||{}).alt||{};
-    d.alt.forEach(da=>{
-      const a=altMap[da.k]||da;
-      const ea=evA[da.k]||{};
-      altRows.push({ANA_PYP:d.kod,ALT_PYP:da.k,ALT_PYP_ADI:da.a,
-        PYP_KUMULATIF_BUTCE:a.b||0,
-        AYLIK_KUMULATIF_PLANLANAN:ea.pv||0,
-        GERCEKLESEN:ea.ac||0,ILERLEME:a.il||0});
-    });
-  });
-  const ws2=XLSX.utils.json_to_sheet(altRows.length?altRows:[{ANA_PYP:"",ALT_PYP:"",ALT_PYP_ADI:"",PYP_KUMULATIF_BUTCE:0,AYLIK_KUMULATIF_PLANLANAN:0,GERCEKLESEN:0,ILERLEME:0}]);
-  XLSX.utils.book_append_sheet(wb,ws2,"ALT_PYP");
-
-  XLSX.writeFile(wb,"pyp_evm_sablon.xlsx");
-  toast("PYP EVM şablonu indirildi ✓","ok");
-}
-
-function importEVMExcel(e){
-  const file=e.target.files[0];if(!file)return;e.target.value="";
-  const reader=new FileReader();
-  reader.onload=function(evt){
-    try{
-      const wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array"});
-      const ed={};
-
-      // ANA_PYP sekmesi
-      const anaSheet=wb.Sheets["ANA_PYP"]||wb.Sheets[wb.SheetNames[0]];
-      if(anaSheet){
-        XLSX.utils.sheet_to_json(anaSheet,{defval:0}).forEach(r=>{
-          const kod=String(r.ANA_PYP||"").trim();if(!kod)return;
-          if(!ed[kod])ed[kod]={pv:0,ac:0,alt:{}};
-          ed[kod].pv=Number(r.AYLIK_KUMULATIF_PLANLANAN)||0;
-          ed[kod].ac=Number(r.GERCEKLESEN)||0;
-          const pi=PYP.findIndex(p=>p.kod===kod);
-          if(pi>=0&&r.ILERLEME!=null) PYP[pi].il=Math.min(100,Math.max(0,Number(r.ILERLEME)||0));
-        });
-      }
-
-      // ALT_PYP sekmesi
-      const altSheet=wb.Sheets["ALT_PYP"]||wb.Sheets[wb.SheetNames[1]];
-      if(altSheet){
-        XLSX.utils.sheet_to_json(altSheet,{defval:0}).forEach(r=>{
-          const anakod=String(r.ANA_PYP||"").trim(),altkod=String(r.ALT_PYP||"").trim();
-          if(!anakod||!altkod)return;
-          if(!ed[anakod])ed[anakod]={pv:0,ac:0,alt:{}};
-          ed[anakod].alt[altkod]={pv:Number(r.AYLIK_KUMULATIF_PLANLANAN)||0,ac:Number(r.GERCEKLESEN)||0};
-          const pi=PYP.findIndex(p=>p.kod===anakod);
-          if(pi>=0){
-            const ai=PYP[pi].alt?.findIndex(a=>a.k===altkod);
-            if(ai>=0&&r.ILERLEME!=null) PYP[pi].alt[ai].il=Math.min(100,Math.max(0,Number(r.ILERLEME)||0));
-          }
-        });
-      }
-
-      evmSave(ed);
-      const _ai=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-      if(_ai>=0){PROJECTS[_ai].pyp=JSON.parse(JSON.stringify(PYP));localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));}
-      Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
-      rend.sapma=false;rSapma();buildForm();
-      toast("PYP EVM verisi yüklendi ✓","ok");
-    }catch(err){toast("Dosya okunamadı: "+err.message,"err");}
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-
-
-function rRehber(){ rend.rehber=true; }
-
-function buildRehberHTML(){
-  return `
-  <style>
-    .rh-hero{background:linear-gradient(135deg,var(--ac)18,var(--ap)10);border-radius:14px;padding:28px 32px;margin-bottom:24px;border:1px solid var(--ac)30;position:relative;overflow:hidden}
-    .rh-hero::before{content:"";position:absolute;right:-30px;top:-30px;width:160px;height:160px;background:var(--ac)08;border-radius:50%}
-    .rh-hero h1{font-size:22px;color:var(--ac);font-weight:800;margin-bottom:6px}
-    .rh-hero p{color:var(--m1);font-size:13px;line-height:1.6;max-width:600px}
-    .rh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:24px}
-    .rh-card{background:var(--bg2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;transition:border-color .2s}
-    .rh-card:hover{border-color:var(--ac)50}
-    .rh-card-hdr{padding:14px 18px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--b1)}
-    .rh-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-    .rh-card-title{font-size:13px;font-weight:700;color:var(--tx)}
-    .rh-card-sub{font-size:10px;color:var(--m2);margin-top:1px}
-    .rh-card-body{padding:14px 18px}
-    .rh-metric{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--b1)08}
-    .rh-metric:last-child{border-bottom:none}
-    .rh-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;margin-top:2px;white-space:nowrap}
-    .rh-metric-info{}
-    .rh-metric-name{font-size:11px;font-weight:600;color:var(--tx);margin-bottom:2px}
-    .rh-metric-desc{font-size:10px;color:var(--m2);line-height:1.5}
-    .rh-formula{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ap);background:var(--ap)12;padding:2px 7px;border-radius:4px;margin-top:3px;display:inline-block}
-    .rh-scale{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-    .rh-scale-item{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
-    .rh-tip{background:var(--ao)10;border-left:3px solid var(--ao);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:11px;color:var(--m1);line-height:1.6}
-    .rh-tip b{color:var(--ao)}
-    .rh-section-title{font-size:11px;font-weight:700;color:var(--m2);text-transform:uppercase;letter-spacing:.8px;margin:20px 0 10px}
-    .rh-flow{display:flex;gap:0;align-items:stretch;flex-wrap:wrap;margin-bottom:24px}
-    .rh-flow-step{flex:1;min-width:140px;background:var(--bg2);border:1px solid var(--b1);padding:14px 16px;position:relative}
-    .rh-flow-step:first-child{border-radius:10px 0 0 10px}
-    .rh-flow-step:last-child{border-radius:0 10px 10px 0}
-    .rh-flow-arrow{display:flex;align-items:center;justify-content:center;width:24px;color:var(--m2);font-size:16px;background:var(--bg2);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1)}
-    .rh-flow-num{font-size:10px;font-weight:800;color:var(--ac);margin-bottom:4px}
-    .rh-flow-title{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:3px}
-    .rh-flow-desc{font-size:9px;color:var(--m2);line-height:1.5}
-    .rh-table{width:100%;border-collapse:collapse;font-size:11px}
-    .rh-table th{background:var(--s3);color:var(--m2);font-size:10px;text-transform:uppercase;letter-spacing:.5px;padding:8px 12px;text-align:left;font-weight:600}
-    .rh-table td{padding:8px 12px;border-bottom:1px solid var(--b1)40;color:var(--m1);vertical-align:top}
-    .rh-table tr:last-child td{border-bottom:none}
-    .rh-gl{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
-    @media(max-width:700px){.rh-grid,.rh-gl{grid-template-columns:1fr}.rh-flow{flex-direction:column}.rh-flow-step{border-radius:8px!important;margin-bottom:4px}.rh-flow-arrow{transform:rotate(90deg);width:100%;height:24px;border:none;border-left:1px solid var(--b1);border-right:1px solid var(--b1)}}
-  </style>
-
-  <!-- HERO -->
-  <div class="rh-hero">
-    <h1>📖 Kullanım Rehberi</h1>
-    <p>Bu panelde yer alan tüm metriklerin tanımı, formülü ve yorumlama kılavuzu. Her sekmedeki verileri nasıl okuyacağınızı öğrenmek için ilgili kartı inceleyin.</p>
-  </div>
-
-  <!-- VERİ GİRİŞİ AKIŞI -->
-  <div class="rh-section-title">📋 Veri Giriş Akışı</div>
-  <div class="rh-flow">
-    <div class="rh-flow-step">
-      <div class="rh-flow-num">1</div>
-      <div class="rh-flow-title">Proje Bilgileri</div>
-      <div class="rh-flow-desc">Giriş sekmesinde proje adı, kodu, mevcut ay ve toplam süreyi girin</div>
-    </div>
-    <div class="rh-flow-arrow">›</div>
-    <div class="rh-flow-step">
-      <div class="rh-flow-num">2</div>
-      <div class="rh-flow-title">PYP Bütçeleri</div>
-      <div class="rh-flow-desc">Her iş kalemi için Alt PYP'lere bütçe ve gerçekleşen girin → ağırlıklar otomatik hesaplanır</div>
-    </div>
-    <div class="rh-flow-arrow">›</div>
-    <div class="rh-flow-step">
-      <div class="rh-flow-num">3</div>
-      <div class="rh-flow-title">Fiziksel İlerleme</div>
-      <div class="rh-flow-desc">Alt PYP yüzdelerini girin → Ana PYP ilerleme otomatik hesaplanır</div>
-    </div>
-    <div class="rh-flow-arrow">›</div>
-    <div class="rh-flow-step">
-      <div class="rh-flow-num">4</div>
-      <div class="rh-flow-title">Kaydet</div>
-      <div class="rh-flow-desc">Kaydet butonuna basın → Tüm paneller ve grafikler güncellenir</div>
-    </div>
-    <div class="rh-flow-arrow">›</div>
-    <div class="rh-flow-step">
-      <div class="rh-flow-num">5</div>
-      <div class="rh-flow-title">Analiz Et</div>
-      <div class="rh-flow-desc">Dashboard, S-Eğrisi, Sapma Analizi sekmelerinde sonuçları inceleyin</div>
-    </div>
-  </div>
-
-  <!-- EVM METRİKLERİ -->
-  <div class="rh-section-title">📊 EVM — Kazanılmış Değer Metrikleri</div>
-  <div class="rh-grid">
-
-    <!-- BCWP / EV -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#9b6cf720">💜</div>
-        <div><div class="rh-card-title">BCWP — Kazanılmış Değer</div><div class="rh-card-sub">Budgeted Cost of Work Performed / Earned Value (EV)</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#9b6cf720;color:#9b6cf7">TANIM</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Bu tarihe kadar tamamlanan işin bütçesel değeri</div>
-            <div class="rh-metric-desc">%80 tamamlanmış 100M TL'lik iş için BCWP = 80M TL. Gerçek harcamadan bağımsızdır.</div>
-            <div class="rh-formula">BCWP = Σ (PYP Bütçesi × Fiziksel İlerleme%)</div>
-          </div>
-        </div>
-        <div class="rh-tip"><b>İpucu:</b> BCWP > ACWP ise para kazanıyorsunuz demektir. BCWP < ACWP ise fazla harcama var.</div>
-      </div>
-    </div>
-
-    <!-- BCWS / PV -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#4f8ef720">💙</div>
-        <div><div class="rh-card-title">BCWS — Planlanan Değer</div><div class="rh-card-sub">Budgeted Cost of Work Scheduled / Planned Value (PV)</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#4f8ef720;color:#4f8ef7">TANIM</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Bu tarihe kadar yapılması planlanan işin bütçesel değeri</div>
-            <div class="rh-metric-desc">Proje takvimine göre bugüne kadar tamamlanmış olması gereken iş miktarının parasal karşılığı.</div>
-            <div class="rh-formula">BCWS = Σ (PYP Bütçesi × Takvim İlerleme%)</div>
-          </div>
-        </div>
-        <div class="rh-tip"><b>İpucu:</b> BCWP < BCWS ise proje takvim gerisindedir. Fark ne kadar büyükse gecikme o kadar ciddidir.</div>
-      </div>
-    </div>
-
-    <!-- ACWP -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#e8544420">❤️</div>
-        <div><div class="rh-card-title">ACWP — Gerçek Maliyet</div><div class="rh-card-sub">Actual Cost of Work Performed (AC)</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#e8544420;color:#e85444">TANIM</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Bu tarihe kadar gerçekte harcanan tutar</div>
-            <div class="rh-metric-desc">PYP veri girişindeki "Gerçekleşen" sütunundan gelen toplam harcama. Faturalar, ödemeler, fiili giderler.</div>
-            <div class="rh-formula">ACWP = Σ Gerçekleşen Harcamalar</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CPI -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#f0b42920">🟡</div>
-        <div><div class="rh-card-title">CPI — Maliyet Performans Endeksi</div><div class="rh-card-sub">Cost Performance Index</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#f0b42920;color:#f0b429">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Harcanan her 1 TL karşılığında üretilen iş değeri</div>
-            <div class="rh-formula">CPI = BCWP ÷ ACWP</div>
-          </div>
-        </div>
-        <div class="rh-scale">
-          <span class="rh-scale-item" style="background:#3dba6f20;color:#3dba6f">CPI > 1 → Bütçe altında ✅</span>
-          <span class="rh-scale-item" style="background:#f0b42920;color:#f0b429">CPI = 1 → Tam bütçede 🟡</span>
-          <span class="rh-scale-item" style="background:#e8544420;color:#e85444">CPI < 1 → Bütçe aşımı 🔴</span>
-        </div>
-        <div class="rh-tip"><b>Örnek:</b> CPI = 0.85 → Her 100 TL harcamada 85 TL'lik iş yapılıyor. Proje bütçesi %15 aşacak demektir.</div>
-      </div>
-    </div>
-
-    <!-- SPI -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#22c4e820">🩵</div>
-        <div><div class="rh-card-title">SPI — Takvim Performans Endeksi</div><div class="rh-card-sub">Schedule Performance Index</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#22c4e820;color:#22c4e8">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Planlanan işe göre gerçekte ne kadar tamamlandığı</div>
-            <div class="rh-formula">SPI = BCWP ÷ BCWS</div>
-          </div>
-        </div>
-        <div class="rh-scale">
-          <span class="rh-scale-item" style="background:#3dba6f20;color:#3dba6f">SPI > 1 → Takvim ilerisinde ✅</span>
-          <span class="rh-scale-item" style="background:#f0b42920;color:#f0b429">SPI = 1 → Tam takvimde 🟡</span>
-          <span class="rh-scale-item" style="background:#e8544420;color:#e85444">SPI < 1 → Takvim gerisinde 🔴</span>
-        </div>
-        <div class="rh-tip"><b>Örnek:</b> SPI = 0.90 → Planın %90'ı tamamlanmış. Bu aydaki işin %10'u bir sonraki aya sarkacak.</div>
-      </div>
-    </div>
-
-    <!-- CV -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#3dba6f20">💚</div>
-        <div><div class="rh-card-title">CV — Maliyet Sapması</div><div class="rh-card-sub">Cost Variance</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#3dba6f20;color:#3dba6f">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Kazanılan değer ile gerçek harcama arasındaki fark</div>
-            <div class="rh-formula">CV = BCWP − ACWP</div>
-          </div>
-        </div>
-        <div class="rh-scale">
-          <span class="rh-scale-item" style="background:#3dba6f20;color:#3dba6f">CV > 0 → Tasarruf ✅</span>
-          <span class="rh-scale-item" style="background:#e8544420;color:#e85444">CV < 0 → Aşım 🔴</span>
-        </div>
-        <div class="rh-tip"><b>Örnek:</b> CV = −5M TL → Yapılan işin bütçesel değerinden 5M TL fazla harcanmış.</div>
-      </div>
-    </div>
-
-    <!-- SV -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#4f8ef720">📅</div>
-        <div><div class="rh-card-title">SV — Takvim Sapması</div><div class="rh-card-sub">Schedule Variance</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#4f8ef720;color:#4f8ef7">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Kazanılan değer ile planlanana göre sapma (para cinsinden)</div>
-            <div class="rh-formula">SV = BCWP − BCWS</div>
-          </div>
-        </div>
-        <div class="rh-scale">
-          <span class="rh-scale-item" style="background:#3dba6f20;color:#3dba6f">SV > 0 → Takvim ileride ✅</span>
-          <span class="rh-scale-item" style="background:#e8544420;color:#e85444">SV < 0 → Takvim geride 🔴</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- EAC -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#f0b42920">🔮</div>
-        <div><div class="rh-card-title">EAC — Tamamlanma Tahmini</div><div class="rh-card-sub">Estimate At Completion</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#f0b42920;color:#f0b429">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Mevcut performans devam ederse projenin toplam maliyeti</div>
-            <div class="rh-formula">EAC = Toplam Bütçe ÷ CPI</div>
-          </div>
-        </div>
-        <div class="rh-tip"><b>Örnek:</b> Bütçe 100M, CPI = 0.90 → EAC = 111M TL. Proje 11M TL fazlaya mal olacak.</div>
-      </div>
-    </div>
-
-    <!-- VAC -->
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#9b6cf720">⚖️</div>
-        <div><div class="rh-card-title">VAC — Tamamlanma Sapması</div><div class="rh-card-sub">Variance At Completion</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric">
-          <div class="rh-badge" style="background:#9b6cf720;color:#9b6cf7">FORMÜL</div>
-          <div class="rh-metric-info">
-            <div class="rh-metric-name">Toplam bütçe ile EAC arasındaki fark — nihai tasarruf veya aşım</div>
-            <div class="rh-formula">VAC = Toplam Bütçe − EAC</div>
-          </div>
-        </div>
-        <div class="rh-scale">
-          <span class="rh-scale-item" style="background:#3dba6f20;color:#3dba6f">VAC > 0 → Tasarruf ile tamamlanacak</span>
-          <span class="rh-scale-item" style="background:#e8544420;color:#e85444">VAC < 0 → Bütçe aşımıyla tamamlanacak</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- S-EĞRİSİ -->
-  <div class="rh-section-title">📈 S-Eğrisi — Nasıl Okunur?</div>
-  <div class="rh-gl">
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#4f8ef720">📐</div>
-        <div><div class="rh-card-title">Planlanan Eğri (Mavi)</div><div class="rh-card-sub">Takvime göre beklenen kümülatif ilerleme</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric-desc" style="font-size:11px;color:var(--m1);line-height:1.6">Her PYP'nin takvim başlangıç/bitiş ayı ve ağırlığından matematiksel olarak hesaplanır. Proje başlangıcında yavaş, orta dönemde hızlı, bitişe doğru yavaşlayan tipik "S" formunu alır.</div>
-        <div class="rh-tip"><b>Dikkat:</b> Düz veya erken dik çıkan plan genellikle gerçekçi değildir. Doğru plan eğrisi S şeklinde olmalıdır.</div>
-      </div>
-    </div>
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#3dba6f20">✅</div>
-        <div><div class="rh-card-title">Gerçekleşen Eğri (Yeşil)</div><div class="rh-card-sub">Fiili fiziksel ilerlemenin kümülatif değeri</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric-desc" style="font-size:11px;color:var(--m1);line-height:1.6">Alt PYP veya ana PYP fiziksel ilerleme değerlerinden ağırlıklı olarak hesaplanır. Sadece mevcut aya kadar gösterilir.</div>
-        <div class="rh-tip"><b>Okuma:</b> Yeşil eğri mavinin <b>üstündeyse</b> → takvim ilerisinde. <b>Altındaysa</b> → geride. İki eğrinin ayrılma noktası kritik.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PYP YAPISI -->
-  <div class="rh-section-title">🏗️ PYP Yapısı — Ana ve Alt PYP</div>
-  <div class="rh-card" style="margin-bottom:24px">
-    <div class="rh-card-body">
-      <table class="rh-table">
-        <thead><tr><th>Alan</th><th>Açıklama</th><th>Otomatik mi?</th></tr></thead>
-        <tbody>
-          <tr><td><b>Bütçe (₺)</b></td><td>PYP için öngörülen toplam maliyet. Alt PYP varsa otomatik toplanır.</td><td>Alt PYP varsa ✅</td></tr>
-          <tr><td><b>Gerçekleşen (₺)</b></td><td>Bu PYP'ye bugüne kadar yapılan toplam ödeme ve harcama.</td><td>Alt PYP varsa ✅</td></tr>
-          <tr><td><b>Ağırlık (%)</b></td><td>Bu PYP'nin toplam proje bütçesindeki payı. CPI/SPI hesabında kullanılır.</td><td>Her zaman ✅</td></tr>
-          <tr><td><b>Fiziksel İlerleme (%)</b></td><td>İşin fiziksel tamamlanma yüzdesi. "İnşaat %70 tamamlandı" gibi. Alt PYP varsa otomatik hesaplanır.</td><td>Alt PYP varsa ✅</td></tr>
-          <tr><td><b>Başlangıç / Bitiş Ay</b></td><td>PYP'nin proje takvimindeki başlangıç ve bitiş ayı (1. ay, 2. ay...).</td><td>❌ Manuel</td></tr>
-          <tr><td><b>Alt PYP İlerleme</b></td><td>Her alt iş kaleminin ayrı ayrı fiziksel tamamlanma yüzdesi. Ana PYP'yi bütçesel ağırlıkla ortalar.</td><td>❌ Manuel</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- RENK KODLARI -->
-  <div class="rh-section-title">🎨 Renk ve Durum Kodları</div>
-  <div class="rh-grid" style="margin-bottom:24px">
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#3dba6f20">🟢</div>
-        <div><div class="rh-card-title">Yeşil — İyi Performans</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric-desc" style="font-size:11px;color:var(--m1);line-height:1.7">
-          • Fiziksel ilerleme ≥ %80 → "İleri Aşama / Tamamlandı"<br>
-          • CPI ≥ 1.0 → Bütçe altında<br>
-          • CV > 0 → Tasarruf<br>
-          • Risk seviyesi: İyi
-        </div>
-      </div>
-    </div>
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#f0b42920">🟡</div>
-        <div><div class="rh-card-title">Sarı/Turuncu — Dikkat Gerekli</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric-desc" style="font-size:11px;color:var(--m1);line-height:1.7">
-          • Fiziksel ilerleme %50–79 → "Devam"<br>
-          • CPI 0.85–1.0 → Hafif bütçe baskısı<br>
-          • CV küçük negatif → İzleme gerekli<br>
-          • Risk seviyesi: Orta/Yüksek
-        </div>
-      </div>
-    </div>
-    <div class="rh-card">
-      <div class="rh-card-hdr">
-        <div class="rh-icon" style="background:#e8544420">🔴</div>
-        <div><div class="rh-card-title">Kırmızı — Kritik Durum</div></div>
-      </div>
-      <div class="rh-card-body">
-        <div class="rh-metric-desc" style="font-size:11px;color:var(--m1);line-height:1.7">
-          • Gerçekleşen > Bütçe × 1.25 → Harcama uyarısı<br>
-          • CPI < 0.85 → Ciddi bütçe aşımı<br>
-          • CV büyük negatif → Müdahale gerekli<br>
-          • Risk seviyesi: Kritik
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEKMELER -->
-  <div class="rh-section-title">🗂️ Sekme Rehberi</div>
-  <div class="rh-card" style="margin-bottom:24px">
-    <div class="rh-card-body">
-      <table class="rh-table">
-        <thead><tr><th>Sekme</th><th>Ne Gösterir?</th><th>Ne Zaman Bakılır?</th></tr></thead>
-        <tbody>
-          <tr><td>🏠 Giriş</td><td>Proje bilgileri, PYP bütçe ve ilerleme girişi, Alt PYP kırılımı</td><td>Her güncelleme döneminde</td></tr>
-          <tr><td>📊 Dashboard</td><td>Toplam bütçe, gerçekleşen, EAC, fiziksel ilerleme, S-eğrisi özet, PYP durum çubukları</td><td>Günlük takip için</td></tr>
-          <tr><td>📈 S-Eğrisi</td><td>Kümülatif plan vs gerçekleşen grafiği, aylık fark, PYP bazlı ilerleme tablosu, Gantt</td><td>Haftalık ilerleme toplantılarında</td></tr>
-          <tr><td>💰 Bütçe</td><td>PYP bazlı bütçe/gerçekleşen/tahmin tablosu, alt PYP kırılımı, kullanım oranları</td><td>Fatura onayı ve maliyet kontrolünde</td></tr>
-          <tr><td>🎯 Sapma</td><td>BCWS/BCWP/ACWP/EAC grafikleri, CPI/SPI trend, PYP bazlı CV tablosu, risk panelleri</td><td>Aylık raporlamada ve erken uyarı için</td></tr>
-          <tr><td>🏦 Nakit Akış</td><td>Aylık plan/gerçek ödeme tablosu, TL+USD kümülatif eğriler, PYP bazlı nakit matris</td><td>Finansman ve ödeme planlamasında</td></tr>
-          <tr><td>🗂️ Konsolide</td><td>Tüm projelerin tek tabloda özeti, EAC karşılaştırması, konsolide CPI/CV</td><td>Portföy değerlendirmesinde</td></tr>
-          <tr><td>📖 Rehber</td><td>Metrik tanımları, formüller, renk kodları, kullanım kılavuzu</td><td>İhtiyaç duyulduğunda</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div style="text-align:center;color:var(--m2);font-size:10px;padding:16px 0">
-    Folkart İnşaat Takip Paneli · v19 · Tüm hesaplamalar PMI-PMBOK EVM standartlarına uygundur
-  </div>
-  `;
-}
-
-
 
 function rKonsolide(){
   // DOM'daki güncel veriyi re-render tetiklemeden state'e çek
@@ -3018,30 +1595,40 @@ function rKonsolide(){
   const sub=document.getElementById("konsSubtitle");
   if(sub)sub.textContent=PROJECTS.length+" proje · "+new Date().toLocaleTimeString("tr-TR");
 }
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+
 function exportExcel(){
- const wb = XLSX.utils.book_new();
+  const wb = XLSX.utils.book_new();
 
- const ana = [["ANA_PYP","ANA_PYP_ADI","BASLANGIC","BITIS","AGIRLIK","BUTCE","GERCEKLESEN","ILERLEME"]];
- const alt = [["ANA_PYP","ALT_PYP","ALT_PYP_ADI","BUTCE","GERCEKLESEN","ILERLEME"]];
+  // DEF = tam PYP listesi; mevcut PYP'den değerleri al
+  const pypMap = {};
+  PYP.forEach(p=>{ pypMap[p.kod]=p; });
 
- if(typeof PYP !== "undefined"){
-   PYP.forEach(p=>{
-     ana.push([p.kod || "", p.ad || "", p.bas||"", p.bit||"", p.ag||"", p.butce||0, p.g||0, p.il||0]);
-     if(p.alt && p.alt.length){
-        p.alt.forEach(a=>{
-           alt.push([p.kod || "", a.k || "", a.a || "", a.b||0, a.g||0, a.il||0]);
-        });
-     }
-   });
- }
+  const ana = [["ANA_PYP","ANA_PYP_ADI","BASLANGIC","BITIS","AGIRLIK","BUTCE","GERCEKLESEN","ILERLEME"]];
+  const alt = [["ANA_PYP","ALT_PYP","ALT_PYP_ADI","BUTCE","GERCEKLESEN","ILERLEME"]];
 
- const ws1 = XLSX.utils.aoa_to_sheet(ana);
- const ws2 = XLSX.utils.aoa_to_sheet(alt);
+  DEF.forEach(d=>{
+    const p = pypMap[d.kod] || d;
+    ana.push([p.kod, p.ad, p.bas||1, p.bit||24, p.ag||0, p.butce||0, p.g||0, p.il||0]);
+    // Alt PYP'ler: DEF'teki tüm alt'lar, değerler mevcut PYP'den
+    const altMap = {};
+    (pypMap[d.kod]?.alt||[]).forEach(a=>{ altMap[a.k]=a; });
+    d.alt.forEach(da=>{
+      const a = altMap[da.k] || da;
+      alt.push([d.kod, a.k||da.k, a.a||da.a, a.b||0, a.g||0, a.il||0]);
+    });
+  });
 
- XLSX.utils.book_append_sheet(wb,ws1,"ANA_PYP");
- XLSX.utils.book_append_sheet(wb,ws2,"ALT_PYP");
-
- XLSX.writeFile(wb,"pyp_sablon.xlsx");
+  const ws1 = XLSX.utils.aoa_to_sheet(ana);
+  const ws2 = XLSX.utils.aoa_to_sheet(alt);
+  XLSX.utils.book_append_sheet(wb,ws1,"ANA_PYP");
+  XLSX.utils.book_append_sheet(wb,ws2,"ALT_PYP");
+  XLSX.writeFile(wb,"pyp_sablon.xlsx");
+  toast("PYP şablonu indirildi","ok");
 }
 
 
@@ -3075,9 +1662,9 @@ function importExcel(e){
        bas:Number(r.BASLANGIC)||0,
        bit:Number(r.BITIS)||0,
        ag:Number(r.AGIRLIK)||0,
-       butce:Number(r.BUTCE)||0,
-       g:Number(r.GERCEKLESEN)||0,
-       il:Number(r.ILERLEME)||0,
+       butce:0,
+       g:0,
+       il:0,
        alt:[]
      });
 
@@ -3125,126 +1712,754 @@ function importExcel(e){
      localStorage.setItem("fp",JSON.stringify(PYP));
    }catch(e){}
 
-   recalcAg();
    if(typeof buildForm==="function") buildForm();
-   recalcAllIl(); // buildForm sonrası — DOM elementleri artık mevcut
-   updHdr();      // Fiziksel ilerlemeyi güncelle
-   Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
-   Object.keys(rend).forEach(k=>rend[k]=false);
-   toast("Excel başarıyla yüklendi ✓","ok");
+   if(typeof render==="function") render();
+
+   alert("Excel başarıyla yüklendi");
 
  };
 
  reader.readAsArrayBuffer(file);
 
 }
-function exportSCurve(){
-  const top=(typeof PRJ!=="undefined"&&PRJ.top)?PRJ.top:36;
-  const scRows=[]; for(let i=1;i<=top;i++) scRows.push({AY:i,PLANLANAN:0,GERCEKLESEN:0});
-  const pypRows=PYP.map(p=>({KOD:p.kod,AD:p.ad,PLAN_PCT:0,GERCEK_PCT:0}));
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(scRows),"S_CURVE");
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(pypRows),"PYP_DETAY");
-  XLSX.writeFile(wb,(PRJ.kod||"prj")+"_scurve_sablon.xlsx");
-  toast("S-Eğrisi şablonu indirildi (S_CURVE+PYP_DETAY) ✓","ok");
-}
 
+</script>
+
+
+
+
+
+
+
+<script>
 
 // ── S-Curve Excel Import fonksiyonu ──
 function importSCurve(e){
-  const file=e.target.files[0]; if(!file)return; e.target.value="";
-  const reader=new FileReader();
-  reader.onload=function(evt){
+  const file = e.target.files[0];
+  if(!file) return;
+  e.target.value = "";
+  const reader = new FileReader();
+  reader.onload = function(evt){
     try{
-      const wb=XLSX.read(new Uint8Array(evt.target.result),{type:"array"});
-      const scSheet=wb.Sheets["S_CURVE"]||wb.Sheets["SCURVE"]||wb.Sheets[wb.SheetNames[0]];
-      const json=XLSX.utils.sheet_to_json(scSheet,{defval:null});
-      const rows=[];
-      json.forEach(r=>{
-        const getV=(obj,keys)=>{for(const k of keys){if(obj[k]!=null&&obj[k]!=="")return Number(String(obj[k]).replace(",","."));}return null;};
-        const ay=getV(r,["AY","Ay","ay","Month"]);
-        if(ay!=null&&isFinite(ay)) rows.push({AY:ay,PLANLANAN:getV(r,["PLANLANAN","PLAN","Plan","Planned"]),GERCEKLESEN:getV(r,["GERCEKLESEN","GERÇEKLEŞEN","Actual","Gercek"])});
-      });
-      if(!rows.length){toast("S_CURVE: AY/PLANLANAN/GERCEKLESEN kolonlarini kontrol edin","err");return;}
-      const _i=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
-      if(_i>=0){PROJECTS[_i].scExcel=rows;localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS));}
-      const pypSheet=wb.Sheets["PYP_DETAY"];
-      if(pypSheet){
-        const o2=sc2Load();
-        XLSX.utils.sheet_to_json(pypSheet,{defval:null}).forEach(r=>{
-          const kod=String(r.KOD||r.Kod||r.kod||"").trim(); if(!kod)return;
-          o2[kod]={plan:Number(String(r.PLAN_PCT||0).replace(",",".")),gercek:Number(String(r.GERCEK_PCT||0).replace(",","."))};
+      const data = new Uint8Array(evt.target.result);
+      const wb = XLSX.read(data,{type:"array"});
+      let scLoaded=false, pypLoaded=false;
+
+      // ── S_CURVE sekmesi ──
+      const scSheet = wb.Sheets["S_CURVE"] || wb.Sheets["SCURVE"] || wb.Sheets[wb.SheetNames[0]];
+      if(scSheet){
+        const json = XLSX.utils.sheet_to_json(scSheet,{defval:null});
+        const rows = [];
+        json.forEach(r=>{
+          const ayKeys=["AY","Ay","ay","Month","MONTH"];
+          const plKeys=["PLANLANAN","Planlanan","PLAN","Plan","Planned"];
+          const grKeys=["GERCEKLESEN","Gerceklesen","GERÇEKLEŞEN","Actual","ACTUAL","Gercek"];
+          const getV=(obj,keys)=>{ for(const k of keys){ if(obj[k]!=null&&obj[k]!=="") return Number(String(obj[k]).replace(",",".")); } return null; };
+          const ay=getV(r,ayKeys);
+          if(ay!=null&&isFinite(ay)){
+            rows.push({AY:ay, PLANLANAN:getV(r,plKeys), GERCEKLESEN:getV(r,grKeys)});
+          }
         });
-        sc2Save(o2);
+        if(rows.length){
+          localStorage.setItem("scurve_excel_data", JSON.stringify(rows));
+          scLoaded=true;
+        }
       }
+
+      // ── PYP_DETAY sekmesi ──
+      const pypSheet = wb.Sheets["PYP_DETAY"] || wb.Sheets["PYP"];
+      if(pypSheet){
+        const json = XLSX.utils.sheet_to_json(pypSheet,{defval:null});
+        const scData = scLoad();
+        json.forEach(r=>{
+          const kod = String(r.PYP_KOD||r.KOD||"").trim();
+          if(!kod) return;
+          const plan  = Math.min(100,Math.max(0,Number(r.PLAN_PCT||r.PLAN||0)||0));
+          const gercek= Math.min(100,Math.max(0,Number(r.GERCEK_PCT||r.GERCEK||0)||0));
+          scData[kod] = { plan, gercek };
+        });
+        scSave(scData);
+        // _INIT_SC'yi de güncelle (proje switch'te kaybolmasın)
+        _INIT_SC = scData;
+        const _ai=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
+        if(_ai>=0){ PROJECTS[_ai].sc=scData; localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS)); }
+        pypLoaded=true;
+      }
+
+      if(!scLoaded&&!pypLoaded){ toast("S_CURVE veya PYP_DETAY sekmesi bulunamadı","err"); return; }
+
+      // Tüm S-eğrisi sayfasını yenile
       Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
-      rend.scurve=false; if(typeof rSCurve==="function")rSCurve();
-      rend.dash=false; if(typeof rDash==="function")rDash();
-      toast("S-Eğrisi Excel yüklendi"+(pypSheet?" (S_CURVE+PYP_DETAY)":"")+" ✓","ok");
-    }catch(err){toast("Hata: "+err.message,"err");}
+      rend.scurve=false; rend.dash=false;
+      if(typeof rSCurve==="function") rSCurve();
+      if(typeof rDash==="function") rDash();
+
+      const msg = scLoaded&&pypLoaded?"S_CURVE + PYP_DETAY yüklendi":scLoaded?"S_CURVE yüklendi":"PYP_DETAY yüklendi";
+      toast(msg+" ✓","ok");
+    }catch(err){ toast("Dosya okunamadı: "+err.message,"err"); }
   };
   reader.readAsArrayBuffer(file);
 }
 
+function exportSCurve(){
+  const wb = XLSX.utils.book_new();
+  const top = (typeof PRJ!=="undefined" && PRJ.top) ? PRJ.top : 36;
+
+  // ── Sekme 1: S_CURVE — kümülatif % ──
+  const scRows = [];
+  // Mevcut kayıtlı veriyi al (varsa)
+  let existingSC = {};
+  try{ const raw=localStorage.getItem("scurve_excel_data"); if(raw){ JSON.parse(raw).forEach(r=>{ existingSC[r.AY]=r; }); } }catch(e){}
+  for(let i=1;i<=top;i++){
+    const ex = existingSC[i] || {};
+    scRows.push({AY:i, PLANLANAN:ex.PLANLANAN??0, GERCEKLESEN:ex.GERCEKLESEN??null});
+  }
+  const ws1 = XLSX.utils.json_to_sheet(scRows);
+  XLSX.utils.book_append_sheet(wb, ws1, "S_CURVE");
+
+  // ── Sekme 2: PYP_DETAY — PYP bazında plan/gerçek % ──
+  const pypRows = [];
+  const scData = scLoad();
+  scPhysicalList().forEach(p=>{
+    const cur = scData[p.kod] || {};
+    pypRows.push({
+      PYP_KOD: p.kod,
+      PYP_ADI: p.ad,
+      BAS_AY: p.bas,
+      BIT_AY: p.bit,
+      PLAN_PCT: cur.plan ?? 0,
+      GERCEK_PCT: cur.gercek ?? 0
+    });
+  });
+  const ws2 = XLSX.utils.json_to_sheet(pypRows);
+  XLSX.utils.book_append_sheet(wb, ws2, "PYP_DETAY");
+
+  XLSX.writeFile(wb, "scurve_sablon.xlsx");
+  toast("Excel şablonu indirildi","ok");
+}
+
+function _num(v){
+  const n = Number(String(v).replace(",","."));
+  return Number.isFinite(n) ? n : null;
+}
+function _get(r, keys){
+  for(const k of keys){
+    if(r[k] != null && r[k] !== "") return r[k];
+  }
+  return null;
+}
 
 
 
-// ── S-Curve Excel Import fonksiyonu ──
+// ══════════════════════════════════════════════════════════════
+// PDF RAPOR
+// ══════════════════════════════════════════════════════════════
+function closePDF(){
+  document.getElementById('pdfModal').classList.remove('show');
+}
+
+function pdfN(n){ return Math.round(n||0).toLocaleString('tr-TR'); }
+function pdfM(n){ return Math.round(n||0).toLocaleString('tr-TR')+' ₺'; }
+function pdfFmt(v,mx){ mx=mx===undefined?2:mx; if(v===null||v===undefined||isNaN(v))return'—'; return Number(v).toLocaleString('tr-TR',{minimumFractionDigits:0,maximumFractionDigits:mx}); }
+function pdfDC(il){ return il>=80?'#3dba6f':il>=50?'#f0b429':il>=20?'#4f8ef7':il>0?'#9b6cf7':'#bbb'; }
+function pdfDA(il){ return il>=100?'Tamamlandı':il>=80?'İleri Aşama':il>=50?'Devam':il>=20?'Erken':il>0?'Başladı':'Başlamadı'; }
+
+function exportPDF(){
+  // Önce tüm proje verilerini kaydet
+  _syncDOM();
+
+  const pages = [];
+  const now = new Date().toLocaleString('tr-TR');
+
+  PROJECTS.forEach((proj, pi) => {
+    const pyp  = proj.pyp || [];
+    const prj  = proj.prj || {};
+    const sc   = proj.sc  || {};
+
+    const tb   = pyp.reduce((s,p)=>s+(p.butce||0),0);
+    const tg   = pyp.reduce((s,p)=>s+(p.g||0),0);
+    const bcwp = pyp.reduce((s,p)=>s+(p.butce||0)*(p.il||0)/100,0);
+    const cpi  = tg>0 ? bcwp/tg : 1;
+    const spi  = tb>0 ? bcwp/(tb*(prj.ay||1)/(prj.top||24)) : 1;
+    const eac  = cpi>0 ? tb/cpi : tb;
+    const cv   = bcwp - tg;
+    const fiz  = proj.manFiz || 0;
+
+    // ── LOGO & HEADER ──
+    const logoHtml = `
+    <div class="pdf-logo">
+      <div class="pdf-logo-ic">🏗️</div>
+      <div>
+        <div class="pdf-logo-name">Folkart <b>${prj.ad||'Proje'}</b></div>
+        <div class="pdf-logo-sub">İnşaat Takip · Kod ${prj.kod||'—'} · ${prj.baslangic||'—'} → ${prj.guncelBitis||prj.planBitis||'—'}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right;font-size:8px;color:#aaa">
+        <div>Rapor: ${now}</div>
+        <div>Ay ${prj.ay||'—'} / ${prj.top||'—'} · Fiziksel: %${fiz}</div>
+      </div>
+    </div>
+    <div class="pdf-divider"></div>`;
+
+    // ── KPI KARTLARI ──
+    const kpiHtml = `
+    <div class="pdf-section">
+      <div class="pdf-section-title">Proje Özeti</div>
+      <div class="pdf-kpi-grid">
+        <div class="pdf-kpi" style="border-top-color:#4f8ef7">
+          <div class="pdf-kpi-l">Toplam Bütçe</div>
+          <div class="pdf-kpi-v" style="color:#4f8ef7">${pdfM(tb)}</div>
+          <div class="pdf-kpi-s">Sözleşme bedeli</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:#3dba6f">
+          <div class="pdf-kpi-l">Gerçekleşen</div>
+          <div class="pdf-kpi-v" style="color:#3dba6f">${pdfM(tg)}</div>
+          <div class="pdf-kpi-s">%${pdfFmt(tb>0?tg/tb*100:0,1)} bütçe kullanımı</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:#f0b429">
+          <div class="pdf-kpi-l">Fiziksel İlerleme</div>
+          <div class="pdf-kpi-v" style="color:${pdfDC(fiz)}">%${fiz}</div>
+          <div class="pdf-kpi-s">Ay ${prj.ay} / ${prj.top}</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:${cpi>=1?'#3dba6f':'#e85444'}">
+          <div class="pdf-kpi-l">CPI</div>
+          <div class="pdf-kpi-v" style="color:${cpi>=1?'#3dba6f':'#e85444'}">${pdfFmt(cpi)}</div>
+          <div class="pdf-kpi-s">EAC: ${pdfM(eac)}</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:${spi>=1?'#3dba6f':'#f0b429'}">
+          <div class="pdf-kpi-l">SPI</div>
+          <div class="pdf-kpi-v" style="color:${spi>=1?'#3dba6f':'#f0b429'}">${pdfFmt(spi)}</div>
+          <div class="pdf-kpi-s">Takvim Performansı</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:${cv>=0?'#3dba6f':'#e85444'}">
+          <div class="pdf-kpi-l">Maliyet Sapması (CV)</div>
+          <div class="pdf-kpi-v" style="color:${cv>=0?'#3dba6f':'#e85444'}">${cv>=0?'+':''}${pdfM(cv)}</div>
+          <div class="pdf-kpi-s">EV - AC</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:#4f8ef7">
+          <div class="pdf-kpi-l">Kalan Bütçe</div>
+          <div class="pdf-kpi-v" style="color:#4f8ef7">${pdfM(tb-tg)}</div>
+          <div class="pdf-kpi-s">Kullanılabilir</div>
+        </div>
+        <div class="pdf-kpi" style="border-top-color:#9b6cf7">
+          <div class="pdf-kpi-l">Tamamlama Tahmini</div>
+          <div class="pdf-kpi-v" style="color:${eac>tb?'#e85444':'#3dba6f'}">${pdfM(eac)}</div>
+          <div class="pdf-kpi-s">${eac>tb?'Aşım':'Tasarruf'}: ${pdfM(Math.abs(eac-tb))}</div>
+        </div>
+      </div>
+    </div>`;
+
+    // ── PYP İLERLEME TABLOSU ──
+    const pypRows = pyp.map(p => {
+      const clr = pdfDC(p.il||0);
+      const bar = `<div class="pdf-bar"><div class="pdf-bar-track"><div class="pdf-bar-fill" style="width:${p.il||0}%;background:${clr}"></div></div><span style="font-size:8px;color:${clr};font-weight:700">${p.il||0}%</span></div>`;
+      return `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#4f8ef7">${p.kod}</td>
+        <td style="font-weight:500">${p.ad}</td>
+        <td class="r">A${p.bas}</td>
+        <td class="r">A${p.bit}</td>
+        <td class="r">${pdfM(p.butce)}</td>
+        <td class="r" style="color:#3dba6f">${pdfM(p.g)}</td>
+        <td>${bar}</td>
+        <td><span class="pdf-tag" style="background:${clr}22;color:${clr}">${pdfDA(p.il||0)}</span></td>
+      </tr>`;
+    }).join('');
+    const pypTotalRow = `<tr>
+      <td colspan="4"><strong>TOPLAM</strong></td>
+      <td class="r" style="color:#4f8ef7"><strong>${pdfM(tb)}</strong></td>
+      <td class="r" style="color:#3dba6f"><strong>${pdfM(tg)}</strong></td>
+      <td colspan="2"></td>
+    </tr>`;
+
+    const pypTableHtml = `
+    <div class="pdf-section">
+      <div class="pdf-section-title">PYP İlerleme Tablosu</div>
+      <table class="pdf-table">
+        <thead><tr>
+          <th>PYP</th><th>İş Kalemi</th><th class="r">Baş.</th><th class="r">Bit.</th>
+          <th class="r">Bütçe (₺)</th><th class="r">Gerçekleşen (₺)</th>
+          <th>İlerleme</th><th>Durum</th>
+        </tr></thead>
+        <tbody>${pypRows}</tbody>
+        <tfoot>${pypTotalRow}</tfoot>
+      </table>
+    </div>`;
+
+    // ── EVM SAPMA TABLOSU ──
+    const evmRows = pyp.filter(p=>(p.il||0)>0).map(p => {
+      const ev  = (p.butce||0) * (p.il||0) / 100;
+      const ac  = p.g || 0;
+      const cv2 = ev - ac;
+      const cvY = ev>0 ? cv2/ev*100 : 0;
+      const risk = cvY < -10 ? {l:'Kritik',c:'#e85444'} : cvY < -5 ? {l:'Yüksek',c:'#f0b429'} : cvY < 0 ? {l:'İzle',c:'#f0b429'} : {l:'İyi',c:'#3dba6f'};
+      return `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#4f8ef7">${p.kod}</td>
+        <td>${p.ad}</td>
+        <td class="r" style="color:#3dba6f">${pdfFmt(ev/1e6,2)}M</td>
+        <td class="r" style="color:#f0b429">${pdfFmt(ac/1e6,2)}M</td>
+        <td class="r" style="color:${cv2>=0?'#3dba6f':'#e85444'};font-weight:700">${cv2>=0?'+':''}${pdfFmt(cv2/1e6,2)}M</td>
+        <td class="r" style="color:${cvY>=0?'#3dba6f':'#e85444'};font-weight:700">${cvY>=0?'+':''}${pdfFmt(cvY,1)}%</td>
+        <td><span class="pdf-tag" style="background:${risk.c}22;color:${risk.c}">${risk.l}</span></td>
+      </tr>`;
+    }).join('');
+
+    const evmHtml = `
+    <div class="pdf-section">
+      <div class="pdf-section-title">EVM Sapma Analizi</div>
+      <table class="pdf-table">
+        <thead><tr>
+          <th>PYP</th><th>İş Kalemi</th>
+          <th class="r">EV (BCWP)</th><th class="r">AC (ACWP)</th>
+          <th class="r">CV</th><th class="r">CV%</th><th>Risk</th>
+        </tr></thead>
+        <tbody>${evmRows}</tbody>
+      </table>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;font-size:9px">
+        <div style="background:#f8f9fd;border-radius:6px;padding:8px;border-left:3px solid #4f8ef7">
+          <div style="font-weight:700;color:#666;margin-bottom:2px">BCWP (EV)</div>
+          <div style="font-size:13px;font-weight:800;color:#4f8ef7">${pdfM(bcwp)}</div>
+        </div>
+        <div style="background:#f8f9fd;border-radius:6px;padding:8px;border-left:3px solid ${cpi>=1?'#3dba6f':'#e85444'}">
+          <div style="font-weight:700;color:#666;margin-bottom:2px">CPI</div>
+          <div style="font-size:13px;font-weight:800;color:${cpi>=1?'#3dba6f':'#e85444'}">${pdfFmt(cpi)}</div>
+        </div>
+        <div style="background:#f8f9fd;border-radius:6px;padding:8px;border-left:3px solid ${eac>tb?'#e85444':'#3dba6f'}">
+          <div style="font-weight:700;color:#666;margin-bottom:2px">EAC</div>
+          <div style="font-size:13px;font-weight:800;color:${eac>tb?'#e85444':'#3dba6f'}">${pdfM(eac)}</div>
+        </div>
+      </div>
+    </div>`;
+
+    // ── S-EĞRİSİ (tablo olarak) ──
+    const scData = proj.sc || {};
+    const scRows2 = pyp.filter(p => !['01','04','05','37','97','99'].includes(String(p.kod))).map(p => {
+      const cur = scData[p.kod] || {};
+      const plan2 = cur.plan || 0;
+      const gercek2 = cur.gercek || 0;
+      const fark2 = gercek2 - plan2;
+      const clr2 = pdfDC(gercek2);
+      const bar2 = `<div class="pdf-bar"><div class="pdf-bar-track"><div class="pdf-bar-fill" style="width:${gercek2}%;background:${clr2}"></div></div><span style="font-size:8px;color:${clr2};font-weight:700">${gercek2}%</span></div>`;
+      return `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:700;color:#4f8ef7">${p.kod}</td>
+        <td>${p.ad}</td>
+        <td class="r">A${p.bas}</td><td class="r">A${p.bit}</td>
+        <td class="r">${plan2}%</td>
+        <td>${bar2}</td>
+        <td class="r" style="font-weight:700;color:${fark2>=0?'#3dba6f':'#e85444'}">${fark2>=0?'+':''}${fark2}%</td>
+        <td><span class="pdf-tag" style="background:${clr2}22;color:${clr2}">${pdfDA(gercek2)}</span></td>
+      </tr>`;
+    }).join('');
+
+    const scHtml = `
+    <div class="pdf-section">
+      <div class="pdf-section-title">S-Eğrisi — PYP Fiziksel İlerleme</div>
+      <table class="pdf-table">
+        <thead><tr>
+          <th>PYP</th><th>İş Kalemi</th><th class="r">Baş.</th><th class="r">Bit.</th>
+          <th class="r">Plan %</th><th>Gerçek %</th><th class="r">Fark</th><th>Durum</th>
+        </tr></thead>
+        <tbody>${scRows2}</tbody>
+      </table>
+    </div>`;
+
+    // ── FOOTER ──
+    const footer = `<div class="pdf-footer"><span>Folkart ${prj.ad} · Kod ${prj.kod}</span><span>Sayfa ${pi+1} / ${PROJECTS.length}</span><span>${now}</span></div>`;
+
+    // ── SAYFAYI BİRLEŞTİR ──
+    pages.push(`
+    <div class="pdf-page">
+      ${logoHtml}
+      ${kpiHtml}
+      ${pypTableHtml}
+      ${footer}
+    </div>
+    <div class="pdf-page">
+      ${logoHtml}
+      ${scHtml}
+      ${evmHtml}
+      ${footer}
+    </div>`);
+  });
+
+  document.getElementById('pdfPages').innerHTML = pages.join('');
+  document.getElementById('pdfPageInfo').textContent = PROJECTS.length + ' proje · ' + (PROJECTS.length*2) + ' sayfa';
+  document.getElementById('pdfModal').classList.add('show');
+}
 
 
+// ══════════════════════════════════════════════════════════════
+// NAKİT AKIŞ
+// ══════════════════════════════════════════════════════════════
+const NAKIT_KEY = "nakit_data_v1";
+
+function nakitLoad(){
+  const ap = _getActive();
+  try{ return JSON.parse(localStorage.getItem(NAKIT_KEY+"_"+ap.id)||"null") || {tl:[],usd:[],pyp:{}}; }
+  catch(e){ return {tl:[],usd:[],pyp:{}}; }
+}
+function nakitSave(d){
+  const ap = _getActive();
+  try{ localStorage.setItem(NAKIT_KEY+"_"+ap.id, JSON.stringify(d)); }catch(e){}
+}
+
+function exportNakit(){
+  const wb = XLSX.utils.book_new();
+  const top = PRJ.top || 24;
+  const nd = nakitLoad();
+
+  // ── NAKIT_TL ──
+  const tlRows = [];
+  // Başlık satırı: PYP_KOD, PYP_ADI, AY_1_PLAN, AY_1_GERCEK, AY_2_PLAN ...
+  const tlHeader = {PYP_KOD:"KOD", PYP_ADI:"İŞ KALEMİ"};
+  for(let m=1;m<=top;m++){ tlHeader["A"+m+"_PLAN"]="A"+m+" PLAN"; tlHeader["A"+m+"_GERCEK"]="A"+m+" GERÇEK"; }
+  tlRows.push(tlHeader);
+
+  DEF.forEach(d=>{
+    const row = {PYP_KOD: d.kod, PYP_ADI: d.ad};
+    const pypData = (nd.pyp[d.kod]||{}).tl || {};
+    for(let m=1;m<=top;m++){
+      row["A"+m+"_PLAN"]   = pypData["A"+m+"_PLAN"]   || 0;
+      row["A"+m+"_GERCEK"] = pypData["A"+m+"_GERCEK"] || 0;
+    }
+    tlRows.push(row);
+    // Alt PYP'ler
+    d.alt.forEach(da=>{
+      const rowA = {PYP_KOD: da.k, PYP_ADI: "  └ "+da.a};
+      const altData = (nd.pyp[da.k]||{}).tl || {};
+      for(let m=1;m<=top;m++){
+        rowA["A"+m+"_PLAN"]   = altData["A"+m+"_PLAN"]   || 0;
+        rowA["A"+m+"_GERCEK"] = altData["A"+m+"_GERCEK"] || 0;
+      }
+      tlRows.push(rowA);
+    });
+  });
+
+  // Toplam satırı
+  const totRow = {PYP_KOD:"TOPLAM", PYP_ADI:""};
+  for(let m=1;m<=top;m++){
+    totRow["A"+m+"_PLAN"]   = nd.tl.find(r=>r.ay===m)?.plan   || 0;
+    totRow["A"+m+"_GERCEK"] = nd.tl.find(r=>r.ay===m)?.gercek || 0;
+  }
+  tlRows.push(totRow);
+
+  const ws1 = XLSX.utils.json_to_sheet(tlRows);
+  XLSX.utils.book_append_sheet(wb, ws1, "NAKIT_TL");
+
+  // ── NAKIT_USD ──
+  const usdRows = [];
+  const usdHeader = {PYP_KOD:"KOD", PYP_ADI:"İŞ KALEMİ"};
+  for(let m=1;m<=top;m++){ usdHeader["A"+m+"_PLAN"]="A"+m+" PLAN"; usdHeader["A"+m+"_GERCEK"]="A"+m+" GERÇEK"; }
+  usdRows.push(usdHeader);
+
+  DEF.forEach(d=>{
+    const row = {PYP_KOD: d.kod, PYP_ADI: d.ad};
+    const pypData = (nd.pyp[d.kod]||{}).usd || {};
+    for(let m=1;m<=top;m++){
+      row["A"+m+"_PLAN"]   = pypData["A"+m+"_PLAN"]   || 0;
+      row["A"+m+"_GERCEK"] = pypData["A"+m+"_GERCEK"] || 0;
+    }
+    usdRows.push(row);
+    d.alt.forEach(da=>{
+      const rowA = {PYP_KOD: da.k, PYP_ADI: "  └ "+da.a};
+      const altData = (nd.pyp[da.k]||{}).usd || {};
+      for(let m=1;m<=top;m++){
+        rowA["A"+m+"_PLAN"]   = altData["A"+m+"_PLAN"]   || 0;
+        rowA["A"+m+"_GERCEK"] = altData["A"+m+"_GERCEK"] || 0;
+      }
+      usdRows.push(rowA);
+    });
+  });
+  const ws2 = XLSX.utils.json_to_sheet(usdRows);
+  XLSX.utils.book_append_sheet(wb, ws2, "NAKIT_USD");
+
+  XLSX.writeFile(wb, "nakit_akis_sablon.xlsx");
+  toast("Nakit akış şablonu indirildi","ok");
+}
+
+function importNakit(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  e.target.value = "";
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    try{
+      const data = new Uint8Array(evt.target.result);
+      const wb = XLSX.read(data,{type:"array"});
+      const nd = {tl:[], usd:[], pyp:{}};
+
+      // ── NAKIT_TL ──
+      const tlSheet = wb.Sheets["NAKIT_TL"] || wb.Sheets[wb.SheetNames[0]];
+      if(tlSheet){
+        const rows = XLSX.utils.sheet_to_json(tlSheet,{defval:0});
+        const top = PRJ.top || 24;
+        // Ay toplamları
+        for(let m=1;m<=top;m++){
+          let plan=0, gercek=0;
+          rows.forEach(r=>{
+            if(String(r.PYP_KOD||"").toUpperCase()==="TOPLAM") return;
+            plan   += Number(r["A"+m+"_PLAN"]  )||0;
+            gercek += Number(r["A"+m+"_GERCEK"])||0;
+          });
+          nd.tl.push({ay:m, plan, gercek});
+        }
+        // PYP bazlı
+        rows.forEach(r=>{
+          const kod = String(r.PYP_KOD||"").trim();
+          if(!kod || kod.toUpperCase()==="TOPLAM" || kod==="KOD") return;
+          if(!nd.pyp[kod]) nd.pyp[kod]={tl:{},usd:{}};
+          for(let m=1;m<=top;m++){
+            nd.pyp[kod].tl["A"+m+"_PLAN"]   = Number(r["A"+m+"_PLAN"]  )||0;
+            nd.pyp[kod].tl["A"+m+"_GERCEK"] = Number(r["A"+m+"_GERCEK"])||0;
+          }
+        });
+      }
+
+      // ── NAKIT_USD ──
+      const usdSheet = wb.Sheets["NAKIT_USD"] || wb.Sheets[wb.SheetNames[1]];
+      if(usdSheet){
+        const rows = XLSX.utils.sheet_to_json(usdSheet,{defval:0});
+        const top = PRJ.top || 24;
+        for(let m=1;m<=top;m++){
+          let plan=0, gercek=0;
+          rows.forEach(r=>{
+            if(String(r.PYP_KOD||"").toUpperCase()==="TOPLAM") return;
+            plan   += Number(r["A"+m+"_PLAN"]  )||0;
+            gercek += Number(r["A"+m+"_GERCEK"])||0;
+          });
+          nd.usd.push({ay:m, plan, gercek});
+        }
+        rows.forEach(r=>{
+          const kod = String(r.PYP_KOD||"").trim();
+          if(!kod || kod.toUpperCase()==="TOPLAM" || kod==="KOD") return;
+          if(!nd.pyp[kod]) nd.pyp[kod]={tl:{},usd:{}};
+          for(let m=1;m<=top;m++){
+            nd.pyp[kod].usd["A"+m+"_PLAN"]   = Number(r["A"+m+"_PLAN"]  )||0;
+            nd.pyp[kod].usd["A"+m+"_GERCEK"] = Number(r["A"+m+"_GERCEK"])||0;
+          }
+        });
+      }
+
+      nakitSave(nd);
+      rend.nakit = false;
+      rNakit();
+      toast("Nakit akış verisi yüklendi ✓","ok");
+    }catch(err){ toast("Dosya okunamadı: "+err.message,"err"); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function rNakit(){
+  const nd = nakitLoad();
+  const top = PRJ.top || 24;
+  const labels = Array.from({length:top},(_,i)=>"A"+(i+1));
+
+  // ── KPI ──
+  const tlPlanTot  = nd.tl.reduce((s,r)=>s+(r.plan||0),0);
+  const tlGercTot  = nd.tl.reduce((s,r)=>s+(r.gercek||0),0);
+  const usdGercTot = nd.usd.reduce((s,r)=>s+(r.gercek||0),0);
+  const fark = tlGercTot - tlPlanTot;
+
+  document.getElementById("nk1").textContent = N(tlPlanTot)+" ₺";
+  document.getElementById("nk2").textContent = N(tlGercTot)+" ₺";
+  document.getElementById("nk2s").textContent = tlPlanTot>0 ? "%"+fmtD(tlGercTot/tlPlanTot*100,1)+" plan gerçekleşme" : "—";
+  document.getElementById("nk3").textContent = (fark>=0?"+":"")+N(fark)+" ₺";
+  document.getElementById("nk3").style.color = fark<=0?"var(--ag)":"var(--ad)";
+  document.getElementById("nk4").textContent = fmtD(usdGercTot/1000,1)+"K $";
+
+  const hasTL  = nd.tl.some(r=>r.plan||r.gercek);
+  const hasUSD = nd.usd.some(r=>r.plan||r.gercek);
+
+  document.getElementById("nakitEmpty").style.display = hasTL ? "none" : "block";
+  document.getElementById("nakitTbl").style.display   = hasTL ? "" : "none";
+
+  if(!hasTL && !hasUSD) return;
+
+  // ── AYLIK BAR GRAFİK (TL) ──
+  const planVals  = labels.map((_,i)=>+((nd.tl[i]?.plan   ||0)/1e6).toFixed(2));
+  const gercVals  = labels.map((_,i)=>+((nd.tl[i]?.gercek ||0)/1e6).toFixed(2));
+  mkC("cNakitBar",{type:"bar",data:{labels,datasets:[
+    {label:"Plan",   data:planVals, backgroundColor:"#4f8ef755",borderRadius:2,barPercentage:.8},
+    {label:"Gerçek", data:gercVals, backgroundColor:"#3dba6f",  borderRadius:2,barPercentage:.8}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${fmtD(c.raw,2)}M ₺`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,1)+"M"}}}}});
+
+  // ── KÜMÜLATİF EĞRİ ──
+  let cumPlan=0, cumGerc=0;
+  const cumPlanVals=[], cumGercVals=[];
+  labels.forEach((_,i)=>{ cumPlan+=(nd.tl[i]?.plan||0)/1e6; cumGerc+=(nd.tl[i]?.gercek||0)/1e6; cumPlanVals.push(+cumPlan.toFixed(2)); cumGercVals.push(i<PRJ.ay?+cumGerc.toFixed(2):null); });
+  mkC("cNakitKum",{type:"line",data:{labels,datasets:[
+    {label:"Plan (Küm.)",   data:cumPlanVals, borderColor:"#4f8ef7",borderWidth:2,fill:true,backgroundColor:"#4f8ef710",pointRadius:0,tension:.4},
+    {label:"Gerçek (Küm.)", data:cumGercVals, borderColor:"#3dba6f",borderWidth:2.5,fill:true,backgroundColor:"#3dba6f10",pointRadius:0,tension:.4}
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:"#7a8fb0",boxWidth:8,font:{size:9}}},tooltip:{...TT,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw!=null?fmtD(c.raw,2)+"M ₺":"—"}`}}},scales:{...AX,y:{...AX.y,ticks:{...AX.y.ticks,callback:v=>fmtD(v,1)+"M"}}}}});
+
+  // ── PYP TABLO ──
+  if(!hasTL) return;
+  const visAys = Array.from({length:Math.min(top,PRJ.ay+2)},(_,i)=>i+1);
+
+  // Başlık
+  const headCols = visAys.map(m=>`<th class="r" colspan="2" style="text-align:center;color:var(--ac)">A${m}</th>`).join("");
+  const subCols  = visAys.map(()=>`<th class="r" style="font-size:8px;color:var(--m2)">Plan</th><th class="r" style="font-size:8px;color:var(--ag)">Gerçek</th>`).join("");
+  document.getElementById("nakitTblHead").innerHTML = `
+    <tr><th rowspan="2">PYP</th><th rowspan="2">İş Kalemi</th>${headCols}</tr>
+    <tr>${subCols}</tr>`;
+
+  // Satırlar
+  const bodyRows = PYP.map(p=>{
+    const pypTL = (nd.pyp[p.kod]||{}).tl || {};
+    const cols = visAys.map(m=>{
+      const pl = pypTL["A"+m+"_PLAN"]   || 0;
+      const gr = pypTL["A"+m+"_GERCEK"] || 0;
+      return `<td class="r" style="color:var(--m2)">${pl>0?fmtD(pl/1e6,2)+"M":"—"}</td><td class="r" style="color:var(--ag)">${gr>0?fmtD(gr/1e6,2)+"M":"—"}</td>`;
+    }).join("");
+    return `<tr><td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700">${p.kod}</td><td style="font-weight:500">${p.ad}</td>${cols}</tr>`;
+  }).join("");
+  document.getElementById("nakitTblBody").innerHTML = bodyRows;
+
+  // Toplam footer
+  const footCols = visAys.map(m=>{
+    const pl = nd.tl[m-1]?.plan  ||0;
+    const gr = nd.tl[m-1]?.gercek||0;
+    return `<td class="r" style="color:var(--ac)">${pl>0?fmtD(pl/1e6,2)+"M":"—"}</td><td class="r" style="color:var(--ag)">${gr>0?fmtD(gr/1e6,2)+"M":"—"}</td>`;
+  }).join("");
+  document.getElementById("nakitTblFoot").innerHTML = `<tr><td colspan="2"><strong>TOPLAM</strong></td>${footCols}</tr>`;
+}
 
 
-// ── S-Curve Excel Import fonksiyonu ──
+// ══════════════════════════════════════════════════════════════
+// PYP EVM EXCEL — İçe/Dışa Aktar
+// ══════════════════════════════════════════════════════════════
+function exportEVMExcel(){
+  const wb = XLSX.utils.book_new();
 
+  // ── ANA_PYP sekmesi ──
+  const ed2 = evmLoad();
+  const pypMap2 = {}; PYP.forEach(p=>{ pypMap2[p.kod]=p; });
+  const anaRows = DEF.map(d=>{
+    const p  = pypMap2[d.kod]||d;
+    const ev = ed2[d.kod]||{};
+    return {
+      ANA_PYP: d.kod,
+      ANA_PYP_ADI: d.ad,
+      PYP_KUMULATIF_BUTCE: p.butce||0,
+      AYLIK_KUMULATIF_PLANLANAN: ev.pv||0,
+      GERCEKLESEN: ev.ac||0,
+      ILERLEME: p.il||0
+    };
+  });
+  const ws1 = XLSX.utils.json_to_sheet(anaRows);
+  XLSX.utils.book_append_sheet(wb, ws1, "ANA_PYP");
 
+  // ── ALT_PYP sekmesi ──
+  const altRows = [];
+  DEF.forEach(d=>{
+    const p = pypMap2[d.kod]||d;
+    const altMap3 = {}; (p.alt||[]).forEach(a=>{ altMap3[a.k]=a; });
+    d.alt.forEach(da=>{
+      const a  = altMap3[da.k]||da;
+      const ev = (ed2[d.kod]||{});
+      const evA= (ev.alt||{})[da.k]||{};
+      altRows.push({
+        ANA_PYP: d.kod,
+        ALT_PYP: da.k,
+        ALT_PYP_ADI: da.a,
+        PYP_KUMULATIF_BUTCE: a.b||0,
+        AYLIK_KUMULATIF_PLANLANAN: evA.pv||0,
+        GERCEKLESEN: evA.ac||0,
+        ILERLEME: a.il||0
+      });
+    });
+  });
+  const ws2 = XLSX.utils.json_to_sheet(altRows.length ? altRows : [{ANA_PYP:"",ALT_PYP:"",ALT_PYP_ADI:"",PYP_KUMULATIF_BUTCE:0,AYLIK_KUMULATIF_PLANLANAN:0,GERCEKLESEN:0,ILERLEME:0}]);
+  XLSX.utils.book_append_sheet(wb, ws2, "ALT_PYP");
 
+  XLSX.writeFile(wb, "pyp_evm_sablon.xlsx");
+  toast("PYP EVM şablonu indirildi","ok");
+}
 
-// ── S-Curve Excel Import fonksiyonu ──
+function importEVMExcel(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  e.target.value = "";
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    try{
+      const data = new Uint8Array(evt.target.result);
+      const wb   = XLSX.read(data,{type:"array"});
+      const ed   = {};
 
+      // ── ANA_PYP sekmesi ──
+      const anaSheet = wb.Sheets["ANA_PYP"] || wb.Sheets[wb.SheetNames[0]];
+      if(anaSheet){
+        const rows = XLSX.utils.sheet_to_json(anaSheet,{defval:0});
+        rows.forEach(r=>{
+          const kod = String(r.ANA_PYP||"").trim();
+          if(!kod) return;
+          if(!ed[kod]) ed[kod]={pv:0,ac:0,alt:{}};
+          ed[kod].pv = Number(r.AYLIK_KUMULATIF_PLANLANAN)||0;
+          ed[kod].ac = Number(r.GERCEKLESEN)||0;
+          // İlerleme% de güncelle (isteğe bağlı)
+          const pypIdx = PYP.findIndex(p=>p.kod===kod);
+          if(pypIdx>=0 && r.ILERLEME!=null){
+            PYP[pypIdx].il = Math.min(100,Math.max(0,Number(r.ILERLEME)||0));
+          }
+        });
+      }
 
+      // ── ALT_PYP sekmesi ──
+      const altSheet = wb.Sheets["ALT_PYP"] || wb.Sheets[wb.SheetNames[1]];
+      if(altSheet){
+        const rows = XLSX.utils.sheet_to_json(altSheet,{defval:0});
+        rows.forEach(r=>{
+          const anakod = String(r.ANA_PYP||"").trim();
+          const altkod = String(r.ALT_PYP||"").trim();
+          if(!anakod||!altkod) return;
+          if(!ed[anakod]) ed[anakod]={pv:0,ac:0,alt:{}};
+          ed[anakod].alt[altkod]={
+            pv: Number(r.AYLIK_KUMULATIF_PLANLANAN)||0,
+            ac: Number(r.GERCEKLESEN)||0
+          };
+          // Alt PYP ilerleme güncelle
+          const pypIdx = PYP.findIndex(p=>p.kod===anakod);
+          if(pypIdx>=0){
+            const altIdx = PYP[pypIdx].alt?.findIndex(a=>a.k===altkod);
+            if(altIdx>=0 && r.ILERLEME!=null){
+              PYP[pypIdx].alt[altIdx].il = Math.min(100,Math.max(0,Number(r.ILERLEME)||0));
+            }
+          }
+        });
+      }
 
+      evmSave(ed);
+      // Projeye kaydet
+      const _ai=PROJECTS.findIndex(p=>p.id===ACTIVE_ID);
+      if(_ai>=0){ PROJECTS[_ai].pyp=JSON.parse(JSON.stringify(PYP)); localStorage.setItem(PRJ_DB_KEY,JSON.stringify(PROJECTS)); }
 
-// ── S-Curve Excel Import fonksiyonu ──
+      // Sapma analizini yenile
+      Object.keys(CI).forEach(k=>{if(CI[k]){CI[k].destroy();CI[k]=null;}});
+      rend.sapma=false;
+      rSapma();
+      buildForm(); // ilerleme güncellenince form da yenilensin
+      toast("PYP EVM verisi yüklendi ✓","ok");
+    }catch(err){ toast("Dosya okunamadı: "+err.message,"err"); }
+  };
+  reader.readAsArrayBuffer(file);
+}
 
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
-
-
-
-
-// ── S-Curve Excel Import fonksiyonu ──
 </script>
+
+
+
+<!-- PDF RAPOR MODAL -->
+<div class="pdf-modal-bg" id="pdfModal">
+  <div class="pdf-modal">
+    <div class="pdf-toolbar">
+      <span style="color:#fff;font-weight:700;font-size:13px">📄 PDF Rapor Önizleme</span>
+      <span style="font-size:10px;color:#888;margin-left:4px" id="pdfPageInfo"></span>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="pdf-print-btn" onclick="window.print()">🖨️ Yazdır / PDF Kaydet</button>
+        <button class="pdf-close-btn" onclick="closePDF()">✕ Kapat</button>
+      </div>
+    </div>
+    <div class="pdf-pages" id="pdfPages"></div>
+  </div>
+</div>
 </body>
 </html>

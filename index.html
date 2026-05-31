@@ -1080,7 +1080,7 @@ function renderSCTableAndGantt(){
             <span style="color:${clr};font-weight:600;font-size:10px">%</span>
           </div>
         </td>
-        <td class="r" style="font-weight:700;color:${fark>=0?"var(--ag)":"var(--ad)"}">${fark>0?"+":""}${fark}%</td>
+        <td class="r" style="font-weight:700;color:${fark>=0?"var(--ag)":"var(--ad)"}">${fark>0?"+":""}${parseFloat(fark.toFixed(2))}%</td>
         <td><span class="tag" style="background:${clr}22;color:${clr}">${dA(act)}</span></td>
       </tr>`;
     }).join("");
@@ -2489,6 +2489,7 @@ function excelIndir(){
     _excelBuildVeriGirisi(wb);
     _excelBuildSCurve(wb);
     _excelBuildNakitAkis(wb);
+    _excelBuildFizikselIlerleme(wb);
     _excelBuildAciklama(wb);
     XLSX.writeFile(wb, 'Folkart_Veri_' + new Date().toLocaleDateString('tr-TR').replace(/\./g,'-') + '.xlsx');
     excelStatus('✅ ' + PROJECTS.length + ' proje indirildi', 'ok');
@@ -2643,6 +2644,48 @@ function _excelBuildNakitAkis(wb){
   XLSX.utils.book_append_sheet(wb, ws, 'NAKİT_AKIŞ');
 }
 
+
+function _excelBuildFizikselIlerleme(wb){
+  const rows = [];
+  rows.push(['PRJ KOD','PYP KOD','PYP ADI','PLANLANAN (%)\n(0-100)','GERÇEKLEŞEN (%)\n(0-100)','NOT']);
+  rows.push(['— Proje kodu','— 2 haneli PYP kodu (örn: 13)','— Otomatik dolar','— 0 ile 100 arası yaz','— 0 ile 100 arası yaz','— Opsiyonel']);
+
+  PROJECTS.forEach(function(proj){
+    const prj = proj.prj;
+    const pyp = (proj.pyp || []).filter(p => !['01','04','05','37','97','99'].includes(String(p.kod).padStart(2,'0')));
+
+    // Her projenin kendi sc verisini al
+    const projSc = proj.sc || {};
+
+    rows.push(['▶ ' + prj.ad + ' (Kod:' + prj.kod + ')', '', '', '', '', '']);
+
+    pyp.forEach(function(p){
+      const kod = String(p.kod).padStart(2,'0');
+      const sc = projSc[kod] || {};
+      // Değer 0-1 arasındaysa 100 ile çarp
+      let plan = sc.plan != null ? sc.plan : 0;
+      let gercek = sc.gercek != null ? sc.gercek : 0;
+      if(plan > 0 && plan <= 1) plan = plan * 100;
+      if(gercek > 0 && gercek <= 1) gercek = gercek * 100;
+      rows.push([
+        prj.kod,
+        kod,
+        getAnaPypName(p.kod, p.ad),
+        parseFloat(plan.toFixed(2)),
+        parseFloat(gercek.toFixed(2)),
+        ''
+      ]);
+    });
+
+    rows.push(['','','','','','']);
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:12},{wch:10},{wch:35},{wch:18},{wch:18},{wch:20}];
+  ws['!freeze'] = {xSplit:0, ySplit:1};
+  XLSX.utils.book_append_sheet(wb, ws, 'FİZİKSEL_İLERLEME');
+}
+
 function _excelBuildAciklama(wb){
   const rows = [
     ['KULLANIM KILAVUZU'],
@@ -2696,6 +2739,10 @@ function excelYukle(input){
       // ── S_EĞRİSİ sayfasını oku (varsa) ──
       const wsS = wb.Sheets['S_EĞRİSİ'];
       if(wsS){ _excelOkuSCurve(wsS, hatalar); }
+
+      // ── FİZİKSEL_İLERLEME sayfasını oku (varsa) ──
+      const wsF = wb.Sheets['FİZİKSEL_İLERLEME'];
+      if(wsF){ _excelOkuFiziksel(wsF, hatalar); }
 
       // Kaydet — save() çağırma, _syncDOM import verisini ezer!
       if(hatalar.length === 0 || degisen > 0){
@@ -2934,6 +2981,40 @@ function _excelOkuSCurve(ws, hatalar){
       hatalar.push('S-Eğrisi: Proje bulunamadı: '+prjKod);
     }
   });
+}
+
+
+// ── FİZİKSEL_İLERLEME Excel okuma ──
+function _excelOkuFiziksel(ws, hatalar){
+  const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:null});
+  if(!rows.length) return;
+  let curKod = null;
+  const scData = scLoad();
+  rows.forEach(function(row, ri){
+    if(ri === 0 || ri === 1) return;
+    if(!row || !row[0]) return;
+    const c0 = String(row[0]).trim();
+    if(c0.startsWith('▶')){
+      const m = c0.match(/Kod:(\w+)/);
+      if(m) curKod = m[1].trim();
+      return;
+    }
+    if(/^\d{4}$/.test(c0)) curKod = c0;
+    const pypKod = row[1] != null ? String(row[1]).trim().padStart(2,'0') : null;
+    if(!pypKod || !/^\d{2}$/.test(pypKod)) return;
+    const plan = row[3] != null ? parseFloat(String(row[3]).replace(',','.')) : null;
+    const gercek = row[4] != null ? parseFloat(String(row[4]).replace(',','.')) : null;
+    if(plan == null && gercek == null) return;
+    const aktifPrj = _getActive();
+    if(!aktifPrj) return;
+    if(curKod && String(aktifPrj.prj.kod).trim() !== curKod) return;
+    scData[pypKod] = scData[pypKod] || {};
+    if(plan != null && !isNaN(plan)) scData[pypKod].plan = Math.max(0, Math.min(100, plan));
+    if(gercek != null && !isNaN(gercek)) scData[pypKod].gercek = Math.max(0, Math.min(100, gercek));
+  });
+  scSave(scData);
+  if(typeof _INIT_SC !== 'undefined') Object.assign(_INIT_SC, scData);
+  renderSCTableAndGantt();
 }
 
 // Sayı parse yardımcısı

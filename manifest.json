@@ -1,0 +1,24 @@
+{
+  "name": "Folkart Teknik Ofis Dashboard",
+  "short_name": "Folkart",
+  "description": "Folkart Teknik Ofis Proje Yönetim Sistemi",
+  "start_url": "/FOLKART-DASHBOARD/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "folkart-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "folkart-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

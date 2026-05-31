@@ -2234,6 +2234,57 @@ async function saveToSupabase(){
     if(data) DB_ROW_ID = data.id;
   }
   showSync('✓ Kaydedildi');
+  await sendMailBildirimi();
+}
+
+async function sendMailBildirimi(){
+  try {
+    // Tüm kullanıcıları Supabase'den çek
+    const { data: users } = await sb.from('mail_alicilar').select('email, ad');
+    if(!users || users.length === 0) return;
+
+    const aktifPrj = PRJ.ad || 'Bilinmiyor';
+    const tarih = new Date().toLocaleString('tr-TR');
+    const girenKisi = document.getElementById('userBadge')?.textContent || '';
+
+    for(const u of users){
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer re_BBaxsWby_H4xCT2aBAyvbTB2a2xW52ftj',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'Folkart Teknik Ofis <onboarding@resend.dev>',
+          to: u.email,
+          subject: `📊 ${aktifPrj} — Yeni Veri Girişi`,
+          html: `
+            <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#f4f6fb;padding:24px;border-radius:12px">
+              <div style="background:linear-gradient(135deg,#4f8ef7,#9b6cf7);border-radius:8px;padding:16px 20px;margin-bottom:20px">
+                <h2 style="color:#fff;margin:0;font-size:18px">🏗️ Folkart Teknik Ofis</h2>
+                <p style="color:rgba(255,255,255,0.8);margin:4px 0 0;font-size:12px">Proje Takip Sistemi</p>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:20px;border:1px solid #e0e4f0">
+                <p style="color:#333;font-size:14px;margin:0 0 12px">Merhaba${u.ad ? ' '+u.ad : ''},</p>
+                <p style="color:#555;font-size:13px;margin:0 0 16px"><strong>${aktifPrj}</strong> projesine yeni veri girişi yapıldı.</p>
+                <table style="width:100%;font-size:12px;color:#666;border-collapse:collapse">
+                  <tr><td style="padding:6px 0;border-bottom:1px solid #f0f2f8">📅 Tarih</td><td style="padding:6px 0;border-bottom:1px solid #f0f2f8;text-align:right;color:#333"><strong>${tarih}</strong></td></tr>
+                  <tr><td style="padding:6px 0;border-bottom:1px solid #f0f2f8">📁 Proje</td><td style="padding:6px 0;border-bottom:1px solid #f0f2f8;text-align:right;color:#333"><strong>${aktifPrj}</strong></td></tr>
+                  <tr><td style="padding:6px 0">👤 Giren</td><td style="padding:6px 0;text-align:right;color:#333"><strong>${girenKisi}</strong></td></tr>
+                </table>
+                <div style="margin-top:20px;text-align:center">
+                  <a href="https://folkart-teknik-ofis.github.io/FOLKART-DASHBOARD/" style="background:linear-gradient(135deg,#4f8ef7,#9b6cf7);color:#fff;text-decoration:none;padding:10px 24px;border-radius:6px;font-size:13px;font-weight:600">Paneli Görüntüle →</a>
+                </div>
+              </div>
+              <p style="color:#aaa;font-size:10px;text-align:center;margin-top:16px">Folkart Teknik Ofis · Otomatik Bildirim</p>
+            </div>
+          `
+        })
+      });
+    }
+  } catch(e) {
+    console.warn('[MAIL] Bildirim gönderilemedi:', e);
+  }
 }
 
 // ── Orijinal save fonksiyonunu wrap et ──
